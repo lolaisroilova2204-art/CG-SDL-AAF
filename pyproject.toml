@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cgaaf"
+version = "1.3.0"
+description = "CG-SDL-AAF: a reproducible automated assessment framework for self-directed learning in Computer Graphics (perceptual image similarity, geometric mesh metrics, Blender-based re-rendering)"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+authors = [{name = "Lola Sunnatovna Isroilova"}]
+keywords = ["computer graphics education", "automated assessment", "self-directed learning", "SSIM", "LPIPS", "Chamfer distance", "Blender"]
+dependencies = ["numpy>=1.23", "scipy>=1.10", "scikit-image>=0.20", "Pillow>=9", "trimesh>=4.0", "pandas>=1.5", "openpyxl>=3.1", "matplotlib>=3.6", "PySide6>=6.5"]
+
+[project.optional-dependencies]
+lpips = ["torch>=2.0", "torchvision>=0.15", "lpips>=0.1.4"]
+dev = ["pytest>=7", "jupyter", "tabulate", "pyinstaller>=6"]
+
+[project.scripts]
+cgaaf = "cgaaf.cli:main"
+
+[project.gui-scripts]
+cgaaf-gui = "cgaaf.gui:run"
+
+[tool.setuptools]
+packages = ["cgaaf"]

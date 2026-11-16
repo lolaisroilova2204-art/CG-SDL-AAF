@@ -1,0 +1,191 @@
+test,reference,variant,method,score
+UI screenshot,scene_A,layout 0,no crop,0.0
+UI screenshot,scene_A,layout 0,auto crop,100.0
+UI screenshot,scene_A,layout 0,no crop,0.0
+UI screenshot,scene_A,layout 0,auto crop,100.0
+UI screenshot,scene_A,layout 0,no crop,0.0
+UI screenshot,scene_A,layout 0,auto crop,100.0
+UI screenshot,scene_A,layout 1,no crop,0.0
+UI screenshot,scene_A,layout 1,auto crop,100.0
+UI screenshot,scene_A,layout 1,no crop,0.0
+UI screenshot,scene_A,layout 1,auto crop,100.0
+UI screenshot,scene_A,layout 1,no crop,0.0
+UI screenshot,scene_A,layout 1,auto crop,100.0
+UI screenshot,scene_A,layout 2,no crop,0.0
+UI screenshot,scene_A,layout 2,auto crop,100.0
+UI screenshot,scene_A,layout 2,no crop,0.0
+UI screenshot,scene_A,layout 2,auto crop,100.0
+UI screenshot,scene_A,layout 2,no crop,0.0
+UI screenshot,scene_A,layout 2,auto crop,100.0
+UI screenshot,scene_B,layout 0,no crop,0.0
+UI screenshot,scene_B,layout 0,auto crop,100.0
+UI screenshot,scene_B,layout 0,no crop,0.0
+UI screenshot,scene_B,layout 0,auto crop,100.0
+UI screenshot,scene_B,layout 0,no crop,0.0
+UI screenshot,scene_B,layout 0,auto crop,100.0
+UI screenshot,scene_B,layout 1,no crop,0.0
+UI screenshot,scene_B,layout 1,auto crop,100.0
+UI screenshot,scene_B,layout 1,no crop,0.0
+UI screenshot,scene_B,layout 1,auto crop,100.0
+UI screenshot,scene_B,layout 1,no crop,0.0
+UI screenshot,scene_B,layout 1,auto crop,100.0
+UI screenshot,scene_B,layout 2,no crop,0.0
+UI screenshot,scene_B,layout 2,auto crop,100.0
+UI screenshot,scene_B,layout 2,no crop,0.0
+UI screenshot,scene_B,layout 2,auto crop,100.0
+UI screenshot,scene_B,layout 2,no crop,0.0
+UI screenshot,scene_B,layout 2,auto crop,100.0
+UI screenshot,render_suzanne,layout 0,no crop,0.0
+UI screenshot,render_suzanne,layout 0,auto crop,100.0
+UI screenshot,render_suzanne,layout 0,no crop,0.0
+UI screenshot,render_suzanne,layout 0,auto crop,100.0
+UI screenshot,render_suzanne,layout 0,no crop,0.0
+UI screenshot,render_suzanne,layout 0,auto crop,100.0
+UI screenshot,render_suzanne,layout 1,no crop,0.0
+UI screenshot,render_suzanne,layout 1,auto crop,100.0
+UI screenshot,render_suzanne,layout 1,no crop,0.0
+UI screenshot,render_suzanne,layout 1,auto crop,100.0
+UI screenshot,render_suzanne,layout 1,no crop,0.0
+UI screenshot,render_suzanne,layout 1,auto crop,100.0
+UI screenshot,render_suzanne,layout 2,no crop,0.0
+UI screenshot,render_suzanne,layout 2,auto crop,100.0
+UI screenshot,render_suzanne,layout 2,no crop,0.0
+UI screenshot,render_suzanne,layout 2,auto crop,100.0
+UI screenshot,render_suzanne,layout 2,no crop,0.0
+UI screenshot,render_suzanne,layout 2,auto crop,100.0
+UI screenshot,render_still_life,layout 0,no crop,0.0
+UI screenshot,render_still_life,layout 0,auto crop,100.0
+UI screenshot,render_still_life,layout 0,no crop,0.0
+UI screenshot,render_still_life,layout 0,auto crop,100.0
+UI screenshot,render_still_life,layout 0,no crop,0.0
+UI screenshot,render_still_life,layout 0,auto crop,100.0
+UI screenshot,render_still_life,layout 1,no crop,0.0
+UI screenshot,render_still_life,layout 1,auto crop,100.0
+UI screenshot,render_still_life,layout 1,no crop,0.0
+UI screenshot,render_still_life,layout 1,auto crop,100.0
+UI screenshot,render_still_life,layout 1,no crop,0.0
+UI screenshot,render_still_life,layout 1,auto crop,100.0
+UI screenshot,render_still_life,layout 2,no crop,0.0
+UI screenshot,render_still_life,layout 2,auto crop,100.0
+UI screenshot,render_still_life,layout 2,no crop,0.0
+UI screenshot,render_still_life,layout 2,auto crop,100.0
+UI screenshot,render_still_life,layout 2,no crop,0.0
+UI screenshot,render_still_life,layout 2,auto crop,100.0
+UI screenshot,render_chair,layout 0,no crop,0.0
+UI screenshot,render_chair,layout 0,auto crop,100.0
+UI screenshot,render_chair,layout 0,no crop,0.0
+UI screenshot,render_chair,layout 0,auto crop,100.0
+UI screenshot,render_chair,layout 0,no crop,0.0
+UI screenshot,render_chair,layout 0,auto crop,100.0
+UI screenshot,render_chair,layout 1,no crop,0.0
+UI screenshot,render_chair,layout 1,auto crop,100.0
+UI screenshot,render_chair,layout 1,no crop,0.0
+UI screenshot,render_chair,layout 1,auto crop,100.0
+UI screenshot,render_chair,layout 1,no crop,0.0
+UI screenshot,render_chair,layout 1,auto crop,100.0
+UI screenshot,render_chair,layout 2,no crop,0.0
+UI screenshot,render_chair,layout 2,auto crop,100.0
+UI screenshot,render_chair,layout 2,no crop,0.0
+UI screenshot,render_chair,layout 2,auto crop,100.0
+UI screenshot,render_chair,layout 2,no crop,0.0
+UI screenshot,render_chair,layout 2,auto crop,100.0
+UI screenshot,render_mug,layout 0,no crop,0.0
+UI screenshot,render_mug,layout 0,auto crop,100.0
+UI screenshot,render_mug,layout 0,no crop,0.0
+UI screenshot,render_mug,layout 0,auto crop,100.0
+UI screenshot,render_mug,layout 0,no crop,0.0
+UI screenshot,render_mug,layout 0,auto crop,100.0
+UI screenshot,render_mug,layout 1,no crop,0.0
+UI screenshot,render_mug,layout 1,auto crop,100.0
+UI screenshot,render_mug,layout 1,no crop,0.0
+UI screenshot,render_mug,layout 1,auto crop,100.0
+UI screenshot,render_mug,layout 1,no crop,0.0
+UI screenshot,render_mug,layout 1,auto crop,100.0
+UI screenshot,render_mug,layout 2,no crop,0.0
+UI screenshot,render_mug,layout 2,auto crop,100.0
+UI screenshot,render_mug,layout 2,no crop,0.0
+UI screenshot,render_mug,layout 2,auto crop,100.0
+UI screenshot,render_mug,layout 2,no crop,0.0
+UI screenshot,render_mug,layout 2,auto crop,100.0
+UI screenshot,render_desk_lamp,layout 0,no crop,0.0
+UI screenshot,render_desk_lamp,layout 0,auto crop,100.0
+UI screenshot,render_desk_lamp,layout 0,no crop,0.0
+UI screenshot,render_desk_lamp,layout 0,auto crop,100.0
+UI screenshot,render_desk_lamp,layout 0,no crop,0.0
+UI screenshot,render_desk_lamp,layout 0,auto crop,100.0
+UI screenshot,render_desk_lamp,layout 1,no crop,0.0
+UI screenshot,render_desk_lamp,layout 1,auto crop,100.0
+UI screenshot,render_desk_lamp,layout 1,no crop,0.0
+UI screenshot,render_desk_lamp,layout 1,auto crop,100.0
+UI screenshot,render_desk_lamp,layout 1,no crop,0.0
+UI screenshot,render_desk_lamp,layout 1,auto crop,100.0
+UI screenshot,render_desk_lamp,layout 2,no crop,0.0
+UI screenshot,render_desk_lamp,layout 2,auto crop,100.0
+UI screenshot,render_desk_lamp,layout 2,no crop,0.0
+UI screenshot,render_desk_lamp,layout 2,auto crop,100.0
+UI screenshot,render_desk_lamp,layout 2,no crop,0.0
+UI screenshot,render_desk_lamp,layout 2,auto crop,100.0
+auxiliary floor,torus,no floor (ref 4×),no removal,0.0
+auxiliary floor,torus,floor 3× (ref 4×),no removal,100.0
+auxiliary floor,torus,floor 4× (ref 4×),no removal,100.0
+auxiliary floor,torus,floor 6× (ref 4×),no removal,100.0
+auxiliary floor,torus,no floor (ref 4×),helper removal,100.0
+auxiliary floor,torus,floor 3× (ref 4×),helper removal,100.0
+auxiliary floor,torus,floor 4× (ref 4×),helper removal,100.0
+auxiliary floor,torus,floor 6× (ref 4×),helper removal,100.0
+auxiliary floor,capsule,no floor (ref 4×),no removal,0.0
+auxiliary floor,capsule,floor 3× (ref 4×),no removal,100.0
+auxiliary floor,capsule,floor 4× (ref 4×),no removal,100.0
+auxiliary floor,capsule,floor 6× (ref 4×),no removal,100.0
+auxiliary floor,capsule,no floor (ref 4×),helper removal,100.0
+auxiliary floor,capsule,floor 3× (ref 4×),helper removal,100.0
+auxiliary floor,capsule,floor 4× (ref 4×),helper removal,100.0
+auxiliary floor,capsule,floor 6× (ref 4×),helper removal,100.0
+auxiliary floor,cylinder,no floor (ref 4×),no removal,0.0
+auxiliary floor,cylinder,floor 3× (ref 4×),no removal,96.71634444936392
+auxiliary floor,cylinder,floor 4× (ref 4×),no removal,100.0
+auxiliary floor,cylinder,floor 6× (ref 4×),no removal,97.3565272625081
+auxiliary floor,cylinder,no floor (ref 4×),helper removal,100.0
+auxiliary floor,cylinder,floor 3× (ref 4×),helper removal,100.0
+auxiliary floor,cylinder,floor 4× (ref 4×),helper removal,100.0
+auxiliary floor,cylinder,floor 6× (ref 4×),helper removal,100.0
+auxiliary floor,ellipsoid,no floor (ref 4×),no removal,0.0
+auxiliary floor,ellipsoid,floor 3× (ref 4×),no removal,98.38955096992069
+auxiliary floor,ellipsoid,floor 4× (ref 4×),no removal,100.0
+auxiliary floor,ellipsoid,floor 6× (ref 4×),no removal,99.96331990348831
+auxiliary floor,ellipsoid,no floor (ref 4×),helper removal,100.0
+auxiliary floor,ellipsoid,floor 3× (ref 4×),helper removal,100.0
+auxiliary floor,ellipsoid,floor 4× (ref 4×),helper removal,100.0
+auxiliary floor,ellipsoid,floor 6× (ref 4×),helper removal,100.0
+auxiliary floor,asset_suzanne,no floor (ref 4×),no removal,0.0
+auxiliary floor,asset_suzanne,floor 3× (ref 4×),no removal,99.37613811945303
+auxiliary floor,asset_suzanne,floor 4× (ref 4×),no removal,100.0
+auxiliary floor,asset_suzanne,floor 6× (ref 4×),no removal,100.0
+auxiliary floor,asset_suzanne,no floor (ref 4×),helper removal,100.0
+auxiliary floor,asset_suzanne,floor 3× (ref 4×),helper removal,100.0
+auxiliary floor,asset_suzanne,floor 4× (ref 4×),helper removal,100.0
+auxiliary floor,asset_suzanne,floor 6× (ref 4×),helper removal,100.0
+auxiliary floor,asset_chair,no floor (ref 4×),no removal,0.0
+auxiliary floor,asset_chair,floor 3× (ref 4×),no removal,100.0
+auxiliary floor,asset_chair,floor 4× (ref 4×),no removal,100.0
+auxiliary floor,asset_chair,floor 6× (ref 4×),no removal,100.0
+auxiliary floor,asset_chair,no floor (ref 4×),helper removal,100.0
+auxiliary floor,asset_chair,floor 3× (ref 4×),helper removal,100.0
+auxiliary floor,asset_chair,floor 4× (ref 4×),helper removal,100.0
+auxiliary floor,asset_chair,floor 6× (ref 4×),helper removal,100.0
+auxiliary floor,asset_mug,no floor (ref 4×),no removal,0.0
+auxiliary floor,asset_mug,floor 3× (ref 4×),no removal,95.74077047574241
+auxiliary floor,asset_mug,floor 4× (ref 4×),no removal,100.0
+auxiliary floor,asset_mug,floor 6× (ref 4×),no removal,94.29163553507678
+auxiliary floor,asset_mug,no floor (ref 4×),helper removal,100.0
+auxiliary floor,asset_mug,floor 3× (ref 4×),helper removal,100.0
+auxiliary floor,asset_mug,floor 4× (ref 4×),helper removal,100.0
+auxiliary floor,asset_mug,floor 6× (ref 4×),helper removal,100.0
+auxiliary floor,asset_desk_lamp,no floor (ref 4×),no removal,0.0
+auxiliary floor,asset_desk_lamp,floor 3× (ref 4×),no removal,100.0
+auxiliary floor,asset_desk_lamp,floor 4× (ref 4×),no removal,100.0
+auxiliary floor,asset_desk_lamp,floor 6× (ref 4×),no removal,100.0
+auxiliary floor,asset_desk_lamp,no floor (ref 4×),helper removal,100.0
+auxiliary floor,asset_desk_lamp,floor 3× (ref 4×),helper removal,100.0
+auxiliary floor,asset_desk_lamp,floor 4× (ref 4×),helper removal,100.0
+auxiliary floor,asset_desk_lamp,floor 6× (ref 4×),helper removal,100.0

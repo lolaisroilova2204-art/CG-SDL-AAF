@@ -1,0 +1,15 @@
+# Exact versions used to develop and test CG-SDL-AAF 1.3 (Python 3.13.18, Linux x86-64; Blender 5.0.1 via bpy)
+# pip install -r requirements-lock.txt     (torch, torchvision, lpips are optional: LPIPS metric)
+numpy==2.5.3
+scipy==1.18.1
+scikit-image==0.26.0
+Pillow==12.3.0
+trimesh==5.2.1
+pandas==3.0.5
+openpyxl==3.1.5
+matplotlib==3.11.2
+PySide6==6.12.0
+tabulate==0.10.0
+torch==2.15.0
+torchvision==0.29.2
+lpips==0.1.4
