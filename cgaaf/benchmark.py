@@ -1,13 +1,20 @@
 """Controlled-perturbation benchmark (technical validation, no student data).
 
-A. Image channel : reference renders x 4 nuisance + 9 error families x severity levels
-B. Mesh channel  : reference meshes (primitives + Blender assets) x 4 nuisance + 5 error families
-C. Blender       : 6 compositions, render-level errors and nuisances, screenshot vs re-render
-                   pipeline, determinism (bench_render.py)
-D. Robustness    : application UI in screenshots, auxiliary floors
-E. Discrimination: AUC / Cohen d of nuisance vs error for the framework and every baseline
-F. Runtime
-All results are written to CSV / XLSX, publication figures and benchmark_report_en.md.
+A. Image channel : reference images x nuisance + error families x severity levels, in two modes
+                   object mode      (trim on, the default of a task): placement and size of the object
+                                    in the frame are not assessed -> reframing is a nuisance
+                   composition mode (trim off): the frame is assessed as it is -> translation, rotation
+                                    and down-scaling are errors
+B. Mesh channel  : reference meshes (primitives + Blender assets) x 5 nuisance + 5 error families
+C. Blender       : 12 compositions (6 development + 6 held-out), re-render vs render- and viewport-
+                   screenshot pipelines, student render settings, re-tessellation, 512 px check (bench_render.py)
+D. Robustness    : application UI in screenshots (dark / light theme, crop IoU), false crops on clean images,
+                   auxiliary floors and thin parts (helper rule of v1.3 vs v1.4)
+E. Discrimination: AUC of nuisance vs error with cluster-bootstrap CIs, paired AUC differences against the
+                   framework score, leave-one-object-out range, development vs held-out objects
+F. Feedback      : whether the rule-based messages name the injected error; localisation of occlusions
+G. Sensitivity   : AUC and grades under perturbed default constants (sensitivity.py)
+All results are written to CSV / XLSX, figures and benchmark_report_en.md.
 """
 from __future__ import annotations
 
@@ -23,25 +30,40 @@ from PIL import Image, ImageEnhance, ImageFilter
 from scipy.stats import spearmanr
 
 from . import ALGO_VERSION
-from .blender import MAKE_SCENE, find_blender, run_blender, run_script
-from .image_metrics import compare_images, load_image
-from .mesh_metrics import compare_meshes, load_mesh, prepare_reference, torus
+from .feedback import feedback_keys
+from .image_metrics import compare_images, load_image, map_point
+from .mesh_metrics import compare_meshes, load_mesh, prepare_reference, prepare_reference_raw, topology, torus
 from .scoring import composite, score
 
 LEVELS = [0.0, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0]
-IMG_FAMILIES = ["translation", "rotation", "scale", "hue", "brightness", "blur", "noise", "jpeg", "occlusion"]
-IMG_NUISANCE = ["n_jpeg", "n_noise", "n_shift", "n_resample"]   # changes a teacher would not penalise
 NUIS_LEVELS = [1 / 3, 2 / 3, 1.0]
+IMG_NUISANCE = ["n_jpeg", "n_noise", "n_shift", "n_resample"]   # changes a teacher would not penalise
+IMG_ERR_COMP = ["translation", "rotation", "scale", "hue", "brightness", "blur", "noise", "jpeg", "occlusion", "greyscale"]
+IMG_ERR_OBJ = ["rotation", "hue", "brightness", "blur", "noise", "jpeg", "occlusion", "greyscale"]
+IMG_MODES = {"object": (True, IMG_NUISANCE + ["n_reframe"], IMG_ERR_OBJ),
+             "composition": (False, IMG_NUISANCE, IMG_ERR_COMP)}
+IMG_FAMILIES = IMG_ERR_COMP  # all image error families
 MESH_INVARIANT = ["rigid_rotation", "uniform_scale", "retriangulation", "micro_noise"]
 MESH_ERRORS = ["anisotropic_scale", "vertex_noise", "hole", "part_removal", "extra_part"]
+STOCHASTIC_IMG = ("noise", "occlusion", "n_noise")
 # (column, label, sign): sign orients the value so that larger = more similar (for AUC)
-IMG_METHODS = [("score", "Framework score", 1), ("composite", "Framework composite P (unclipped)", 1), ("psnr", "PSNR", 1), ("ssim_plain", "SSIM (unweighted)", 1), ("ssim", "SSIM (fg-weighted)", 1),
-               ("msssim", "MS-SSIM", 1), ("lpips", "LPIPS", -1), ("deltaE00", "ΔE00", -1), ("color_hist", "Colour histogram", 1), ("edge_f1", "Edge F1", 1)]
-MESH_METHODS = [("score", "Framework score", 1), ("composite", "Framework composite P (unclipped)", 1), ("cd_noalign", "Chamfer, no alignment", -1), ("cd", "Chamfer, PCA+ICP", -1),
-                ("hd", "Hausdorff", -1), ("h95", "Hausdorff-95", -1), ("fscore", "F-score@0.1", 1)]
+IMG_METHODS = [("score", "Framework score", 1), ("composite", "Framework composite P (unclipped)", 1), ("psnr", "PSNR", 1),
+               ("ssim_plain", "SSIM (unweighted)", 1), ("ssim", "SSIM (fg-weighted)", 1), ("msssim", "MS-SSIM", 1), ("lpips", "LPIPS", -1),
+               ("flip", "FLIP", -1), ("sncd", "SNCD", -1), ("deltaE00", "ΔE00", -1), ("color_hist", "Colour histogram", 1), ("edge_f1", "Edge F1", 1)]
+MESH_METHODS = [("score", "Framework score", 1), ("composite", "Framework composite P (unclipped)", 1), ("cd_noalign", "Chamfer, no alignment", -1),
+                ("cd_icp", "Chamfer, ICP only", -1), ("cd_pca", "Chamfer, PCA only", -1), ("cd", "Chamfer, PCA+ICP", -1), ("hd", "Hausdorff", -1),
+                ("h95", "Hausdorff-95", -1), ("fscore", "F-score@0.1", 1), ("d2", "D2 shape distribution", -1)]
 IMG_METRICS = [("score", "Score"), ("psnr", "PSNR"), ("ssim_plain", "SSIM (unweighted)"), ("ssim", "SSIM (weighted)"), ("msssim", "MS-SSIM"),
-               ("lpips", "LPIPS"), ("deltaE00", "ΔE00"), ("color_hist", "Hist. BC"), ("edge_f1", "Edge F1")]
-MESH_METRICS = [("score", "Score"), ("cd_noalign", "CD (no align)"), ("cd", "CD"), ("hd", "HD"), ("h95", "H95"), ("fscore", "F-score"), ("boundary_edges", "Boundary edges")]
+               ("lpips", "LPIPS"), ("flip", "FLIP"), ("sncd", "SNCD"), ("deltaE00", "ΔE00"), ("color_hist", "Hist. BC"), ("edge_f1", "Edge F1")]
+MESH_METRICS = [("score", "Score"), ("cd_noalign", "CD (no align)"), ("cd", "CD"), ("hd", "HD"), ("h95", "H95"), ("fscore", "F-score"),
+                ("d2", "D2"), ("boundary_edges", "Boundary edges")]
+# messages that name the injected error (any of them counts as a hit); fixed before the run
+IMG_EXPECTED = {"hue": {"fb_color"}, "greyscale": {"fb_color"}, "brightness": {"fb_color"},
+                "blur": {"fb_edge_missing", "fb_shape", "fb_region"}, "noise": {"fb_edge_extra", "fb_shape", "fb_region"},
+                "jpeg": {"fb_shape", "fb_edge_missing", "fb_edge_extra", "fb_region"}, "occlusion": {"fb_region", "fb_edge_missing", "fb_shape"},
+                "rotation": {"fb_shape", "fb_region"}, "translation": {"fb_shape", "fb_region"}, "scale": {"fb_shape", "fb_region"}}
+MESH_EXPECTED = {"anisotropic_scale": {"fb_mesh_shape", "fb_mesh_outlier"}, "vertex_noise": {"fb_mesh_outlier", "fb_mesh_shape"},
+                 "hole": {"fb_open", "fb_mesh_missing"}, "part_removal": {"fb_mesh_missing", "fb_open"}, "extra_part": {"fb_mesh_extra"}}
 
 
 # ------------------------------------------------------------------ image perturbations
@@ -51,7 +73,8 @@ def _bg(img):
                                           a[-4:, :4].reshape(-1, 3).mean(0), a[-4:, -4:].reshape(-1, 3).mean(0)], 0))
 
 
-def perturb_image(img: Image.Image, fam: str, lv: float, rng) -> Image.Image:
+def perturb_image(img: Image.Image, fam: str, lv: float, rng, meta: dict | None = None) -> Image.Image:
+    """meta (optional dict) receives the occluder rectangle of the occlusion family."""
     if lv == 0:
         return img.copy()
     W, H = img.size
@@ -68,6 +91,15 @@ def perturb_image(img: Image.Image, fam: str, lv: float, rng) -> Image.Image:
     if fam == "n_resample":
         s_ = 1 - 0.4 * lv
         return img.resize((max(8, int(W * s_)), max(8, int(H * s_))), Image.BILINEAR).resize((W, H), Image.BICUBIC)
+    if fam == "n_reframe":  # object mode nuisance: the picture is reduced and moved, the object stays fully visible
+        s_ = 1 - 0.3 * lv
+        d = int(round(0.1 * lv * W))
+        w, h = int(W * s_), int(H * s_)
+        c = Image.new("RGB", img.size, bg)
+        c.paste(img.resize((w, h), Image.LANCZOS), ((W - w) // 2 + d, (H - h) // 2 + d // 2))
+        return c
+    if fam == "greyscale":  # colours lost (e.g. materials not assigned)
+        return Image.blend(img, img.convert("L").convert("RGB"), float(lv))
     if fam == "translation":
         d = int(lv * 0.25 * W)
         return img.transform(img.size, Image.AFFINE, (1, 0, -d, 0, 1, 0), fillcolor=bg)
@@ -101,7 +133,10 @@ def perturb_image(img: Image.Image, fam: str, lv: float, rng) -> Image.Image:
         cy, cx = (int(ys.mean()), int(xs.mean())) if len(ys) else (H // 2, W // 2)
         cy += int(rng.normal(0, H * 0.05)); cx += int(rng.normal(0, W * 0.05))
         s = int(lv * 0.35 * min(W, H))
-        a[max(0, cy - s // 2):cy + s // 2, max(0, cx - s // 2):cx + s // 2] = bg
+        y0, y1, x0, x1 = max(0, cy - s // 2), cy + s // 2, max(0, cx - s // 2), cx + s // 2
+        a[y0:y1, x0:x1] = bg
+        if meta is not None:
+            meta["occluder"] = (x0, y0, min(W, x1), min(H, y1))
         return Image.fromarray(a)
     raise ValueError(fam)
 
@@ -159,187 +194,306 @@ def builtin_meshes():
     return {"torus": torus(), "capsule": cap, "cylinder": cyl, "ellipsoid": ico}
 
 
+def builtin_mesh_variants():
+    """The same primitives built with half / double the segment counts: independently tessellated
+    but correct models (nuisance 're-tessellation')."""
+    def ell(k):
+        ico = trimesh.creation.icosphere(subdivisions=k)
+        ico.apply_transform(np.diag([1.0, 0.7, 0.5, 1]))
+        return ico
+    return {"torus": [("half", torus(nu=24, nv=12)), ("double", torus(nu=96, nv=48))],
+            "capsule": [("half", trimesh.creation.capsule(height=1.2, radius=0.4, count=[16, 16])),
+                        ("double", trimesh.creation.capsule(height=1.2, radius=0.4, count=[64, 64]))],
+            "cylinder": [("half", trimesh.creation.cylinder(radius=0.5, height=1.4, sections=24)),
+                         ("double", trimesh.creation.cylinder(radius=0.5, height=1.4, sections=96))],
+            "ellipsoid": [("half", ell(2)), ("double", ell(4))]}
+
+
 def builtin_images():
     from .demo import scene
     return {"scene_A": scene(), "scene_B": scene(dx=-70, dy=15)}
 
 
 # ------------------------------------------------------------------ runners
-def run_image_bench(refs: dict, repeats=3, use_lpips=True, log=print):
+def uniform_background(img: Image.Image, tol=6.0) -> bool:
+    """True if the image border has one colour (an object on a background, e.g. a canonical render);
+    full-frame pictures with gradients have no object boundary that object mode could trim to."""
+    a = np.asarray(img.convert("RGB"), float)
+    border = np.concatenate([a[:3].reshape(-1, 3), a[-3:].reshape(-1, 3), a[:, :3].reshape(-1, 3), a[:, -3:].reshape(-1, 3)])
+    return bool(border.std(0).max() < tol)
+
+
+def run_image_bench(refs: dict, repeats=3, use_lpips=True, log=print, modes=("object", "composition"), subsets=None):
     rows = []
+    subsets = subsets or {}
     for name, ref in refs.items():
         R = np.asarray(ref.convert("RGB"), float)
-        for fam in IMG_NUISANCE + IMG_FAMILIES:
-            nuis = fam in IMG_NUISANCE
-            for lv in (NUIS_LEVELS if nuis else LEVELS):
-                for rep in range(repeats if fam in ("noise", "occlusion", "n_noise") else 1):
-                    rng = np.random.default_rng(1000 * rep + int(lv * 100))
-                    t0 = time.perf_counter()
-                    res = compare_images(R, np.asarray(perturb_image(ref, fam, lv, rng), float), trim=False, use_lpips=use_lpips)
-                    dt_ = time.perf_counter() - t0
-                    rows.append({"reference": name, "family": fam, "kind": "nuisance" if nuis else ("identity" if lv == 0 else "error"),
-                                 "level": lv, "repeat": rep, **res.raw, "score": score({"type": "image"}, res.m),
-                                 "composite": composite({"type": "image"}, res.m), "seconds": dt_})
+        uni = uniform_background(ref)
+        for mode in modes:
+            trim, nuis_fams, err_fams = IMG_MODES[mode]
+            for fam in nuis_fams + err_fams:
+                if fam == "n_reframe" and not uni:
+                    continue
+                nuis = fam in nuis_fams
+                for lv in (NUIS_LEVELS if nuis else LEVELS):
+                    for rep in range(repeats if fam in STOCHASTIC_IMG else 1):
+                        rng = np.random.default_rng(1000 * rep + int(lv * 100))
+                        meta = {}
+                        S_img = perturb_image(ref, fam, lv, rng, meta)
+                        S = np.asarray(S_img, float)
+                        t0 = time.perf_counter()
+                        res = compare_images(R, S, trim=trim, use_lpips=use_lpips, baselines=True)
+                        dt_ = time.perf_counter() - t0
+                        sc = score({"type": "image"}, res.m)
+                        row = {"reference": name, "subset": subsets.get(name, "development"), "mode": mode, "family": fam,
+                               "kind": "nuisance" if nuis else ("identity" if lv == 0 else "error"), "level": lv, "repeat": rep, **res.raw,
+                               "score": sc, "composite": composite({"type": "image"}, res.m), "seconds": dt_,
+                               "feedback": ";".join(feedback_keys(image_raw=res.raw, worst=res.worst, image_score=sc))}
+                        if "occluder" in meta:
+                            x0, y0, x1, y1 = meta["occluder"]
+                            px, py = map_point(S, (x0 + x1) / 2, (y0 + y1) / 2, trim)
+                            n = res.ssim_map.shape[0]
+                            row["occluder_cell"] = int(min(2, max(0, py * 3 // n)) * 3 + min(2, max(0, px * 3 // n)))
+                        rows.append(row)
         log(f"image bench: {name} ✓")
     return pd.DataFrame(rows)
 
 
-def run_mesh_bench(refs: dict, repeats=3, log=print):
+def run_mesh_bench(refs: dict, repeats=3, log=print, variants=None, subsets=None):
     rows = []
+    variants, subsets = variants or {}, subsets or {}
     for name, m in refs.items():
-        ref_pts = prepare_reference(m, "pca_icp")
+        ref_pts, ref_raw, ref_topo = prepare_reference(m, "pca_icp"), prepare_reference_raw(m), topology(m)
+
+        def add(stu, fam, kind, lv, rep, variant=""):
+            t0 = time.perf_counter()
+            res = compare_meshes(stu, ref_pts, "pca_icp", ref_topo=ref_topo, baselines=True, ref_raw=ref_raw)
+            dt_ = time.perf_counter() - t0
+            rows.append({"reference": name, "subset": subsets.get(name, "development"), "family": fam, "kind": kind, "level": lv,
+                         "repeat": rep, "variant": variant, **res.raw, **{"m_" + k: v for k, v in res.m.items()},
+                         "score": score({"type": "mesh"}, res.m), "composite": composite({"type": "mesh"}, res.m), "seconds": dt_,
+                         "feedback": ";".join(feedback_keys(mesh_raw=res.raw, mesh_m=res.m, mesh_score=score({"type": "mesh"}, res.m)))})
+
         for fam in MESH_INVARIANT + MESH_ERRORS:
             levels = [0.0, 0.5, 1.0] if fam == "retriangulation" else LEVELS
             for lv in levels:
                 for rep in range(repeats):
                     rng = np.random.default_rng(7919 * rep + int(lv * 100))
-                    t0 = time.perf_counter()
-                    res = compare_meshes(perturb_mesh(m, fam, lv, rng), ref_pts, "pca_icp")
-                    dt_ = time.perf_counter() - t0
-                    rows.append({"reference": name, "family": fam, "kind": "nuisance" if fam in MESH_INVARIANT else ("identity" if lv == 0 else "error"),
-                                 "level": lv, "repeat": rep, **res.raw, **{"m_" + k: v for k, v in res.m.items()},
-                                 "score": score({"type": "mesh"}, res.m), "composite": composite({"type": "mesh"}, res.m), "seconds": dt_})
+                    kind = "identity" if lv == 0 else ("nuisance" if fam in MESH_INVARIANT else "error")
+                    add(perturb_mesh(m, fam, lv, rng), fam, kind, lv, rep)
+        for label, vm in variants.get(name, []):
+            add(vm, "retessellation", "nuisance", 1.0, 0, label)
         log(f"mesh bench: {name} ✓")
     return pd.DataFrame(rows)
 
 
-JITTERS = [(0, 0, 1.0), (5, 0, 1.0), (-5, 3, 1.0), (10, -3, 1.0), (-10, 5, 1.05), (15, 0, 0.95), (-15, -5, 1.1), (20, 8, 1.0), (-20, 0, 1.15), (25, -6, 0.9)]
-ERR_SCENES = {"correct": (0.0, 0.35, 1), "colour_error": (0.45, 0.35, 1), "proportion_error": (0.0, 0.20, 1), "missing_object": (0.0, 0.35, 0)}
+def _drop_planes_v13(m: trimesh.Trimesh):
+    """Helper-component rule of v1.3 (flat and at most 128 faces), kept for the comparison."""
+    parts = m.split(only_watertight=False)
+    if len(parts) <= 1:
+        return m
+    keep = []
+    for p in parts:
+        ext = np.sort(p.bounding_box_oriented.extents) if len(p.vertices) >= 4 else np.zeros(3)
+        if not (ext[2] > 0 and ext[0] < 0.01 * ext[2] and len(p.faces) <= 128):
+            keep.append(p)
+    return trimesh.util.concatenate(keep) if keep and len(keep) < len(parts) else m
 
 
-def run_blender_bench(work: Path, res=256, samples=16, blender=None, log=print):
-    """Simulated screenshots (identical scene, jittered viewpoint) vs canonical re-render."""
-    b = blender or find_blender()
-    if b is None:
-        log("Blender not found — part C skipped")
-        return None, None
-    work.mkdir(parents=True, exist_ok=True)
-    for k, (hue, minor, cube) in ERR_SCENES.items():
-        run_script(MAKE_SCENE, [work / f"{k}.blend", hue, minor, cube], blender=b)
-    # determinism
-    run_blender(work / "correct.blend", work / "ref.png", work / "ref.obj", res=res, samples=samples, blender=b)
-    run_blender(work / "correct.blend", work / "ref2.png", work / "ref2.obj", res=res, samples=samples, blender=b)
-    a1, a2 = np.asarray(Image.open(work / "ref.png").convert("RGB"), int), np.asarray(Image.open(work / "ref2.png").convert("RGB"), int)
-    det = {"max_abs_pixel_diff": int(np.abs(a1 - a2).max()), "identical_obj": (work / "ref.obj").read_bytes() == (work / "ref2.obj").read_bytes()}
-    ref_png = load_image(work / "ref.png")
-    ref_pts = prepare_reference(load_mesh(work / "ref.obj"))
-    rows = []
-    for k in ERR_SCENES:
-        t0 = time.perf_counter()
-        run_blender(work / f"{k}.blend", work / f"{k}_canon.png", work / f"{k}.obj", res=res, samples=samples, blender=b)
-        rt = time.perf_counter() - t0
-        ir = compare_images(ref_png, load_image(work / f"{k}_canon.png"), trim=True, use_lpips=False)
-        mr = compare_meshes(work / f"{k}.obj", ref_pts)
-        rows.append({"scene": k, "mode": "re-render (canonical)", "jitter": "0/0/1.00", "score_image": score({"type": "image"}, ir.m),
-                     "score_mesh": score({"type": "mesh"}, mr.m), "ssim": ir.raw["ssim"], "render_seconds": rt})
-        for j, (az, el, df) in enumerate(JITTERS[1:]):
-            p = work / f"{k}_shot{j}.png"
-            run_blender(work / f"{k}.blend", p, None, res=res, samples=samples, blender=b, jitter=(az, el, df))
-            ir = compare_images(ref_png, load_image(p), trim=True, use_lpips=False)
-            rows.append({"scene": k, "mode": "screenshot (jittered view)", "jitter": f"{az}/{el}/{df:.2f}", "score_image": score({"type": "image"}, ir.m),
-                         "score_mesh": np.nan, "ssim": ir.raw["ssim"], "render_seconds": np.nan})
-        log(f"blender bench: {k} ✓")
-    return pd.DataFrame(rows), det
-
-
-def run_robustness_bench(imgs: dict, meshes: dict, log=print):
-    """(i) screenshots containing application UI, with and without automatic viewport cropping;
-    (ii) meshes with an auxiliary floor of varying size, with and without helper-component removal."""
-    from .mesh_metrics import load_mesh as _lm
-    from .ui_crop import mock_ui
-    import tempfile
-    rows = []
-    for name, ref in imgs.items():
-        R = np.asarray(ref.convert("RGB"), float)
-        for lay in range(3):
-            for seed in range(3):
-                ui = np.asarray(mock_ui(ref, lay, seed), float)
-                for crop in (None, "auto"):
-                    r = compare_images(R, ui, trim=False, use_lpips=False, crop=crop)
-                    rows.append({"test": "UI screenshot", "reference": name, "variant": f"layout {lay}", "method": "auto crop" if crop else "no crop",
-                                 "score": score({"type": "image"}, r.m)})
-    tmp = Path(tempfile.mkdtemp())
-    floor = lambda s: trimesh.creation.box(extents=[s, s, 0.02]).apply_translation([0, 0, -0.45])
+def run_robustness_bench(imgs: dict, meshes: dict, viewport_shots: dict | None = None, clean_extra: dict | None = None, log=print):
+    """(i) screenshots with a Blender-like interface (dark / light theme): crop IoU and scores with and without
+    automatic cropping, for the exact render (geometry of the crop) and for solid-shaded viewport content;
+    (ii) false crops on clean images; (iii) auxiliary floors and a thin model part, helper rule v1.3 vs v1.4."""
+    from .mesh_metrics import drop_plane_components
+    from .ui_crop import box_iou, detect_viewport, mock_ui
+    rows, crop_rows = [], []
+    for src, pool in (("render", imgs), ("viewport content", viewport_shots or {})):
+        for name, ref in pool.items():
+            R = np.asarray(ref.convert("RGB"), float)
+            for theme in ("dark", "light"):
+                for lay in range(3):
+                    for seed in range(2 if src == "render" else 1):
+                        ui, box = mock_ui(ref, lay, seed, theme, return_box=True)
+                        U = np.asarray(ui, float)
+                        det = detect_viewport(U)
+                        crop_rows.append({"content": src, "theme": theme, "reference": name, "layout": lay, "seed": seed,
+                                          "iou": box_iou(det, box), "detected": det is not None})
+                        for crop in (None, "auto"):
+                            r = compare_images(R, U, trim=True, use_lpips=False, crop=crop)
+                            rows.append({"test": f"UI screenshot ({src}, {theme})", "reference": name, "variant": f"layout {lay}",
+                                         "method": "auto crop" if crop else "no crop", "score": score({"type": "image"}, r.m)})
+    clean = dict(imgs, **(clean_extra or {}))
+    for name, im in clean.items():
+        det = detect_viewport(np.asarray(im.convert("RGB"), float))
+        crop_rows.append({"content": "clean image", "theme": "-", "reference": name, "layout": -1, "seed": 0, "iou": np.nan,
+                          "detected": det is not None})
+    # ---- floors and a thin part of the model
     for name, m in meshes.items():
         ext = float(np.max(m.extents))
-        trimesh.util.concatenate([m, floor(4 * ext)]).export(tmp / "ref.obj")
-        for drop in (False, True):
-            ref = prepare_reference(_lm(tmp / "ref.obj", drop_planes=drop))
-            for fs in (0, 3, 4, 6):
-                p = tmp / f"s{fs}.obj"
-                (trimesh.util.concatenate([m, floor(fs * ext)]) if fs else m).export(p)
-                r = compare_meshes(_lm(p, drop_planes=drop), ref)
-                rows.append({"test": "auxiliary floor", "reference": name, "variant": f"floor {fs}× (ref 4×)" if fs else "no floor (ref 4×)",
-                             "method": "helper removal" if drop else "no removal", "score": score({"type": "mesh"}, r.m)})
+        z0 = float(m.bounds[0][2]) - 0.01 * ext
+
+        def floor(s, t=0.0025, sub=0):
+            f = trimesh.creation.box(extents=[s * ext, s * ext, t * s * ext])
+            for _ in range(sub):
+                f = f.subdivide()
+            return f.apply_translation([float(m.centroid[0]), float(m.centroid[1]), z0 - t * s * ext / 2])
+
+        plate = trimesh.creation.box(extents=[0.4 * ext, 0.003 * ext, 0.4 * ext]).apply_translation(
+            [float(m.centroid[0]), float(m.bounds[0][1]) - 0.002 * ext, float(m.centroid[2])])
+        ref_floor = trimesh.util.concatenate([m, floor(4)])
+        cases = [("no floor", m), ("thin floor 3x", trimesh.util.concatenate([m, floor(3)])),
+                 ("thin floor 4x", trimesh.util.concatenate([m, floor(4)])), ("thin floor 6x", trimesh.util.concatenate([m, floor(6)])),
+                 ("subdivided floor 4x", trimesh.util.concatenate([m, floor(4, sub=3)])),
+                 ("slab floor 4x (2 % thick)", trimesh.util.concatenate([m, floor(4, t=0.02)]))]
+        for rule, fn in (("no removal", lambda x: x), ("helper rule v1.3", _drop_planes_v13), ("helper rule v1.4", lambda x: drop_plane_components(x)[0])):
+            rf = fn(ref_floor.copy())
+            ref_pts, ref_t = prepare_reference(rf), topology(rf)
+            for lab, stu in cases:
+                r = compare_meshes(fn(stu.copy()), ref_pts, ref_topo=ref_t)
+                rows.append({"test": "auxiliary floor", "reference": name, "variant": lab, "method": rule, "score": score({"type": "mesh"}, r.m)})
+            # a thin plate that belongs to the model: a student who omits it must lose points
+            rp = fn(trimesh.util.concatenate([m, plate]).copy())
+            ref_pl, ref_plt = prepare_reference(rp), topology(rp)
+            for lab, stu in (("plate present", trimesh.util.concatenate([m, plate])), ("plate missing (error)", m)):
+                r = compare_meshes(fn(stu.copy()), ref_pl, ref_topo=ref_plt)
+                rows.append({"test": "thin model part", "reference": name, "variant": lab, "method": rule, "score": score({"type": "mesh"}, r.m)})
     log("robustness bench ✓")
-    return pd.DataFrame(rows)
+    return pd.DataFrame(rows), pd.DataFrame(crop_rows)
 
 
-# ------------------------------------------------------------------ analysis & figures
+# ------------------------------------------------------------------ analysis
 def _plt():
     from .reports import _plt as p
     return p()
 
 
+def _mono(g):
+    m = g.groupby("level")["score"].mean()
+    inc = np.diff(m.values)
+    return {"rho_level_score": spearmanr(g["level"], g["score"]).statistic, "score_L0": m.iloc[0], "score_L0.2": m.get(0.2, np.nan),
+            "score_L0.4": m.get(0.4, np.nan), "score_L1": m.iloc[-1], "monotone_means": bool((inc <= 1e-6).all()),
+            "max_increase": float(max(0.0, inc.max())) if len(inc) else 0.0}
+
+
 def summarise(img: pd.DataFrame, mesh: pd.DataFrame):
     out = {}
     if img is not None and len(img):
-        mono = []
-        ie = img[img.family.isin(IMG_FAMILIES)]
-        for fam, g in ie.groupby("family"):
-            m = g.groupby("level")["score"].mean()
-            mono.append({"family": fam, "rho_level_score": spearmanr(g["level"], g["score"]).statistic, "score_L0": m.iloc[0], "score_L0.4": m.get(0.4, np.nan),
-                         "score_L1": m.iloc[-1], "monotone_means": bool((np.diff(m.values) <= 1e-6).all())})
+        mono, nuis, sens = [], [], {}
+        for mode, gm in img.groupby("mode"):
+            _, nf, ef = IMG_MODES[mode]
+            ie = gm[gm.family.isin(ef)]
+            for fam, g in ie.groupby("family"):
+                mono.append({"mode": mode, "family": fam, **_mono(g)})
+            t = gm[gm.kind == "nuisance"].groupby("family")["score"].agg(["count", "mean", "std", "min"]).reset_index()
+            t.insert(0, "mode", mode)
+            nuis.append(t)
+            if mode == "composition":
+                for col, lab in IMG_METRICS:
+                    if col in ie and ie[col].notna().any():
+                        sens[lab] = {fam: abs(spearmanr(g["level"], g[col].astype(float)).statistic) for fam, g in ie.groupby("family")
+                                     if g[col].astype(float).std() > 0}
         out["image_monotonicity"] = pd.DataFrame(mono)
-        out["image_nuisance"] = img[img.kind == "nuisance"].groupby("family")["score"].agg(["mean", "std", "min"]).reset_index()
-        sens = {}
-        for col, lab in IMG_METRICS:
-            if col in ie and ie[col].notna().any():
-                sens[lab] = {fam: abs(spearmanr(g["level"], g[col]).statistic) for fam, g in ie.groupby("family") if g[col].std() > 0}
+        out["image_nuisance"] = pd.concat(nuis, ignore_index=True)
         out["image_sensitivity"] = pd.DataFrame(sens).T
     if mesh is not None and len(mesh):
         inv = []
         for fam, g in mesh[mesh.kind == "nuisance"].groupby("family"):
-            gg = g[g.level > 0]
-            inv.append({"family": fam, "n": len(gg), "score_mean": gg.score.mean(), "score_min": gg.score.min(), "cd_mean": gg.cd.mean(), "cd_noalign_mean": gg.cd_noalign.mean(), "fscore_mean": gg.fscore.mean()})
+            inv.append({"family": fam, "n": len(g), "score_mean": g.score.mean(), "score_sd": g.score.std(), "score_min": g.score.min(),
+                        "cd_mean": g.cd.mean(), "cd_noalign_mean": g.cd_noalign.mean(), "fscore_mean": g.fscore.mean()})
         out["mesh_invariance"] = pd.DataFrame(inv)
-        mono = []
         me = mesh[mesh.family.isin(MESH_ERRORS)]
-        for fam, g in me.groupby("family"):
-            m = g.groupby("level")["score"].mean()
-            mono.append({"family": fam, "rho_level_score": spearmanr(g["level"], g["score"]).statistic, "score_L0": m.iloc[0], "score_L0.4": m.get(0.4, np.nan),
-                         "score_L1": m.iloc[-1], "monotone_means": bool((np.diff(m.values) <= 1e-6).all())})
-        out["mesh_monotonicity"] = pd.DataFrame(mono)
+        out["mesh_monotonicity"] = pd.DataFrame([{"family": fam, **_mono(g)} for fam, g in me.groupby("family")])
         sens = {}
         for col, lab in MESH_METRICS:
-            sens[lab] = {fam: abs(spearmanr(g["level"], g[col]).statistic) for fam, g in me.groupby("family") if g[col].std() > 0}
+            if col in me:
+                sens[lab] = {fam: abs(spearmanr(g["level"], g[col].astype(float)).statistic) for fam, g in me.groupby("family")
+                             if g[col].astype(float).std() > 0}
         out["mesh_sensitivity"] = pd.DataFrame(sens).T
-        noise = mesh[(mesh.kind == "identity") | ((mesh.kind == "nuisance") & (mesh.level == 0))]
+        noise = mesh[mesh.kind == "identity"]
         out["mesh_noise_floor"] = {"cd_mean": float(noise.cd.mean()), "h95_mean": float(noise.h95.mean())}
     return out
 
 
+def _fb_row(channel, fam, exp, g, top=86):
+    """Hit rate over all error cases and over the cases graded below the top grade (score < top), and the share
+    of those penalised cases that received no problem message at all."""
+    keys = g.feedback.fillna("").map(lambda f: set(k for k in f.split(";") if k))
+    hit = keys.map(lambda k: bool(k & exp))
+    pen = g.score < top
+    return {"channel": channel, "family": fam, "expected": ", ".join(sorted(exp)), "n": len(g), "rate": float(hit.mean()),
+            "n_penalised": int(pen.sum()), "rate_penalised": float(hit[pen].mean()) if pen.any() else float("nan"),
+            "silent_penalised": float((keys[pen].map(len) == 0).mean()) if pen.any() else float("nan")}
+
+
+def feedback_validation(img, mesh, min_level=0.2):
+    """Hit rate: share of error cases (severity >= min_level) for which at least one message that names the
+    injected error is issued, overall and among the cases graded below 5 (score < 86); false alarms: share of
+    nuisance cases with any problem message."""
+    rows = []
+    if img is not None and len(img):
+        for mode, gm in img.groupby("mode"):
+            nu = gm[gm.kind == "nuisance"]
+            rows.append({"channel": f"image ({mode} mode)", "family": "nuisance (false alarms)", "expected": "none",
+                         "n": len(nu), "rate": float((nu.feedback.fillna("") != "").mean())})
+            for fam, g in gm[(gm.kind == "error") & (gm.level >= min_level)].groupby("family"):
+                rows.append(_fb_row(f"image ({mode} mode)", fam, IMG_EXPECTED.get(fam, set()), g))
+            oc = gm[(gm.family == "occlusion") & (gm.level >= min_level) & gm.get("occluder_cell", pd.Series(dtype=float)).notna()]
+            if len(oc):
+                rows.append({"channel": f"image ({mode} mode)", "family": "occlusion: worst cell = occluder", "expected": "fb_region location",
+                             "n": len(oc), "rate": float((oc.worst_cell == oc.occluder_cell).mean())})
+    if mesh is not None and len(mesh):
+        nu = mesh[mesh.kind == "nuisance"]
+        rows.append({"channel": "mesh", "family": "nuisance (false alarms)", "expected": "none", "n": len(nu),
+                     "rate": float((nu.feedback.fillna("") != "").mean())})
+        for fam, g in mesh[(mesh.kind == "error") & (mesh.level >= min_level)].groupby("family"):
+            rows.append(_fb_row("mesh", fam, MESH_EXPECTED[fam], g))
+    return pd.DataFrame(rows)
+
+
 def discrimination(img, mesh, rend):
-    """Framework vs baselines: AUC of nuisance vs error (E)."""
+    """Framework vs baselines: AUC of nuisance vs error (E), overall and per subset."""
     from .discrimination import compare_methods, detectability, min_detectable
     D = {}
+
+    def per_subset(df, methods, key, **kw):
+        parts = []
+        for sub in ("all", "development", "held-out"):
+            g = df if sub == "all" else df[df["subset"] == sub]
+            if g["reference"].nunique() < 2 or not (g["kind"] == "error").any():
+                continue
+            t = compare_methods(g, methods, **kw)
+            t.insert(0, "objects", sub)
+            parts.append(t)
+        D[key] = pd.concat(parts, ignore_index=True)
+
     if img is not None and len(img):
-        D["image_auc"] = compare_methods(img, IMG_METHODS, min_level=0.2)
-        D["image_detectability"] = detectability(img, IMG_METHODS)
-        D["image_min_severity"] = min_detectable(D["image_detectability"])
+        for mode, gm in img.groupby("mode"):
+            per_subset(gm, IMG_METHODS, f"image_auc_{mode}", min_level=0.2)
+            D[f"image_detectability_{mode}"] = detectability(gm, IMG_METHODS)
+            D[f"image_min_severity_{mode}"] = min_detectable(D[f"image_detectability_{mode}"])
     if mesh is not None and len(mesh):
-        D["mesh_auc"] = compare_methods(mesh, MESH_METHODS, min_level=0.2)
+        per_subset(mesh, MESH_METHODS, "mesh_auc", min_level=0.2)
         D["mesh_detectability"] = detectability(mesh, MESH_METHODS)
         D["mesh_min_severity"] = min_detectable(D["mesh_detectability"])
     if rend is not None and len(rend):
         parts = []
         for pipe, g in rend.groupby("pipeline"):
-            t = compare_methods(g, IMG_METHODS, min_level=0.0)
-            t.insert(0, "pipeline", pipe)
-            parts.append(t)
+            for sub in ("all", "development", "held-out"):
+                gg = g if sub == "all" else g[g["subset"] == sub]
+                if gg["reference"].nunique() < 2:
+                    continue
+                t = compare_methods(gg, IMG_METHODS, min_level=0.0)
+                t.insert(0, "objects", sub)
+                t.insert(0, "pipeline", pipe)
+                parts.append(t)
         D["render_auc"] = pd.concat(parts, ignore_index=True)
         D["render_scores"] = rend.groupby(["pipeline", "kind", "family"])["score"].agg(["mean", "std", "min", "max", "count"]).reset_index()
     return D
+
+
+# ------------------------------------------------------------------ figures (repository versions)
+MARKERS = ["o", "s", "^", "v", "D", "P", "X", "*", "<", ">", "h"]
+STYLES = ["-", "--", "-.", ":"]
 
 
 def figures(img, mesh, rend, S, D, out: Path):
@@ -351,189 +505,119 @@ def figures(img, mesh, rend, S, D, out: Path):
         figs[name] = out / f"{name}.png"
 
     if img is not None and len(img):
-        fig, ax = plt.subplots(figsize=(4.6, 3.2))
-        for fam, g in img[img.family.isin(IMG_FAMILIES)].groupby("family"):
-            m = g.groupby("level")["score"].mean()
-            ax.plot(m.index, m.values, marker="o", ms=3, lw=1.2, label=fam)
-        ax.set(xlabel="Error severity", ylabel="Framework score", ylim=(0, 102), title="Image channel: score vs error severity")
-        ax.legend(frameon=False, fontsize=6.5, ncol=2)
-        save(fig, "fig_bench_image_curves")
+        for mode, gm in img.groupby("mode"):
+            fig, ax = plt.subplots(figsize=(4.6, 3.2))
+            for k, (fam, g) in enumerate(gm[gm.kind.isin(["error", "identity"]) & gm.family.isin(IMG_MODES[mode][2])].groupby("family")):
+                m = g.groupby("level")["score"].mean()
+                ax.plot(m.index, m.values, marker=MARKERS[k % len(MARKERS)], ms=3.5, lw=1.1, ls=STYLES[k % 4], label=fam)
+            ax.set(xlabel="Error severity", ylabel="Framework score", ylim=(0, 102), title=f"Image channel ({mode} mode)")
+            ax.legend(frameon=False, fontsize=6.5, ncol=2)
+            save(fig, f"fig_bench_image_curves_{mode}")
     if mesh is not None and len(mesh):
         fig, ax = plt.subplots(figsize=(4.6, 3.2))
-        for fam, g in mesh.groupby("family"):
+        for k, (fam, g) in enumerate(mesh[mesh.family != "retessellation"].groupby("family")):
             m = g.groupby("level")["score"].mean()
-            ax.plot(m.index, m.values, marker="o", ms=3, lw=1.2, ls="--" if fam in MESH_INVARIANT else "-", label=fam)
+            ax.plot(m.index, m.values, marker=MARKERS[k % len(MARKERS)], ms=3.5, lw=1.1, ls="--" if fam in MESH_INVARIANT else "-", label=fam)
         ax.set(xlabel="Perturbation severity", ylabel="Framework score", ylim=(0, 102), title="Mesh channel (dashed = nuisance)")
         ax.legend(frameon=False, fontsize=6.5, ncol=2)
         save(fig, "fig_bench_mesh_curves")
-    for key in ("image_sensitivity", "mesh_sensitivity"):
-        if key in S and len(S[key]):
-            M = S[key]
-            fig, ax = plt.subplots(figsize=(0.62 * M.shape[1] + 1.8, 0.34 * M.shape[0] + 1.0))
-            im = ax.imshow(M.values.astype(float), cmap="Blues", vmin=0, vmax=1)
-            ax.set(xticks=range(M.shape[1]), yticks=range(M.shape[0]), xticklabels=M.columns, yticklabels=M.index)
-            plt.setp(ax.get_xticklabels(), rotation=40, ha="right")
-            for i in range(M.shape[0]):
-                for j in range(M.shape[1]):
-                    v = M.values[i, j]
-                    if np.isfinite(v):
-                        ax.text(j, i, f"{v:.2f}", ha="center", va="center", fontsize=6, color="white" if v > 0.6 else "black")
-            ax.set_title("|Spearman ρ| between severity and metric")
-            fig.colorbar(im, ax=ax, fraction=0.03)
-            save(fig, f"fig_bench_{key}")
-    for key, title in (("image_detectability", "Image: nuisance vs error at each severity"), ("mesh_detectability", "Mesh: nuisance vs error at each severity")):
-        if key in D and len(D[key]):
-            fig, ax = plt.subplots(figsize=(4.8, 3.3))
-            for lab, g in D[key].groupby("method", sort=False):
-                fw = lab.startswith("Framework")
-                ax.plot(g["level"], g["AUC"], marker="o", ms=3 if not fw else 4, lw=2.2 if fw else 1, color="#2b59d9" if fw else None,
-                        ls="--" if "composite" in lab else "-", alpha=1 if fw else 0.75, label=lab, zorder=3 if fw else 2)
-            ax.axhline(0.5, color="#98a2b3", lw=0.8, ls=":")
-            ax.set(xlabel="Error severity", ylabel="AUC (nuisance vs error)", ylim=(0.3, 1.02), title=title)
-            ax.legend(frameon=False, fontsize=6.3, ncol=2)
-            save(fig, f"fig_bench_{key}")
     if "render_auc" in D:
-        R = D["render_auc"]
+        R = D["render_auc"][D["render_auc"].objects == "all"]
         meths = [m for m in R["method"].unique()]
+        pipes = [p for p in ("viewport", "screenshot", "re-render", "re-render 512px") if p in set(R.pipeline)]
         x = np.arange(len(meths))
-        fig, ax = plt.subplots(figsize=(5.4, 3.2))
-        for k, (pipe, col) in enumerate([("screenshot", "#98a2b3"), ("re-render", "#2b59d9")]):
+        fig, ax = plt.subplots(figsize=(5.6, 3.2))
+        wdt = 0.8 / len(pipes)
+        for k, pipe in enumerate(pipes):
             g = R[R.pipeline == pipe].set_index("method").reindex(meths)
-            ax.bar(x + (k - 0.5) * 0.38, g["AUC"], 0.38, color=col, label={"screenshot": "screenshot (jittered viewpoint)", "re-render": "Blender re-render"}[pipe])
+            ax.bar(x + (k - (len(pipes) - 1) / 2) * wdt, g["AUC"], wdt, label=pipe, hatch=["", "//", "..", "xx"][k % 4], edgecolor="black", lw=0.3)
         ax.axhline(0.5, color="#667085", lw=0.8, ls=":")
-        ax.set(xticks=x, ylim=(0, 1.05), ylabel="AUC (nuisance vs error)", title="Render-level errors: re-rendering vs screenshots")
+        ax.set(xticks=x, ylim=(0, 1.05), ylabel="AUC (nuisance vs error)", title="Render-level errors by evidence pipeline")
         ax.set_xticklabels(meths, rotation=35, ha="right", fontsize=7)
         ax.legend(frameon=False, fontsize=7, loc="lower right")
         save(fig, "fig_bench_render_auc")
-        fig, ax = plt.subplots(figsize=(5.0, 3.0))
-        fams = ["nuisance"] + [f for f in ["hue", "proportion", "lighting", "missing_object", "extra_object"] if f in set(rend.family)]
-        for k, (pipe, col) in enumerate([("screenshot", "#98a2b3"), ("re-render", "#2b59d9")]):
-            for i, f in enumerate(fams):
-                v = rend[(rend.pipeline == pipe) & ((rend.kind == "nuisance") if f == "nuisance" else (rend.family == f))]["score"]
-                ax.scatter(np.full(len(v), i + (k - 0.5) * 0.3) + np.random.default_rng(i + 7 * k).normal(0, 0.03, len(v)), v, s=9, color=col,
-                           label=({"screenshot": "screenshot (jittered viewpoint)", "re-render": "Blender re-render"}[pipe] if i == 0 else None))
-        ax.set(xticks=range(len(fams)), ylim=(0, 102), ylabel="Framework score", title="Correct scenes (nuisance) vs scenes with errors")
-        ax.set_xticklabels([f.replace("_", "\n") for f in fams], fontsize=7)
-        ax.legend(frameon=False, fontsize=7)
-        save(fig, "fig_bench_viewpoint")
     return figs
 
 
-def robustness_table(rb):
-    return rb.groupby(["test", "method"])["score"].agg(["mean", "std", "min", "max", "count"]).reset_index()
-
-
-def report_md(S, D, det, runtime, meta):
+def report_md(S, D, F, SE, det, runtime, meta):
     L = [f"# Controlled-perturbation benchmark — {ALGO_VERSION}", "", f"References: {meta}", ""]
-    blocks = [("image_auc", "E1. Image channel — framework vs baselines (AUC, nuisance vs errors with severity ≥ 0.2)", D),
-              ("image_min_severity", "E2. Image channel — smallest severity detected with AUC ≥ 0.9", D),
-              ("mesh_auc", "E3. Mesh channel — framework vs baselines (AUC)", D), ("mesh_min_severity", "E4. Mesh channel — smallest severity detected", D),
-              ("render_auc", "E5. Render-level errors — re-render vs screenshot pipeline (AUC)", D), ("render_scores", "C1. Render-level scores", D),
-              ("image_monotonicity", "A1. Image channel — monotonicity", S), ("image_nuisance", "A2. Image channel — scores under nuisance", S),
-              ("mesh_invariance", "B1. Mesh channel — nuisance invariance", S), ("mesh_monotonicity", "B2. Mesh channel — monotonicity", S),
-              ("image_sensitivity", "A3. Image metric sensitivity |ρ|", S), ("mesh_sensitivity", "B3. Mesh metric sensitivity |ρ|", S),
-              ("robustness", "D. Robustness: UI screenshots and auxiliary objects", S)]
-    for key, title, src in blocks:
-        if key in src and len(src[key]):
-            L += [f"## {title}", "", src[key].round(3).to_markdown(index=key.endswith("sensitivity")), ""]
-    L += [f"Determinism: {det}", "", "## Runtime (s per assessment)", "", pd.DataFrame([runtime]).round(3).to_markdown(index=False), "",
-          "## Results paragraph (EN)", "", paragraph(S, D, det, runtime), ""]
+    for key, v in list(D.items()) + list(S.items()) + [("feedback_validation", F)] + list((SE or {}).items()):
+        if isinstance(v, pd.DataFrame) and len(v):
+            L += [f"## {key}", "", v.round(4).to_markdown(index=key.endswith("sensitivity")), ""]
+    L += [f"Determinism: {det}", "", "## Runtime (s per assessment)", "", pd.DataFrame([runtime]).round(3).to_markdown(index=False), ""]
     return "\n".join(L)
 
 
-def _get(T, method, col="AUC"):
-    r = T[T["method"] == method]
-    return float(r[col].iloc[0]) if len(r) else np.nan
-
-
-def paragraph(S, D, det, rt):
-    s = []
-    if "image_auc" in D:
-        T = D["image_auc"]
-        best_base = T[~T.method.str.startswith("Framework")].iloc[0]
-        s.append(f"In the image channel the framework score separated nuisance variation from errors of severity ≥ 0.2 with AUC = {_get(T, 'Framework score'):.3f} "
-                 f"({T.loc[T.method == 'Framework score', 'AUC 95% CI'].iloc[0]}), compared with {_get(T, 'PSNR'):.3f} for PSNR and {_get(T, 'SSIM (unweighted)'):.3f} for unweighted SSIM; "
-                 f"the strongest single baseline was {best_base['method']} (AUC = {best_base['AUC']:.3f}).")
-    if "image_monotonicity" in S:
-        im = S["image_monotonicity"]
-        s.append(f"The score decreased monotonically with severity for {int(im.monotone_means.sum())} of {len(im)} error families (median Spearman ρ = {im.rho_level_score.median():.2f}).")
-    if "mesh_invariance" in S:
-        iv = S["mesh_invariance"]
-        s.append(f"The mesh channel was invariant to rigid rotation, uniform scaling, re-triangulation and micro-noise (mean score {iv.score_mean.mean():.1f}, minimum {iv.score_min.min():.1f}; "
-                 f"mean Chamfer distance {iv.cd_mean.mean():.3f} versus {iv.cd_noalign_mean.mean():.3f} without pose alignment).")
-    if "mesh_auc" in D:
-        T = D["mesh_auc"]
-        s.append(f"Against nuisance variation the framework reached AUC = {_get(T, 'Framework score'):.3f} for geometric errors, versus {_get(T, 'Chamfer, no alignment'):.3f} for Chamfer distance without alignment.")
-    if "render_auc" in D:
-        R = D["render_auc"]
-        fr = R[(R.method == "Framework score") & (R.pipeline == "re-render")]["AUC"]
-        fs = R[(R.method == "Framework score") & (R.pipeline == "screenshot")]["AUC"]
-        rs = D["render_scores"]
-        nshot = rs[(rs.pipeline == "screenshot") & (rs.kind == "nuisance")]
-        nrr = rs[(rs.pipeline == "re-render") & (rs.kind == "nuisance")]
-        if len(fr) and len(fs):
-            s.append(f"For render-level errors in six Blender compositions, standardised re-rendering raised the framework's AUC from {float(fs.iloc[0]):.3f} (screenshots from jittered viewpoints) "
-                     f"to {float(fr.iloc[0]):.3f}; correct scenes scored {nrr['mean'].mean():.1f} on average when re-rendered with different sample counts and resolutions, "
-                     f"but {nshot['mean'].mean():.1f} as viewpoint-jittered screenshots.")
-    if det:
-        s.append(f"Re-rendering was deterministic (maximum pixel difference {det['max_abs_pixel_diff']}, identical mesh export: {det['identical_obj']}).")
-    if "robustness" in S:
-        R = S["robustness"].set_index(["test", "method"])["mean"]
-        try:
-            s.append(f"Screenshots that contained the application interface scored {R[('UI screenshot', 'no crop')]:.1f} on average and {R[('UI screenshot', 'auto crop')]:.1f} after automatic viewport cropping; "
-                     f"an auxiliary floor reduced the mesh score to {R[('auxiliary floor', 'no removal')]:.1f} without and {R[('auxiliary floor', 'helper removal')]:.1f} with helper-component removal.")
-        except KeyError:
-            pass
-    s.append(f"Mean assessment time was {rt.get('image_s', np.nan):.2f} s per image and {rt.get('mesh_s', np.nan):.2f} s per mesh on a CPU"
-             + (f"; one Blender re-render took {rt['blender_render_s']:.2f} s." if "blender_render_s" in rt else "."))
-    return " ".join(s)
-
-
 def run_benchmark(out, ref_images_dir=None, ref_meshes_dir=None, blender=True, repeats=3, use_lpips=True, log=print):
-    from .bench_render import run_render_bench
+    from .bench_render import COMPOSITIONS, HELD_OUT, run_render_bench
+    from .sensitivity import sensitivity_tables
     out = Path(out)
     out.mkdir(parents=True, exist_ok=True)
     rend, det, assets = run_render_bench(out / "_render", use_lpips=use_lpips, log=log) if blender else (None, None, {})
-    imgs = builtin_images()
-    for name in ("suzanne", "still_life", "chair", "mug", "desk_lamp"):
+    held = {COMPOSITIONS[c] for c in HELD_OUT}
+    imgs, subsets = builtin_images(), {}
+    for name in ("suzanne", "still_life", "chair", "mug", "desk_lamp") + tuple(sorted(held)):
         p = out / "_render" / name / "ref.png"
         if p.exists():
             imgs["render_" + name] = Image.open(p).convert("RGB")
+            subsets["render_" + name] = "held-out" if name in held else "development"
     if ref_images_dir:
         for p in sorted(Path(ref_images_dir).glob("*")):
             if p.suffix.lower() in (".png", ".jpg", ".jpeg"):
                 imgs[p.stem] = Image.open(p).convert("RGB")
-    meshes = builtin_meshes()
-    for name in ("suzanne", "chair", "mug", "desk_lamp"):
-        if name in assets and Path(assets[name]).exists():
-            meshes["asset_" + name] = load_mesh(assets[name])
+    meshes, variants = builtin_meshes(), builtin_mesh_variants()
+    for name in ("suzanne", "chair", "mug", "desk_lamp") + tuple(sorted(held)):
+        a = assets.get(name)
+        if a and Path(a["ref"]).exists():
+            meshes["asset_" + name] = load_mesh(a["ref"])
+            subsets["asset_" + name] = "held-out" if name in held else "development"
+            variants["asset_" + name] = [(lab, load_mesh(a[f"tess{k}"])) for k, lab in ((1, "half"), (2, "double")) if Path(a.get(f"tess{k}", "")).exists()]
     if ref_meshes_dir:
         for p in sorted(Path(ref_meshes_dir).glob("*")):
             if p.suffix.lower() in (".obj", ".stl", ".ply", ".off", ".glb"):
                 meshes[p.stem] = load_mesh(p)
-    img = run_image_bench(imgs, repeats, use_lpips, log)
-    mesh = run_mesh_bench(meshes, repeats, log)
-    rb = run_robustness_bench(imgs, meshes, log)
+    img = run_image_bench(imgs, repeats, use_lpips, log, subsets=subsets)
+    mesh = run_mesh_bench(meshes, repeats, log, variants=variants, subsets=subsets)
+    shots, clean_extra = {}, {}
+    if rend is not None:
+        for name in sorted({COMPOSITIONS[c] for c in COMPOSITIONS}):
+            d = out / "_render" / name
+            if (d / "nuis_view0.png").exists():
+                shots[name] = Image.open(d / "nuis_view0.png").convert("RGB")
+            for f in ("nuis_shot0.png", "nuis_view1.png", "err0_rr.png", "err6_rr.png"):
+                if (d / f).exists():
+                    clean_extra[f"{name}/{f}"] = Image.open(d / f).convert("RGB")
+    rb, crops = run_robustness_bench(imgs, meshes, shots, clean_extra, log)
     S = summarise(img, mesh)
-    S["robustness"] = robustness_table(rb)
+    S["robustness"] = rb.groupby(["test", "method", "variant"])["score"].agg(["mean", "std", "min", "max", "count"]).reset_index() \
+        if len(rb) else pd.DataFrame()
+    S["crop_accuracy"] = crops.groupby(["content", "theme"]).agg(n=("detected", "size"), detected=("detected", "mean"),
+                                                                  iou_mean=("iou", "mean"), iou_ge_09=("iou", lambda v: float((v >= 0.9).mean()))).reset_index()
     D = discrimination(img, mesh, rend)
+    F = feedback_validation(img, mesh)
+    SE = sensitivity_tables(img, mesh, rend)
     rt = {"image_s": float(img.seconds.mean()), "mesh_s": float(mesh.seconds.mean())}
     if det:
         rt["blender_render_s"] = det.get("render_seconds")
     img.to_csv(out / "bench_image.csv", index=False)
     mesh.to_csv(out / "bench_mesh.csv", index=False)
     rb.to_csv(out / "bench_robustness.csv", index=False)
+    crops.to_csv(out / "bench_crop_accuracy.csv", index=False)
+    F.to_csv(out / "bench_feedback.csv", index=False)
     if rend is not None:
         rend.to_csv(out / "bench_render.csv", index=False)
     with pd.ExcelWriter(out / "benchmark_tables.xlsx") as xw:
-        for k, v in list(D.items()) + list(S.items()):
-            if isinstance(v, pd.DataFrame):
+        for k, v in list(D.items()) + list(S.items()) + [("feedback_validation", F)] + list(SE.items()):
+            if isinstance(v, pd.DataFrame) and len(v):
                 (v.rename_axis("metric").reset_index() if k.endswith("sensitivity") else v).to_excel(xw, sheet_name=k[:31], index=False)
     figs = figures(img, mesh, rend, S, D, out)
-    lp = bool(use_lpips and img["lpips"].notna().any())
-    meta = {"images": list(imgs), "meshes": list(meshes), "error_levels": LEVELS, "nuisance_levels": NUIS_LEVELS, "repeats": repeats, "lpips": lp,
-            "render_compositions": sorted(rend.reference.unique().tolist()) if rend is not None else []}
-    (out / "benchmark_report_en.md").write_text(report_md(S, D, det, rt, meta), encoding="utf-8")
+    lp = bool(use_lpips and "lpips" in img and img["lpips"].notna().any())
+    meta = {"version": ALGO_VERSION, "images": list(imgs), "meshes": list(meshes), "subsets": subsets, "error_levels": LEVELS,
+            "image_nuisance_levels": NUIS_LEVELS, "mesh_nuisance_levels": [lv for lv in LEVELS if lv > 0], "repeats": repeats, "lpips": lp,
+            "render_compositions": sorted(rend.reference.unique().tolist()) if rend is not None else [],
+            "blender_version": (det or {}).get("blender_version")}
+    (out / "benchmark_report_en.md").write_text(report_md(S, D, F, SE, det, rt, meta), encoding="utf-8")
     (out / "benchmark_summary.json").write_text(json.dumps({"meta": meta, "determinism": det, "runtime": rt,
-                                                            "paragraph": paragraph(S, D, det, rt)}, indent=2, default=str), encoding="utf-8")
-    return {"summary": S, "discrimination": D, "render": rend, "determinism": det, "runtime": rt, "figures": figs, "out": out}
+                                                            "mesh_noise_floor": S.get("mesh_noise_floor")}, indent=2, default=str), encoding="utf-8")
+    return {"summary": S, "discrimination": D, "feedback": F, "sensitivity": SE, "render": rend, "determinism": det, "runtime": rt,
+            "figures": figs, "out": out}

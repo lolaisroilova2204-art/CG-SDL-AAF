@@ -1,5 +1,6 @@
 {
   "meta": {
+    "version": "CG-SDL-AAF 1.4",
     "images": [
       "scene_A",
       "scene_B",
@@ -7,7 +8,13 @@
       "render_still_life",
       "render_chair",
       "render_mug",
-      "render_desk_lamp"
+      "render_desk_lamp",
+      "render_bottle_glass",
+      "render_kettle",
+      "render_robot",
+      "render_rocket",
+      "render_snowman",
+      "render_table_vase"
     ],
     "meshes": [
       "torus",
@@ -17,8 +24,37 @@
       "asset_suzanne",
       "asset_chair",
       "asset_mug",
-      "asset_desk_lamp"
+      "asset_desk_lamp",
+      "asset_bottle_glass",
+      "asset_kettle",
+      "asset_robot",
+      "asset_rocket",
+      "asset_snowman",
+      "asset_table_vase"
     ],
+    "subsets": {
+      "render_suzanne": "development",
+      "render_still_life": "development",
+      "render_chair": "development",
+      "render_mug": "development",
+      "render_desk_lamp": "development",
+      "render_bottle_glass": "held-out",
+      "render_kettle": "held-out",
+      "render_robot": "held-out",
+      "render_rocket": "held-out",
+      "render_snowman": "held-out",
+      "render_table_vase": "held-out",
+      "asset_suzanne": "development",
+      "asset_chair": "development",
+      "asset_mug": "development",
+      "asset_desk_lamp": "development",
+      "asset_bottle_glass": "held-out",
+      "asset_kettle": "held-out",
+      "asset_robot": "held-out",
+      "asset_rocket": "held-out",
+      "asset_snowman": "held-out",
+      "asset_table_vase": "held-out"
+    },
     "error_levels": [
       0.0,
       0.1,
@@ -28,31 +64,50 @@
       0.8,
       1.0
     ],
-    "nuisance_levels": [
+    "image_nuisance_levels": [
       0.3333333333333333,
       0.6666666666666666,
+      1.0
+    ],
+    "mesh_nuisance_levels": [
+      0.1,
+      0.2,
+      0.4,
+      0.6,
+      0.8,
       1.0
     ],
     "repeats": 3,
     "lpips": false,
     "render_compositions": [
+      "bottle_glass",
       "chair",
       "desk_lamp",
+      "kettle",
       "mug",
+      "robot",
+      "rocket",
+      "snowman",
       "still_life",
       "suzanne",
+      "table_vase",
       "torus_cube"
-    ]
+    ],
+    "blender_version": "5.3.0"
   },
   "determinism": {
     "max_abs_pixel_diff": 0,
     "identical_obj": true,
-    "render_seconds": 1.03
+    "render_seconds": 1.23,
+    "blender_version": "5.3.0"
   },
   "runtime": {
-    "image_s": 0.06929238816252076,
-    "mesh_s": 0.07183436943431917,
-    "blender_render_s": 1.03
+    "image_s": 0.26218673847994556,
+    "mesh_s": 0.11864737940862846,
+    "blender_render_s": 1.23
   },
-  "paragraph": "In the image channel the framework score separated nuisance variation from errors of severity \u2265 0.2 with AUC = 0.914 ([0.887, 0.938]), compared with 0.919 for PSNR and 0.769 for unweighted SSIM; the strongest single baseline was Edge F1 (AUC = 0.934). The score decreased monotonically with severity for 8 of 9 error families (median Spearman \u03c1 = -0.89). The mesh channel was invariant to rigid rotation, uniform scaling, re-triangulation and micro-noise (mean score 100.0, minimum 100.0; mean Chamfer distance 0.009 versus 0.248 without pose alignment). Against nuisance variation the framework reached AUC = 0.971 for geometric errors, versus 0.541 for Chamfer distance without alignment. For render-level errors in six Blender compositions, standardised re-rendering raised the framework's AUC from 0.749 (screenshots from jittered viewpoints) to 0.985; correct scenes scored 97.4 on average when re-rendered with different sample counts and resolutions, but 43.8 as viewpoint-jittered screenshots. Re-rendering was deterministic (maximum pixel difference 0, identical mesh export: True). Screenshots that contained the application interface scored 0.0 on average and 100.0 after automatic viewport cropping; an auxiliary floor reduced the mesh score to 74.4 without and 100.0 with helper-component removal. Mean assessment time was 0.07 s per image and 0.07 s per mesh on a CPU; one Blender re-render took 1.03 s."
+  "mesh_noise_floor": {
+    "cd_mean": 3.005435798528196e-16,
+    "h95_mean": 4.924882069328646e-16
+  }
 }

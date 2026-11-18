@@ -17,24 +17,51 @@ from scipy.spatial import cKDTree
 N_POINTS = 4096
 SEED = 20260101
 TAU = 0.1
+TOPO_FRAC = 0.05  # defects are tolerated up to 5 % of the edges
 CD_FLOOR, CD_SIGMA = 0.03, 0.12
 H95_FLOOR, H95_SIGMA = 0.06, 0.30
 MESH_EXT = {".obj", ".stl", ".ply", ".off", ".glb", ".gltf"}
 
 
 def drop_plane_components(m: trimesh.Trimesh):
-    """Remove plane-like helper components (floors, backdrops). Returns (mesh, n_dropped)."""
-    parts = m.split(only_watertight=False)
-    if len(parts) <= 1:
+    """Remove plane-like helper components (floors, backdrops). Returns (mesh, n_dropped).
+
+    A connected component is a helper if it is flat (oriented-bounding-box thickness below 1 % of its
+    largest extent) and at least 0.8 times as large as the rest of the model, or if it is a thin slab
+    (thickness below 3 %) at least 1.5 times as large as the rest. The size condition keeps small thin
+    parts that belong to the model (plates, signs); the face count no longer matters, so subdivided
+    floors are recognised as well. The faces of the kept components are taken from the original mesh,
+    so vertices shared between parts stay welded and the topology of the model is unchanged."""
+    if len(m.faces) == 0:
         return m, 0
-    keep = []
-    for p in parts:
-        ext = np.sort(p.bounding_box_oriented.extents) if len(p.vertices) >= 4 else np.zeros(3)
-        if not (ext[2] > 0 and ext[0] < 0.01 * ext[2] and len(p.faces) <= 128):
-            keep.append(p)
-    if not keep or len(keep) == len(parts):
+    labels = trimesh.graph.connected_component_labels(m.face_adjacency, node_count=len(m.faces))
+    comps = [np.flatnonzero(labels == k) for k in range(int(labels.max()) + 1)]
+    if len(comps) <= 1:
         return m, 0
-    return trimesh.util.concatenate(keep), len(parts) - len(keep)
+    tri = m.triangles
+    boxes, exts = [], []
+    for f in comps:
+        pts = tri[f].reshape(-1, 3)
+        boxes.append((pts.min(0), pts.max(0)))
+        sub = trimesh.Trimesh(pts, np.arange(len(pts)).reshape(-1, 3), process=False)
+        exts.append(np.sort(sub.bounding_box_oriented.extents) if len(pts) >= 4 else np.zeros(3))
+    keep, drop = np.ones(len(m.faces), bool), 0
+    for i, f in enumerate(comps):
+        t, L = exts[i][0], exts[i][2]
+        others = [boxes[k] for k in range(len(comps)) if k != i]
+        lo = np.min([b[0] for b in others], axis=0)
+        hi = np.max([b[1] for b in others], axis=0)
+        E_rest = float(np.max(hi - lo))
+        flat = L > 0 and t < 0.01 * L and L >= 0.8 * E_rest
+        slab = L > 0 and t < 0.03 * L and L >= 1.5 * E_rest
+        if (flat or slab) and E_rest > 0:
+            keep[f] = False
+            drop += 1
+    if drop == 0 or not keep.any():
+        return m, 0
+    out = trimesh.Trimesh(m.vertices, m.faces[keep], process=False)
+    out.remove_unreferenced_vertices()
+    return out, drop
 
 
 def load_mesh(path, drop_planes=False) -> trimesh.Trimesh:
@@ -64,9 +91,33 @@ def topology(m: trimesh.Trimesh) -> dict:
             "components": int(labels.max() + 1) if len(labels) else 0, "watertight": bool(b == 0 and nm == 0)}
 
 
-def topo_score(t: dict) -> float:
-    bad = t["boundary_edges"] + 2 * t["nonmanifold_edges"] + t["degenerate_faces"]
-    return float(np.clip(1 - bad / (0.05 * max(t["E"], 1)), 0, 1))
+def defect_excess(t: dict, ref: dict | None = None) -> dict:
+    """Topological defects of the student mesh in excess of the reference rate (per edge).
+    Without a reference the absolute counts are returned (v1.3 behaviour)."""
+    out = {}
+    tol = max(2.0, 0.005 * t["E"])  # a genuine hole has at least three boundary edges
+    for k in ("boundary_edges", "nonmanifold_edges", "degenerate_faces"):
+        if ref:
+            expect = ref[k] * t["E"] / max(ref["E"], 1)
+            out[k] = float(max(0.0, t[k] - expect - tol))
+        else:
+            out[k] = float(t[k])
+    return out
+
+
+def topo_score(t: dict, ref: dict | None = None) -> float:
+    x = defect_excess(t, ref)
+    bad = x["boundary_edges"] + 2 * x["nonmanifold_edges"] + x["degenerate_faces"]
+    return float(np.clip(1 - bad / (TOPO_FRAC * max(t["E"], 1)), 0, 1))
+
+
+def d2_histogram(P, bins=64, n_pairs=20000, seed=SEED, r_max=4.0):
+    """D2 shape distribution (Osada et al.): histogram of distances between random point pairs of a
+    centred, unit-RMS point cloud. Rotation-invariant, needs no alignment."""
+    rng = np.random.default_rng(seed + 1)
+    i, j = rng.integers(len(P), size=n_pairs), rng.integers(len(P), size=n_pairs)
+    h, _ = np.histogram(np.linalg.norm(P[i] - P[j], axis=1), bins=bins, range=(0, r_max))
+    return h / max(h.sum(), 1)
 
 
 def sample_points(m: trimesh.Trimesh, n=N_POINTS, seed=SEED) -> np.ndarray:
@@ -123,6 +174,11 @@ def chamfer_quick(A, B):
     return 0.5 * (cKDTree(B).query(A)[0].mean() + cKDTree(A).query(B)[0].mean())
 
 
+def prepare_reference_raw(m: trimesh.Trimesh):
+    """Reference cloud centred and scaled to unit RMS radius, in its original orientation."""
+    return normalise(sample_points(m))[0]
+
+
 def prepare_reference(m: trimesh.Trimesh, align="pca_icp", return_scale=False):
     P, s = normalise(sample_points(m))
     P = pca_align(P) if align == "pca_icp" else P
@@ -130,9 +186,10 @@ def prepare_reference(m: trimesh.Trimesh, align="pca_icp", return_scale=False):
 
 
 def align_cloud(S, ref, align="pca_icp"):
+    """none | pca_icp (default) | pca_only | icp (ICP from the identity pose)."""
     if align == "none":
         return S
-    if align == "pca_icp":
+    if align in ("pca_icp", "pca_only"):
         S = pca_align(S)
         rs = ref[:: max(1, len(ref) // 512)]
         best = None
@@ -142,6 +199,8 @@ def align_cloud(S, ref, align="pca_icp"):
             if best is None or c < best[0]:
                 best = (c, Q)
         S = best[1]
+        if align == "pca_only":
+            return S
     sub = S[:: max(1, len(S) // 2048)]
     R, t = icp(sub, cKDTree(ref), ref)
     return S @ R.T + t
@@ -158,23 +217,44 @@ class MeshResult:
 SIZE_SIGMA = 0.10  # |ln(size ratio)| scale: ratio 1.1 -> m_size ~ 0.39
 
 
-def compare_meshes(stu_mesh, ref_points: np.ndarray, align="pca_icp", ref_scale=None) -> MeshResult:
+def compare_meshes(stu_mesh, ref_points: np.ndarray, align="pca_icp", ref_scale=None, ref_topo: dict | None = None,
+                   baselines: bool = False, ref_raw: np.ndarray | None = None) -> MeshResult:
+    """ref_topo: topology(reference mesh); defects are then penalised only in excess of the reference
+    (open or non-manifold references are not penalised). baselines=True adds the alignment baselines
+    (PCA only, ICP only) and the alignment-free D2 shape-distribution distance to raw.
+    ref_raw: the reference cloud centred and scaled but NOT rotated into the PCA frame; the
+    no-alignment and ICP-only baselines must be computed against it (v1.3 used the PCA-rotated
+    reference, which made even an identical copy look misaligned)."""
     if not isinstance(stu_mesh, trimesh.Trimesh):
         stu_mesh = load_mesh(stu_mesh)
     topo = topology(stu_mesh)
     S0, s_stu = normalise(sample_points(stu_mesh))
-    cd_noalign = chamfer_quick(S0, ref_points)  # baseline: no pose alignment
+    R0 = ref_raw if ref_raw is not None else ref_points
+    cd_noalign = chamfer_quick(S0, R0)  # baseline: no pose alignment (original orientations)
     S = align_cloud(S0, ref_points, align)
     dab = cKDTree(ref_points).query(S)[0]
     dba = cKDTree(S).query(ref_points)[0]
     cd = 0.5 * (dab.mean() + dba.mean())
     hd = max(dab.max(), dba.max())
     h95 = max(np.percentile(dab, 95), np.percentile(dba, 95))
-    p, r = (dab < TAU).mean(), (dba < TAU).mean()
-    f = 2 * p * r / (p + r) if p + r else 0.0
-    raw = {"cd": float(cd), "hd": float(hd), "h95": float(h95), "precision": float(p), "recall": float(r), "fscore": float(f), "cd_noalign": float(cd_noalign), **topo}
+    fs = {}
+    for tau in (0.05, TAU, 0.15):
+        p_, r_ = (dab < tau).mean(), (dba < tau).mean()
+        fs[tau] = (float(p_), float(r_), float(2 * p_ * r_ / (p_ + r_)) if p_ + r_ else 0.0)
+    p, r, f = fs[TAU]
+    exc = defect_excess(topo, ref_topo)
+    raw = {"cd": float(cd), "hd": float(hd), "h95": float(h95), "precision": p, "recall": r, "fscore": f,
+           "fscore_005": fs[0.05][2], "fscore_015": fs[0.15][2], "cd_noalign": float(cd_noalign), **topo,
+           "excess_boundary": exc["boundary_edges"], "excess_nonmanifold": exc["nonmanifold_edges"],
+           "excess_degenerate": exc["degenerate_faces"], "topo_relative": bool(ref_topo)}
+    if baselines:
+        Sp = align_cloud(S0, ref_points, "pca_only")
+        Si = align_cloud(S0, R0, "icp")
+        raw["cd_pca"] = float(chamfer_quick(Sp, ref_points))
+        raw["cd_icp"] = float(chamfer_quick(Si, R0))
+        raw["d2"] = float(np.abs(d2_histogram(S0) - d2_histogram(ref_points)).sum())
     m = {"cd": float(np.exp(-max(0, cd - CD_FLOOR) / CD_SIGMA)), "h95": float(np.exp(-max(0, h95 - H95_FLOOR) / H95_SIGMA)),
-         "fscore": float(f), "topo": topo_score(topo)}
+         "fscore": float(f), "topo": topo_score(topo, ref_topo)}
     raw["rms_radius"] = float(s_stu)
     if ref_scale:
         ratio = float(s_stu / ref_scale)

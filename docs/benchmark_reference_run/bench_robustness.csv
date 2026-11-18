@@ -1,191 +1,793 @@
 test,reference,variant,method,score
-UI screenshot,scene_A,layout 0,no crop,0.0
-UI screenshot,scene_A,layout 0,auto crop,100.0
-UI screenshot,scene_A,layout 0,no crop,0.0
-UI screenshot,scene_A,layout 0,auto crop,100.0
-UI screenshot,scene_A,layout 0,no crop,0.0
-UI screenshot,scene_A,layout 0,auto crop,100.0
-UI screenshot,scene_A,layout 1,no crop,0.0
-UI screenshot,scene_A,layout 1,auto crop,100.0
-UI screenshot,scene_A,layout 1,no crop,0.0
-UI screenshot,scene_A,layout 1,auto crop,100.0
-UI screenshot,scene_A,layout 1,no crop,0.0
-UI screenshot,scene_A,layout 1,auto crop,100.0
-UI screenshot,scene_A,layout 2,no crop,0.0
-UI screenshot,scene_A,layout 2,auto crop,100.0
-UI screenshot,scene_A,layout 2,no crop,0.0
-UI screenshot,scene_A,layout 2,auto crop,100.0
-UI screenshot,scene_A,layout 2,no crop,0.0
-UI screenshot,scene_A,layout 2,auto crop,100.0
-UI screenshot,scene_B,layout 0,no crop,0.0
-UI screenshot,scene_B,layout 0,auto crop,100.0
-UI screenshot,scene_B,layout 0,no crop,0.0
-UI screenshot,scene_B,layout 0,auto crop,100.0
-UI screenshot,scene_B,layout 0,no crop,0.0
-UI screenshot,scene_B,layout 0,auto crop,100.0
-UI screenshot,scene_B,layout 1,no crop,0.0
-UI screenshot,scene_B,layout 1,auto crop,100.0
-UI screenshot,scene_B,layout 1,no crop,0.0
-UI screenshot,scene_B,layout 1,auto crop,100.0
-UI screenshot,scene_B,layout 1,no crop,0.0
-UI screenshot,scene_B,layout 1,auto crop,100.0
-UI screenshot,scene_B,layout 2,no crop,0.0
-UI screenshot,scene_B,layout 2,auto crop,100.0
-UI screenshot,scene_B,layout 2,no crop,0.0
-UI screenshot,scene_B,layout 2,auto crop,100.0
-UI screenshot,scene_B,layout 2,no crop,0.0
-UI screenshot,scene_B,layout 2,auto crop,100.0
-UI screenshot,render_suzanne,layout 0,no crop,0.0
-UI screenshot,render_suzanne,layout 0,auto crop,100.0
-UI screenshot,render_suzanne,layout 0,no crop,0.0
-UI screenshot,render_suzanne,layout 0,auto crop,100.0
-UI screenshot,render_suzanne,layout 0,no crop,0.0
-UI screenshot,render_suzanne,layout 0,auto crop,100.0
-UI screenshot,render_suzanne,layout 1,no crop,0.0
-UI screenshot,render_suzanne,layout 1,auto crop,100.0
-UI screenshot,render_suzanne,layout 1,no crop,0.0
-UI screenshot,render_suzanne,layout 1,auto crop,100.0
-UI screenshot,render_suzanne,layout 1,no crop,0.0
-UI screenshot,render_suzanne,layout 1,auto crop,100.0
-UI screenshot,render_suzanne,layout 2,no crop,0.0
-UI screenshot,render_suzanne,layout 2,auto crop,100.0
-UI screenshot,render_suzanne,layout 2,no crop,0.0
-UI screenshot,render_suzanne,layout 2,auto crop,100.0
-UI screenshot,render_suzanne,layout 2,no crop,0.0
-UI screenshot,render_suzanne,layout 2,auto crop,100.0
-UI screenshot,render_still_life,layout 0,no crop,0.0
-UI screenshot,render_still_life,layout 0,auto crop,100.0
-UI screenshot,render_still_life,layout 0,no crop,0.0
-UI screenshot,render_still_life,layout 0,auto crop,100.0
-UI screenshot,render_still_life,layout 0,no crop,0.0
-UI screenshot,render_still_life,layout 0,auto crop,100.0
-UI screenshot,render_still_life,layout 1,no crop,0.0
-UI screenshot,render_still_life,layout 1,auto crop,100.0
-UI screenshot,render_still_life,layout 1,no crop,0.0
-UI screenshot,render_still_life,layout 1,auto crop,100.0
-UI screenshot,render_still_life,layout 1,no crop,0.0
-UI screenshot,render_still_life,layout 1,auto crop,100.0
-UI screenshot,render_still_life,layout 2,no crop,0.0
-UI screenshot,render_still_life,layout 2,auto crop,100.0
-UI screenshot,render_still_life,layout 2,no crop,0.0
-UI screenshot,render_still_life,layout 2,auto crop,100.0
-UI screenshot,render_still_life,layout 2,no crop,0.0
-UI screenshot,render_still_life,layout 2,auto crop,100.0
-UI screenshot,render_chair,layout 0,no crop,0.0
-UI screenshot,render_chair,layout 0,auto crop,100.0
-UI screenshot,render_chair,layout 0,no crop,0.0
-UI screenshot,render_chair,layout 0,auto crop,100.0
-UI screenshot,render_chair,layout 0,no crop,0.0
-UI screenshot,render_chair,layout 0,auto crop,100.0
-UI screenshot,render_chair,layout 1,no crop,0.0
-UI screenshot,render_chair,layout 1,auto crop,100.0
-UI screenshot,render_chair,layout 1,no crop,0.0
-UI screenshot,render_chair,layout 1,auto crop,100.0
-UI screenshot,render_chair,layout 1,no crop,0.0
-UI screenshot,render_chair,layout 1,auto crop,100.0
-UI screenshot,render_chair,layout 2,no crop,0.0
-UI screenshot,render_chair,layout 2,auto crop,100.0
-UI screenshot,render_chair,layout 2,no crop,0.0
-UI screenshot,render_chair,layout 2,auto crop,100.0
-UI screenshot,render_chair,layout 2,no crop,0.0
-UI screenshot,render_chair,layout 2,auto crop,100.0
-UI screenshot,render_mug,layout 0,no crop,0.0
-UI screenshot,render_mug,layout 0,auto crop,100.0
-UI screenshot,render_mug,layout 0,no crop,0.0
-UI screenshot,render_mug,layout 0,auto crop,100.0
-UI screenshot,render_mug,layout 0,no crop,0.0
-UI screenshot,render_mug,layout 0,auto crop,100.0
-UI screenshot,render_mug,layout 1,no crop,0.0
-UI screenshot,render_mug,layout 1,auto crop,100.0
-UI screenshot,render_mug,layout 1,no crop,0.0
-UI screenshot,render_mug,layout 1,auto crop,100.0
-UI screenshot,render_mug,layout 1,no crop,0.0
-UI screenshot,render_mug,layout 1,auto crop,100.0
-UI screenshot,render_mug,layout 2,no crop,0.0
-UI screenshot,render_mug,layout 2,auto crop,100.0
-UI screenshot,render_mug,layout 2,no crop,0.0
-UI screenshot,render_mug,layout 2,auto crop,100.0
-UI screenshot,render_mug,layout 2,no crop,0.0
-UI screenshot,render_mug,layout 2,auto crop,100.0
-UI screenshot,render_desk_lamp,layout 0,no crop,0.0
-UI screenshot,render_desk_lamp,layout 0,auto crop,100.0
-UI screenshot,render_desk_lamp,layout 0,no crop,0.0
-UI screenshot,render_desk_lamp,layout 0,auto crop,100.0
-UI screenshot,render_desk_lamp,layout 0,no crop,0.0
-UI screenshot,render_desk_lamp,layout 0,auto crop,100.0
-UI screenshot,render_desk_lamp,layout 1,no crop,0.0
-UI screenshot,render_desk_lamp,layout 1,auto crop,100.0
-UI screenshot,render_desk_lamp,layout 1,no crop,0.0
-UI screenshot,render_desk_lamp,layout 1,auto crop,100.0
-UI screenshot,render_desk_lamp,layout 1,no crop,0.0
-UI screenshot,render_desk_lamp,layout 1,auto crop,100.0
-UI screenshot,render_desk_lamp,layout 2,no crop,0.0
-UI screenshot,render_desk_lamp,layout 2,auto crop,100.0
-UI screenshot,render_desk_lamp,layout 2,no crop,0.0
-UI screenshot,render_desk_lamp,layout 2,auto crop,100.0
-UI screenshot,render_desk_lamp,layout 2,no crop,0.0
-UI screenshot,render_desk_lamp,layout 2,auto crop,100.0
-auxiliary floor,torus,no floor (ref 4×),no removal,0.0
-auxiliary floor,torus,floor 3× (ref 4×),no removal,100.0
-auxiliary floor,torus,floor 4× (ref 4×),no removal,100.0
-auxiliary floor,torus,floor 6× (ref 4×),no removal,100.0
-auxiliary floor,torus,no floor (ref 4×),helper removal,100.0
-auxiliary floor,torus,floor 3× (ref 4×),helper removal,100.0
-auxiliary floor,torus,floor 4× (ref 4×),helper removal,100.0
-auxiliary floor,torus,floor 6× (ref 4×),helper removal,100.0
-auxiliary floor,capsule,no floor (ref 4×),no removal,0.0
-auxiliary floor,capsule,floor 3× (ref 4×),no removal,100.0
-auxiliary floor,capsule,floor 4× (ref 4×),no removal,100.0
-auxiliary floor,capsule,floor 6× (ref 4×),no removal,100.0
-auxiliary floor,capsule,no floor (ref 4×),helper removal,100.0
-auxiliary floor,capsule,floor 3× (ref 4×),helper removal,100.0
-auxiliary floor,capsule,floor 4× (ref 4×),helper removal,100.0
-auxiliary floor,capsule,floor 6× (ref 4×),helper removal,100.0
-auxiliary floor,cylinder,no floor (ref 4×),no removal,0.0
-auxiliary floor,cylinder,floor 3× (ref 4×),no removal,96.71634444936392
-auxiliary floor,cylinder,floor 4× (ref 4×),no removal,100.0
-auxiliary floor,cylinder,floor 6× (ref 4×),no removal,97.3565272625081
-auxiliary floor,cylinder,no floor (ref 4×),helper removal,100.0
-auxiliary floor,cylinder,floor 3× (ref 4×),helper removal,100.0
-auxiliary floor,cylinder,floor 4× (ref 4×),helper removal,100.0
-auxiliary floor,cylinder,floor 6× (ref 4×),helper removal,100.0
-auxiliary floor,ellipsoid,no floor (ref 4×),no removal,0.0
-auxiliary floor,ellipsoid,floor 3× (ref 4×),no removal,98.38955096992069
-auxiliary floor,ellipsoid,floor 4× (ref 4×),no removal,100.0
-auxiliary floor,ellipsoid,floor 6× (ref 4×),no removal,99.96331990348831
-auxiliary floor,ellipsoid,no floor (ref 4×),helper removal,100.0
-auxiliary floor,ellipsoid,floor 3× (ref 4×),helper removal,100.0
-auxiliary floor,ellipsoid,floor 4× (ref 4×),helper removal,100.0
-auxiliary floor,ellipsoid,floor 6× (ref 4×),helper removal,100.0
-auxiliary floor,asset_suzanne,no floor (ref 4×),no removal,0.0
-auxiliary floor,asset_suzanne,floor 3× (ref 4×),no removal,99.37613811945303
-auxiliary floor,asset_suzanne,floor 4× (ref 4×),no removal,100.0
-auxiliary floor,asset_suzanne,floor 6× (ref 4×),no removal,100.0
-auxiliary floor,asset_suzanne,no floor (ref 4×),helper removal,100.0
-auxiliary floor,asset_suzanne,floor 3× (ref 4×),helper removal,100.0
-auxiliary floor,asset_suzanne,floor 4× (ref 4×),helper removal,100.0
-auxiliary floor,asset_suzanne,floor 6× (ref 4×),helper removal,100.0
-auxiliary floor,asset_chair,no floor (ref 4×),no removal,0.0
-auxiliary floor,asset_chair,floor 3× (ref 4×),no removal,100.0
-auxiliary floor,asset_chair,floor 4× (ref 4×),no removal,100.0
-auxiliary floor,asset_chair,floor 6× (ref 4×),no removal,100.0
-auxiliary floor,asset_chair,no floor (ref 4×),helper removal,100.0
-auxiliary floor,asset_chair,floor 3× (ref 4×),helper removal,100.0
-auxiliary floor,asset_chair,floor 4× (ref 4×),helper removal,100.0
-auxiliary floor,asset_chair,floor 6× (ref 4×),helper removal,100.0
-auxiliary floor,asset_mug,no floor (ref 4×),no removal,0.0
-auxiliary floor,asset_mug,floor 3× (ref 4×),no removal,95.74077047574241
-auxiliary floor,asset_mug,floor 4× (ref 4×),no removal,100.0
-auxiliary floor,asset_mug,floor 6× (ref 4×),no removal,94.29163553507678
-auxiliary floor,asset_mug,no floor (ref 4×),helper removal,100.0
-auxiliary floor,asset_mug,floor 3× (ref 4×),helper removal,100.0
-auxiliary floor,asset_mug,floor 4× (ref 4×),helper removal,100.0
-auxiliary floor,asset_mug,floor 6× (ref 4×),helper removal,100.0
-auxiliary floor,asset_desk_lamp,no floor (ref 4×),no removal,0.0
-auxiliary floor,asset_desk_lamp,floor 3× (ref 4×),no removal,100.0
-auxiliary floor,asset_desk_lamp,floor 4× (ref 4×),no removal,100.0
-auxiliary floor,asset_desk_lamp,floor 6× (ref 4×),no removal,100.0
-auxiliary floor,asset_desk_lamp,no floor (ref 4×),helper removal,100.0
-auxiliary floor,asset_desk_lamp,floor 3× (ref 4×),helper removal,100.0
-auxiliary floor,asset_desk_lamp,floor 4× (ref 4×),helper removal,100.0
-auxiliary floor,asset_desk_lamp,floor 6× (ref 4×),helper removal,100.0
+"UI screenshot (render, dark)",scene_A,layout 0,no crop,0.0
+"UI screenshot (render, dark)",scene_A,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",scene_A,layout 0,no crop,0.0
+"UI screenshot (render, dark)",scene_A,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",scene_A,layout 1,no crop,0.0
+"UI screenshot (render, dark)",scene_A,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",scene_A,layout 1,no crop,0.0
+"UI screenshot (render, dark)",scene_A,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",scene_A,layout 2,no crop,0.0
+"UI screenshot (render, dark)",scene_A,layout 2,auto crop,100.0
+"UI screenshot (render, dark)",scene_A,layout 2,no crop,0.0
+"UI screenshot (render, dark)",scene_A,layout 2,auto crop,100.0
+"UI screenshot (render, light)",scene_A,layout 0,no crop,0.0
+"UI screenshot (render, light)",scene_A,layout 0,auto crop,92.08691700859022
+"UI screenshot (render, light)",scene_A,layout 0,no crop,0.0
+"UI screenshot (render, light)",scene_A,layout 0,auto crop,92.08691700859022
+"UI screenshot (render, light)",scene_A,layout 1,no crop,0.0
+"UI screenshot (render, light)",scene_A,layout 1,auto crop,8.682667008651167
+"UI screenshot (render, light)",scene_A,layout 1,no crop,0.0
+"UI screenshot (render, light)",scene_A,layout 1,auto crop,16.07865225934666
+"UI screenshot (render, light)",scene_A,layout 2,no crop,0.0
+"UI screenshot (render, light)",scene_A,layout 2,auto crop,17.27773332639408
+"UI screenshot (render, light)",scene_A,layout 2,no crop,0.5142805543591057
+"UI screenshot (render, light)",scene_A,layout 2,auto crop,31.185084703362957
+"UI screenshot (render, dark)",scene_B,layout 0,no crop,0.0
+"UI screenshot (render, dark)",scene_B,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",scene_B,layout 0,no crop,0.0
+"UI screenshot (render, dark)",scene_B,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",scene_B,layout 1,no crop,0.0
+"UI screenshot (render, dark)",scene_B,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",scene_B,layout 1,no crop,0.0
+"UI screenshot (render, dark)",scene_B,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",scene_B,layout 2,no crop,0.0
+"UI screenshot (render, dark)",scene_B,layout 2,auto crop,100.0
+"UI screenshot (render, dark)",scene_B,layout 2,no crop,0.0
+"UI screenshot (render, dark)",scene_B,layout 2,auto crop,100.0
+"UI screenshot (render, light)",scene_B,layout 0,no crop,0.0
+"UI screenshot (render, light)",scene_B,layout 0,auto crop,92.25364695339461
+"UI screenshot (render, light)",scene_B,layout 0,no crop,0.0
+"UI screenshot (render, light)",scene_B,layout 0,auto crop,92.25364695339461
+"UI screenshot (render, light)",scene_B,layout 1,no crop,0.0
+"UI screenshot (render, light)",scene_B,layout 1,auto crop,9.17478233645342
+"UI screenshot (render, light)",scene_B,layout 1,no crop,0.0
+"UI screenshot (render, light)",scene_B,layout 1,auto crop,16.336870307094358
+"UI screenshot (render, light)",scene_B,layout 2,no crop,0.0
+"UI screenshot (render, light)",scene_B,layout 2,auto crop,17.347294289461356
+"UI screenshot (render, light)",scene_B,layout 2,no crop,0.0
+"UI screenshot (render, light)",scene_B,layout 2,auto crop,30.954443088164773
+"UI screenshot (render, dark)",render_suzanne,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_suzanne,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_suzanne,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_suzanne,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_suzanne,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_suzanne,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_suzanne,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_suzanne,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_suzanne,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_suzanne,layout 2,auto crop,100.0
+"UI screenshot (render, dark)",render_suzanne,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_suzanne,layout 2,auto crop,100.0
+"UI screenshot (render, light)",render_suzanne,layout 0,no crop,0.0
+"UI screenshot (render, light)",render_suzanne,layout 0,auto crop,12.410041437315599
+"UI screenshot (render, light)",render_suzanne,layout 0,no crop,0.0
+"UI screenshot (render, light)",render_suzanne,layout 0,auto crop,12.410041437315599
+"UI screenshot (render, light)",render_suzanne,layout 1,no crop,0.0
+"UI screenshot (render, light)",render_suzanne,layout 1,auto crop,4.250242726898611
+"UI screenshot (render, light)",render_suzanne,layout 1,no crop,0.0
+"UI screenshot (render, light)",render_suzanne,layout 1,auto crop,4.250242726898611
+"UI screenshot (render, light)",render_suzanne,layout 2,no crop,0.0
+"UI screenshot (render, light)",render_suzanne,layout 2,auto crop,4.250242726898611
+"UI screenshot (render, light)",render_suzanne,layout 2,no crop,0.0
+"UI screenshot (render, light)",render_suzanne,layout 2,auto crop,4.250242726898611
+"UI screenshot (render, dark)",render_still_life,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_still_life,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_still_life,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_still_life,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_still_life,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_still_life,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_still_life,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_still_life,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_still_life,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_still_life,layout 2,auto crop,100.0
+"UI screenshot (render, dark)",render_still_life,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_still_life,layout 2,auto crop,100.0
+"UI screenshot (render, light)",render_still_life,layout 0,no crop,0.0
+"UI screenshot (render, light)",render_still_life,layout 0,auto crop,15.694893436521104
+"UI screenshot (render, light)",render_still_life,layout 0,no crop,0.0
+"UI screenshot (render, light)",render_still_life,layout 0,auto crop,15.694893436521104
+"UI screenshot (render, light)",render_still_life,layout 1,no crop,0.0
+"UI screenshot (render, light)",render_still_life,layout 1,auto crop,17.07285247136093
+"UI screenshot (render, light)",render_still_life,layout 1,no crop,0.0
+"UI screenshot (render, light)",render_still_life,layout 1,auto crop,17.07285247136093
+"UI screenshot (render, light)",render_still_life,layout 2,no crop,0.0
+"UI screenshot (render, light)",render_still_life,layout 2,auto crop,17.07285247136093
+"UI screenshot (render, light)",render_still_life,layout 2,no crop,0.0
+"UI screenshot (render, light)",render_still_life,layout 2,auto crop,17.07285247136093
+"UI screenshot (render, dark)",render_chair,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_chair,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_chair,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_chair,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_chair,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_chair,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_chair,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_chair,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_chair,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_chair,layout 2,auto crop,100.0
+"UI screenshot (render, dark)",render_chair,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_chair,layout 2,auto crop,100.0
+"UI screenshot (render, light)",render_chair,layout 0,no crop,6.774870477098444
+"UI screenshot (render, light)",render_chair,layout 0,auto crop,25.162927347543096
+"UI screenshot (render, light)",render_chair,layout 0,no crop,8.2516264859934
+"UI screenshot (render, light)",render_chair,layout 0,auto crop,25.162927347543096
+"UI screenshot (render, light)",render_chair,layout 1,no crop,0.0
+"UI screenshot (render, light)",render_chair,layout 1,auto crop,31.75790760608339
+"UI screenshot (render, light)",render_chair,layout 1,no crop,4.153454643344357
+"UI screenshot (render, light)",render_chair,layout 1,auto crop,31.75790760608339
+"UI screenshot (render, light)",render_chair,layout 2,no crop,0.0
+"UI screenshot (render, light)",render_chair,layout 2,auto crop,31.75790760608339
+"UI screenshot (render, light)",render_chair,layout 2,no crop,1.9034981125520727
+"UI screenshot (render, light)",render_chair,layout 2,auto crop,31.75790760608339
+"UI screenshot (render, dark)",render_mug,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_mug,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_mug,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_mug,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_mug,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_mug,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_mug,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_mug,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_mug,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_mug,layout 2,auto crop,100.0
+"UI screenshot (render, dark)",render_mug,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_mug,layout 2,auto crop,100.0
+"UI screenshot (render, light)",render_mug,layout 0,no crop,7.0575704351798745
+"UI screenshot (render, light)",render_mug,layout 0,auto crop,25.02841256925752
+"UI screenshot (render, light)",render_mug,layout 0,no crop,4.612110467986518
+"UI screenshot (render, light)",render_mug,layout 0,auto crop,25.02841256925752
+"UI screenshot (render, light)",render_mug,layout 1,no crop,0.0
+"UI screenshot (render, light)",render_mug,layout 1,auto crop,28.903388543170614
+"UI screenshot (render, light)",render_mug,layout 1,no crop,0.0
+"UI screenshot (render, light)",render_mug,layout 1,auto crop,28.903388543170614
+"UI screenshot (render, light)",render_mug,layout 2,no crop,0.0
+"UI screenshot (render, light)",render_mug,layout 2,auto crop,28.903388543170614
+"UI screenshot (render, light)",render_mug,layout 2,no crop,0.9846069116169247
+"UI screenshot (render, light)",render_mug,layout 2,auto crop,28.903388543170614
+"UI screenshot (render, dark)",render_desk_lamp,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_desk_lamp,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_desk_lamp,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_desk_lamp,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_desk_lamp,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_desk_lamp,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_desk_lamp,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_desk_lamp,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_desk_lamp,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_desk_lamp,layout 2,auto crop,100.0
+"UI screenshot (render, dark)",render_desk_lamp,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_desk_lamp,layout 2,auto crop,100.0
+"UI screenshot (render, light)",render_desk_lamp,layout 0,no crop,0.0
+"UI screenshot (render, light)",render_desk_lamp,layout 0,auto crop,14.05618905866792
+"UI screenshot (render, light)",render_desk_lamp,layout 0,no crop,0.0
+"UI screenshot (render, light)",render_desk_lamp,layout 0,auto crop,14.05618905866792
+"UI screenshot (render, light)",render_desk_lamp,layout 1,no crop,0.0
+"UI screenshot (render, light)",render_desk_lamp,layout 1,auto crop,13.288498744167093
+"UI screenshot (render, light)",render_desk_lamp,layout 1,no crop,1.6614839864653732
+"UI screenshot (render, light)",render_desk_lamp,layout 1,auto crop,13.288498744167093
+"UI screenshot (render, light)",render_desk_lamp,layout 2,no crop,0.0
+"UI screenshot (render, light)",render_desk_lamp,layout 2,auto crop,13.288498744167093
+"UI screenshot (render, light)",render_desk_lamp,layout 2,no crop,0.28111765150474793
+"UI screenshot (render, light)",render_desk_lamp,layout 2,auto crop,13.288498744167093
+"UI screenshot (render, dark)",render_bottle_glass,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_bottle_glass,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_bottle_glass,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_bottle_glass,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_bottle_glass,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_bottle_glass,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_bottle_glass,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_bottle_glass,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_bottle_glass,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_bottle_glass,layout 2,auto crop,100.0
+"UI screenshot (render, dark)",render_bottle_glass,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_bottle_glass,layout 2,auto crop,100.0
+"UI screenshot (render, light)",render_bottle_glass,layout 0,no crop,3.035954733034457
+"UI screenshot (render, light)",render_bottle_glass,layout 0,auto crop,21.184182454416742
+"UI screenshot (render, light)",render_bottle_glass,layout 0,no crop,2.1259986800316755
+"UI screenshot (render, light)",render_bottle_glass,layout 0,auto crop,21.184182454416742
+"UI screenshot (render, light)",render_bottle_glass,layout 1,no crop,0.0
+"UI screenshot (render, light)",render_bottle_glass,layout 1,auto crop,27.02148652213833
+"UI screenshot (render, light)",render_bottle_glass,layout 1,no crop,4.094175789101469
+"UI screenshot (render, light)",render_bottle_glass,layout 1,auto crop,27.02148652213833
+"UI screenshot (render, light)",render_bottle_glass,layout 2,no crop,0.0
+"UI screenshot (render, light)",render_bottle_glass,layout 2,auto crop,27.02148652213833
+"UI screenshot (render, light)",render_bottle_glass,layout 2,no crop,1.0591927415469924
+"UI screenshot (render, light)",render_bottle_glass,layout 2,auto crop,27.02148652213833
+"UI screenshot (render, dark)",render_kettle,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_kettle,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_kettle,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_kettle,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_kettle,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_kettle,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_kettle,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_kettle,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_kettle,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_kettle,layout 2,auto crop,100.0
+"UI screenshot (render, dark)",render_kettle,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_kettle,layout 2,auto crop,100.0
+"UI screenshot (render, light)",render_kettle,layout 0,no crop,0.43869089761709584
+"UI screenshot (render, light)",render_kettle,layout 0,auto crop,11.76442823589122
+"UI screenshot (render, light)",render_kettle,layout 0,no crop,0.0
+"UI screenshot (render, light)",render_kettle,layout 0,auto crop,11.76442823589122
+"UI screenshot (render, light)",render_kettle,layout 1,no crop,0.0
+"UI screenshot (render, light)",render_kettle,layout 1,auto crop,16.490639967302343
+"UI screenshot (render, light)",render_kettle,layout 1,no crop,1.5971015916898037
+"UI screenshot (render, light)",render_kettle,layout 1,auto crop,16.490639967302343
+"UI screenshot (render, light)",render_kettle,layout 2,no crop,0.0
+"UI screenshot (render, light)",render_kettle,layout 2,auto crop,16.490639967302343
+"UI screenshot (render, light)",render_kettle,layout 2,no crop,4.501343229319585
+"UI screenshot (render, light)",render_kettle,layout 2,auto crop,16.490639967302343
+"UI screenshot (render, dark)",render_robot,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_robot,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_robot,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_robot,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_robot,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_robot,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_robot,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_robot,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_robot,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_robot,layout 2,auto crop,100.0
+"UI screenshot (render, dark)",render_robot,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_robot,layout 2,auto crop,100.0
+"UI screenshot (render, light)",render_robot,layout 0,no crop,8.730805985827152
+"UI screenshot (render, light)",render_robot,layout 0,auto crop,15.225118917423536
+"UI screenshot (render, light)",render_robot,layout 0,no crop,6.74260913678992
+"UI screenshot (render, light)",render_robot,layout 0,auto crop,15.225118917423536
+"UI screenshot (render, light)",render_robot,layout 1,no crop,3.6691960176286273
+"UI screenshot (render, light)",render_robot,layout 1,auto crop,24.06375346972507
+"UI screenshot (render, light)",render_robot,layout 1,no crop,8.346068580226992
+"UI screenshot (render, light)",render_robot,layout 1,auto crop,24.06375346972507
+"UI screenshot (render, light)",render_robot,layout 2,no crop,0.0
+"UI screenshot (render, light)",render_robot,layout 2,auto crop,24.06375346972507
+"UI screenshot (render, light)",render_robot,layout 2,no crop,4.609841220034663
+"UI screenshot (render, light)",render_robot,layout 2,auto crop,24.06375346972507
+"UI screenshot (render, dark)",render_rocket,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_rocket,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_rocket,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_rocket,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_rocket,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_rocket,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_rocket,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_rocket,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_rocket,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_rocket,layout 2,auto crop,100.0
+"UI screenshot (render, dark)",render_rocket,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_rocket,layout 2,auto crop,100.0
+"UI screenshot (render, light)",render_rocket,layout 0,no crop,0.0
+"UI screenshot (render, light)",render_rocket,layout 0,auto crop,12.79019844929677
+"UI screenshot (render, light)",render_rocket,layout 0,no crop,0.0
+"UI screenshot (render, light)",render_rocket,layout 0,auto crop,12.79019844929677
+"UI screenshot (render, light)",render_rocket,layout 1,no crop,0.0
+"UI screenshot (render, light)",render_rocket,layout 1,auto crop,22.323196708518108
+"UI screenshot (render, light)",render_rocket,layout 1,no crop,0.11638305465127928
+"UI screenshot (render, light)",render_rocket,layout 1,auto crop,22.323196708518108
+"UI screenshot (render, light)",render_rocket,layout 2,no crop,0.0
+"UI screenshot (render, light)",render_rocket,layout 2,auto crop,22.323196708518108
+"UI screenshot (render, light)",render_rocket,layout 2,no crop,0.6020738289695634
+"UI screenshot (render, light)",render_rocket,layout 2,auto crop,22.323196708518108
+"UI screenshot (render, dark)",render_snowman,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_snowman,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_snowman,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_snowman,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_snowman,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_snowman,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_snowman,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_snowman,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_snowman,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_snowman,layout 2,auto crop,100.0
+"UI screenshot (render, dark)",render_snowman,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_snowman,layout 2,auto crop,100.0
+"UI screenshot (render, light)",render_snowman,layout 0,no crop,0.0
+"UI screenshot (render, light)",render_snowman,layout 0,auto crop,10.391179000976988
+"UI screenshot (render, light)",render_snowman,layout 0,no crop,0.0
+"UI screenshot (render, light)",render_snowman,layout 0,auto crop,10.391179000976988
+"UI screenshot (render, light)",render_snowman,layout 1,no crop,0.0
+"UI screenshot (render, light)",render_snowman,layout 1,auto crop,13.229537948629469
+"UI screenshot (render, light)",render_snowman,layout 1,no crop,3.600326946311884
+"UI screenshot (render, light)",render_snowman,layout 1,auto crop,13.229537948629469
+"UI screenshot (render, light)",render_snowman,layout 2,no crop,0.0
+"UI screenshot (render, light)",render_snowman,layout 2,auto crop,13.229537948629469
+"UI screenshot (render, light)",render_snowman,layout 2,no crop,3.4439787989538178
+"UI screenshot (render, light)",render_snowman,layout 2,auto crop,13.229537948629469
+"UI screenshot (render, dark)",render_table_vase,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_table_vase,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_table_vase,layout 0,no crop,0.0
+"UI screenshot (render, dark)",render_table_vase,layout 0,auto crop,100.0
+"UI screenshot (render, dark)",render_table_vase,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_table_vase,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_table_vase,layout 1,no crop,0.0
+"UI screenshot (render, dark)",render_table_vase,layout 1,auto crop,100.0
+"UI screenshot (render, dark)",render_table_vase,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_table_vase,layout 2,auto crop,100.0
+"UI screenshot (render, dark)",render_table_vase,layout 2,no crop,0.0
+"UI screenshot (render, dark)",render_table_vase,layout 2,auto crop,100.0
+"UI screenshot (render, light)",render_table_vase,layout 0,no crop,6.519605095916241
+"UI screenshot (render, light)",render_table_vase,layout 0,auto crop,15.646488399535817
+"UI screenshot (render, light)",render_table_vase,layout 0,no crop,3.620997226407756
+"UI screenshot (render, light)",render_table_vase,layout 0,auto crop,15.646488399535817
+"UI screenshot (render, light)",render_table_vase,layout 1,no crop,1.9364227055886805
+"UI screenshot (render, light)",render_table_vase,layout 1,auto crop,23.574972265639552
+"UI screenshot (render, light)",render_table_vase,layout 1,no crop,4.957371015287624
+"UI screenshot (render, light)",render_table_vase,layout 1,auto crop,23.574972265639552
+"UI screenshot (render, light)",render_table_vase,layout 2,no crop,0.0
+"UI screenshot (render, light)",render_table_vase,layout 2,auto crop,23.574972265639552
+"UI screenshot (render, light)",render_table_vase,layout 2,no crop,3.7355271865037025
+"UI screenshot (render, light)",render_table_vase,layout 2,auto crop,23.574972265639552
+"UI screenshot (viewport content, dark)",bottle_glass,layout 0,no crop,1.40001085843359
+"UI screenshot (viewport content, dark)",bottle_glass,layout 0,auto crop,100.0
+"UI screenshot (viewport content, dark)",bottle_glass,layout 1,no crop,0.0
+"UI screenshot (viewport content, dark)",bottle_glass,layout 1,auto crop,100.0
+"UI screenshot (viewport content, dark)",bottle_glass,layout 2,no crop,0.0
+"UI screenshot (viewport content, dark)",bottle_glass,layout 2,auto crop,100.0
+"UI screenshot (viewport content, light)",bottle_glass,layout 0,no crop,0.0
+"UI screenshot (viewport content, light)",bottle_glass,layout 0,auto crop,9.317095854177506
+"UI screenshot (viewport content, light)",bottle_glass,layout 1,no crop,0.0
+"UI screenshot (viewport content, light)",bottle_glass,layout 1,auto crop,0.0
+"UI screenshot (viewport content, light)",bottle_glass,layout 2,no crop,0.0
+"UI screenshot (viewport content, light)",bottle_glass,layout 2,auto crop,0.0
+"UI screenshot (viewport content, dark)",chair,layout 0,no crop,5.445370035869537
+"UI screenshot (viewport content, dark)",chair,layout 0,auto crop,100.0
+"UI screenshot (viewport content, dark)",chair,layout 1,no crop,0.0
+"UI screenshot (viewport content, dark)",chair,layout 1,auto crop,100.0
+"UI screenshot (viewport content, dark)",chair,layout 2,no crop,0.0
+"UI screenshot (viewport content, dark)",chair,layout 2,auto crop,100.0
+"UI screenshot (viewport content, light)",chair,layout 0,no crop,0.0
+"UI screenshot (viewport content, light)",chair,layout 0,auto crop,4.342486983051859
+"UI screenshot (viewport content, light)",chair,layout 1,no crop,0.0
+"UI screenshot (viewport content, light)",chair,layout 1,auto crop,0.0
+"UI screenshot (viewport content, light)",chair,layout 2,no crop,0.0
+"UI screenshot (viewport content, light)",chair,layout 2,auto crop,0.0
+"UI screenshot (viewport content, dark)",desk_lamp,layout 0,no crop,2.3522297737575837
+"UI screenshot (viewport content, dark)",desk_lamp,layout 0,auto crop,100.0
+"UI screenshot (viewport content, dark)",desk_lamp,layout 1,no crop,0.0
+"UI screenshot (viewport content, dark)",desk_lamp,layout 1,auto crop,100.0
+"UI screenshot (viewport content, dark)",desk_lamp,layout 2,no crop,0.0
+"UI screenshot (viewport content, dark)",desk_lamp,layout 2,auto crop,100.0
+"UI screenshot (viewport content, light)",desk_lamp,layout 0,no crop,0.0
+"UI screenshot (viewport content, light)",desk_lamp,layout 0,auto crop,11.809646812925836
+"UI screenshot (viewport content, light)",desk_lamp,layout 1,no crop,0.0
+"UI screenshot (viewport content, light)",desk_lamp,layout 1,auto crop,0.0
+"UI screenshot (viewport content, light)",desk_lamp,layout 2,no crop,0.0
+"UI screenshot (viewport content, light)",desk_lamp,layout 2,auto crop,0.0
+"UI screenshot (viewport content, dark)",kettle,layout 0,no crop,7.940146329574671
+"UI screenshot (viewport content, dark)",kettle,layout 0,auto crop,100.0
+"UI screenshot (viewport content, dark)",kettle,layout 1,no crop,0.0
+"UI screenshot (viewport content, dark)",kettle,layout 1,auto crop,100.0
+"UI screenshot (viewport content, dark)",kettle,layout 2,no crop,0.0
+"UI screenshot (viewport content, dark)",kettle,layout 2,auto crop,100.0
+"UI screenshot (viewport content, light)",kettle,layout 0,no crop,5.996555368485758
+"UI screenshot (viewport content, light)",kettle,layout 0,auto crop,10.331409256473762
+"UI screenshot (viewport content, light)",kettle,layout 1,no crop,0.0
+"UI screenshot (viewport content, light)",kettle,layout 1,auto crop,0.0
+"UI screenshot (viewport content, light)",kettle,layout 2,no crop,0.0
+"UI screenshot (viewport content, light)",kettle,layout 2,auto crop,0.0
+"UI screenshot (viewport content, dark)",mug,layout 0,no crop,6.035838391844274
+"UI screenshot (viewport content, dark)",mug,layout 0,auto crop,100.0
+"UI screenshot (viewport content, dark)",mug,layout 1,no crop,0.0
+"UI screenshot (viewport content, dark)",mug,layout 1,auto crop,100.0
+"UI screenshot (viewport content, dark)",mug,layout 2,no crop,0.0
+"UI screenshot (viewport content, dark)",mug,layout 2,auto crop,100.0
+"UI screenshot (viewport content, light)",mug,layout 0,no crop,4.17087980851133
+"UI screenshot (viewport content, light)",mug,layout 0,auto crop,10.483712344215723
+"UI screenshot (viewport content, light)",mug,layout 1,no crop,0.0
+"UI screenshot (viewport content, light)",mug,layout 1,auto crop,0.0
+"UI screenshot (viewport content, light)",mug,layout 2,no crop,0.0
+"UI screenshot (viewport content, light)",mug,layout 2,auto crop,0.0
+"UI screenshot (viewport content, dark)",robot,layout 0,no crop,7.846364710420938
+"UI screenshot (viewport content, dark)",robot,layout 0,auto crop,100.0
+"UI screenshot (viewport content, dark)",robot,layout 1,no crop,0.9413271047726767
+"UI screenshot (viewport content, dark)",robot,layout 1,auto crop,100.0
+"UI screenshot (viewport content, dark)",robot,layout 2,no crop,0.0
+"UI screenshot (viewport content, dark)",robot,layout 2,auto crop,100.0
+"UI screenshot (viewport content, light)",robot,layout 0,no crop,2.727865592132475
+"UI screenshot (viewport content, light)",robot,layout 0,auto crop,15.625571401541652
+"UI screenshot (viewport content, light)",robot,layout 1,no crop,0.0
+"UI screenshot (viewport content, light)",robot,layout 1,auto crop,0.0
+"UI screenshot (viewport content, light)",robot,layout 2,no crop,0.0
+"UI screenshot (viewport content, light)",robot,layout 2,auto crop,0.0
+"UI screenshot (viewport content, dark)",rocket,layout 0,no crop,0.0
+"UI screenshot (viewport content, dark)",rocket,layout 0,auto crop,100.0
+"UI screenshot (viewport content, dark)",rocket,layout 1,no crop,0.0
+"UI screenshot (viewport content, dark)",rocket,layout 1,auto crop,100.0
+"UI screenshot (viewport content, dark)",rocket,layout 2,no crop,0.0
+"UI screenshot (viewport content, dark)",rocket,layout 2,auto crop,100.0
+"UI screenshot (viewport content, light)",rocket,layout 0,no crop,0.0
+"UI screenshot (viewport content, light)",rocket,layout 0,auto crop,8.078698399080995
+"UI screenshot (viewport content, light)",rocket,layout 1,no crop,0.0
+"UI screenshot (viewport content, light)",rocket,layout 1,auto crop,0.0
+"UI screenshot (viewport content, light)",rocket,layout 2,no crop,0.0
+"UI screenshot (viewport content, light)",rocket,layout 2,auto crop,0.0
+"UI screenshot (viewport content, dark)",snowman,layout 0,no crop,8.270742592772391
+"UI screenshot (viewport content, dark)",snowman,layout 0,auto crop,100.0
+"UI screenshot (viewport content, dark)",snowman,layout 1,no crop,0.5786924474158299
+"UI screenshot (viewport content, dark)",snowman,layout 1,auto crop,100.0
+"UI screenshot (viewport content, dark)",snowman,layout 2,no crop,0.0
+"UI screenshot (viewport content, dark)",snowman,layout 2,auto crop,100.0
+"UI screenshot (viewport content, light)",snowman,layout 0,no crop,5.3095516320634175
+"UI screenshot (viewport content, light)",snowman,layout 0,auto crop,8.819571385923602
+"UI screenshot (viewport content, light)",snowman,layout 1,no crop,0.0
+"UI screenshot (viewport content, light)",snowman,layout 1,auto crop,0.0
+"UI screenshot (viewport content, light)",snowman,layout 2,no crop,0.0
+"UI screenshot (viewport content, light)",snowman,layout 2,auto crop,0.0
+"UI screenshot (viewport content, dark)",still_life,layout 0,no crop,2.4573081070970586
+"UI screenshot (viewport content, dark)",still_life,layout 0,auto crop,100.0
+"UI screenshot (viewport content, dark)",still_life,layout 1,no crop,0.0
+"UI screenshot (viewport content, dark)",still_life,layout 1,auto crop,100.0
+"UI screenshot (viewport content, dark)",still_life,layout 2,no crop,0.0
+"UI screenshot (viewport content, dark)",still_life,layout 2,auto crop,100.0
+"UI screenshot (viewport content, light)",still_life,layout 0,no crop,0.0
+"UI screenshot (viewport content, light)",still_life,layout 0,auto crop,5.551500606994
+"UI screenshot (viewport content, light)",still_life,layout 1,no crop,0.0
+"UI screenshot (viewport content, light)",still_life,layout 1,auto crop,0.0
+"UI screenshot (viewport content, light)",still_life,layout 2,no crop,0.0
+"UI screenshot (viewport content, light)",still_life,layout 2,auto crop,0.0
+"UI screenshot (viewport content, dark)",suzanne,layout 0,no crop,13.268906295601953
+"UI screenshot (viewport content, dark)",suzanne,layout 0,auto crop,100.0
+"UI screenshot (viewport content, dark)",suzanne,layout 1,no crop,0.0
+"UI screenshot (viewport content, dark)",suzanne,layout 1,auto crop,100.0
+"UI screenshot (viewport content, dark)",suzanne,layout 2,no crop,0.0
+"UI screenshot (viewport content, dark)",suzanne,layout 2,auto crop,100.0
+"UI screenshot (viewport content, light)",suzanne,layout 0,no crop,8.082772176522372
+"UI screenshot (viewport content, light)",suzanne,layout 0,auto crop,15.662013116826204
+"UI screenshot (viewport content, light)",suzanne,layout 1,no crop,0.0
+"UI screenshot (viewport content, light)",suzanne,layout 1,auto crop,0.0
+"UI screenshot (viewport content, light)",suzanne,layout 2,no crop,0.0
+"UI screenshot (viewport content, light)",suzanne,layout 2,auto crop,0.0
+"UI screenshot (viewport content, dark)",table_vase,layout 0,no crop,2.2988746316988413
+"UI screenshot (viewport content, dark)",table_vase,layout 0,auto crop,100.0
+"UI screenshot (viewport content, dark)",table_vase,layout 1,no crop,0.0
+"UI screenshot (viewport content, dark)",table_vase,layout 1,auto crop,100.0
+"UI screenshot (viewport content, dark)",table_vase,layout 2,no crop,0.0
+"UI screenshot (viewport content, dark)",table_vase,layout 2,auto crop,100.0
+"UI screenshot (viewport content, light)",table_vase,layout 0,no crop,0.0
+"UI screenshot (viewport content, light)",table_vase,layout 0,auto crop,9.267053317170703
+"UI screenshot (viewport content, light)",table_vase,layout 1,no crop,0.0
+"UI screenshot (viewport content, light)",table_vase,layout 1,auto crop,0.0
+"UI screenshot (viewport content, light)",table_vase,layout 2,no crop,0.0
+"UI screenshot (viewport content, light)",table_vase,layout 2,auto crop,0.0
+"UI screenshot (viewport content, dark)",torus_cube,layout 0,no crop,7.537270686913745
+"UI screenshot (viewport content, dark)",torus_cube,layout 0,auto crop,100.0
+"UI screenshot (viewport content, dark)",torus_cube,layout 1,no crop,0.0
+"UI screenshot (viewport content, dark)",torus_cube,layout 1,auto crop,100.0
+"UI screenshot (viewport content, dark)",torus_cube,layout 2,no crop,0.0
+"UI screenshot (viewport content, dark)",torus_cube,layout 2,auto crop,100.0
+"UI screenshot (viewport content, light)",torus_cube,layout 0,no crop,0.0
+"UI screenshot (viewport content, light)",torus_cube,layout 0,auto crop,10.786231659423287
+"UI screenshot (viewport content, light)",torus_cube,layout 1,no crop,0.0
+"UI screenshot (viewport content, light)",torus_cube,layout 1,auto crop,0.0
+"UI screenshot (viewport content, light)",torus_cube,layout 2,no crop,0.0
+"UI screenshot (viewport content, light)",torus_cube,layout 2,auto crop,0.0
+auxiliary floor,torus,no floor,no removal,0.0
+auxiliary floor,torus,thin floor 3x,no removal,100.0
+auxiliary floor,torus,thin floor 4x,no removal,100.0
+auxiliary floor,torus,thin floor 6x,no removal,100.0
+auxiliary floor,torus,subdivided floor 4x,no removal,93.94525782270173
+auxiliary floor,torus,slab floor 4x (2 % thick),no removal,100.0
+thin model part,torus,plate present,no removal,100.0
+thin model part,torus,plate missing (error),no removal,89.34513778499031
+auxiliary floor,torus,no floor,helper rule v1.3,100.0
+auxiliary floor,torus,thin floor 3x,helper rule v1.3,100.0
+auxiliary floor,torus,thin floor 4x,helper rule v1.3,100.0
+auxiliary floor,torus,thin floor 6x,helper rule v1.3,100.0
+auxiliary floor,torus,subdivided floor 4x,helper rule v1.3,0.0
+auxiliary floor,torus,slab floor 4x (2 % thick),helper rule v1.3,0.0
+thin model part,torus,plate present,helper rule v1.3,100.0
+thin model part,torus,plate missing (error),helper rule v1.3,100.0
+auxiliary floor,torus,no floor,helper rule v1.4,100.0
+auxiliary floor,torus,thin floor 3x,helper rule v1.4,100.0
+auxiliary floor,torus,thin floor 4x,helper rule v1.4,100.0
+auxiliary floor,torus,thin floor 6x,helper rule v1.4,100.0
+auxiliary floor,torus,subdivided floor 4x,helper rule v1.4,100.0
+auxiliary floor,torus,slab floor 4x (2 % thick),helper rule v1.4,100.0
+thin model part,torus,plate present,helper rule v1.4,100.0
+thin model part,torus,plate missing (error),helper rule v1.4,89.34513778499031
+auxiliary floor,capsule,no floor,no removal,0.0
+auxiliary floor,capsule,thin floor 3x,no removal,100.0
+auxiliary floor,capsule,thin floor 4x,no removal,100.0
+auxiliary floor,capsule,thin floor 6x,no removal,100.0
+auxiliary floor,capsule,subdivided floor 4x,no removal,100.0
+auxiliary floor,capsule,slab floor 4x (2 % thick),no removal,100.0
+thin model part,capsule,plate present,no removal,100.0
+thin model part,capsule,plate missing (error),no removal,73.22488805046292
+auxiliary floor,capsule,no floor,helper rule v1.3,100.0
+auxiliary floor,capsule,thin floor 3x,helper rule v1.3,100.0
+auxiliary floor,capsule,thin floor 4x,helper rule v1.3,100.0
+auxiliary floor,capsule,thin floor 6x,helper rule v1.3,100.0
+auxiliary floor,capsule,subdivided floor 4x,helper rule v1.3,0.0
+auxiliary floor,capsule,slab floor 4x (2 % thick),helper rule v1.3,0.0
+thin model part,capsule,plate present,helper rule v1.3,100.0
+thin model part,capsule,plate missing (error),helper rule v1.3,100.0
+auxiliary floor,capsule,no floor,helper rule v1.4,100.0
+auxiliary floor,capsule,thin floor 3x,helper rule v1.4,100.0
+auxiliary floor,capsule,thin floor 4x,helper rule v1.4,100.0
+auxiliary floor,capsule,thin floor 6x,helper rule v1.4,100.0
+auxiliary floor,capsule,subdivided floor 4x,helper rule v1.4,100.0
+auxiliary floor,capsule,slab floor 4x (2 % thick),helper rule v1.4,100.0
+thin model part,capsule,plate present,helper rule v1.4,100.0
+thin model part,capsule,plate missing (error),helper rule v1.4,73.22488805046292
+auxiliary floor,cylinder,no floor,no removal,0.0
+auxiliary floor,cylinder,thin floor 3x,no removal,97.72891897802899
+auxiliary floor,cylinder,thin floor 4x,no removal,100.0
+auxiliary floor,cylinder,thin floor 6x,no removal,97.3995880668236
+auxiliary floor,cylinder,subdivided floor 4x,no removal,100.0
+auxiliary floor,cylinder,slab floor 4x (2 % thick),no removal,100.0
+thin model part,cylinder,plate present,no removal,100.0
+thin model part,cylinder,plate missing (error),no removal,99.71104954430305
+auxiliary floor,cylinder,no floor,helper rule v1.3,100.0
+auxiliary floor,cylinder,thin floor 3x,helper rule v1.3,100.0
+auxiliary floor,cylinder,thin floor 4x,helper rule v1.3,100.0
+auxiliary floor,cylinder,thin floor 6x,helper rule v1.3,100.0
+auxiliary floor,cylinder,subdivided floor 4x,helper rule v1.3,0.0
+auxiliary floor,cylinder,slab floor 4x (2 % thick),helper rule v1.3,0.0
+thin model part,cylinder,plate present,helper rule v1.3,100.0
+thin model part,cylinder,plate missing (error),helper rule v1.3,100.0
+auxiliary floor,cylinder,no floor,helper rule v1.4,100.0
+auxiliary floor,cylinder,thin floor 3x,helper rule v1.4,100.0
+auxiliary floor,cylinder,thin floor 4x,helper rule v1.4,100.0
+auxiliary floor,cylinder,thin floor 6x,helper rule v1.4,100.0
+auxiliary floor,cylinder,subdivided floor 4x,helper rule v1.4,100.0
+auxiliary floor,cylinder,slab floor 4x (2 % thick),helper rule v1.4,100.0
+thin model part,cylinder,plate present,helper rule v1.4,100.0
+thin model part,cylinder,plate missing (error),helper rule v1.4,99.71104954430305
+auxiliary floor,ellipsoid,no floor,no removal,0.0
+auxiliary floor,ellipsoid,thin floor 3x,no removal,98.14728106226248
+auxiliary floor,ellipsoid,thin floor 4x,no removal,100.0
+auxiliary floor,ellipsoid,thin floor 6x,no removal,99.91253500498186
+auxiliary floor,ellipsoid,subdivided floor 4x,no removal,79.85812208957964
+auxiliary floor,ellipsoid,slab floor 4x (2 % thick),no removal,100.0
+thin model part,ellipsoid,plate present,no removal,100.0
+thin model part,ellipsoid,plate missing (error),no removal,88.24564573998258
+auxiliary floor,ellipsoid,no floor,helper rule v1.3,100.0
+auxiliary floor,ellipsoid,thin floor 3x,helper rule v1.3,100.0
+auxiliary floor,ellipsoid,thin floor 4x,helper rule v1.3,100.0
+auxiliary floor,ellipsoid,thin floor 6x,helper rule v1.3,100.0
+auxiliary floor,ellipsoid,subdivided floor 4x,helper rule v1.3,0.0
+auxiliary floor,ellipsoid,slab floor 4x (2 % thick),helper rule v1.3,0.0
+thin model part,ellipsoid,plate present,helper rule v1.3,100.0
+thin model part,ellipsoid,plate missing (error),helper rule v1.3,100.0
+auxiliary floor,ellipsoid,no floor,helper rule v1.4,100.0
+auxiliary floor,ellipsoid,thin floor 3x,helper rule v1.4,100.0
+auxiliary floor,ellipsoid,thin floor 4x,helper rule v1.4,100.0
+auxiliary floor,ellipsoid,thin floor 6x,helper rule v1.4,100.0
+auxiliary floor,ellipsoid,subdivided floor 4x,helper rule v1.4,100.0
+auxiliary floor,ellipsoid,slab floor 4x (2 % thick),helper rule v1.4,100.0
+thin model part,ellipsoid,plate present,helper rule v1.4,100.0
+thin model part,ellipsoid,plate missing (error),helper rule v1.4,88.24564573998258
+auxiliary floor,asset_suzanne,no floor,no removal,0.0
+auxiliary floor,asset_suzanne,thin floor 3x,no removal,99.89383981474536
+auxiliary floor,asset_suzanne,thin floor 4x,no removal,100.0
+auxiliary floor,asset_suzanne,thin floor 6x,no removal,100.0
+auxiliary floor,asset_suzanne,subdivided floor 4x,no removal,100.0
+auxiliary floor,asset_suzanne,slab floor 4x (2 % thick),no removal,100.0
+thin model part,asset_suzanne,plate present,no removal,100.0
+thin model part,asset_suzanne,plate missing (error),no removal,10.10944297120765
+auxiliary floor,asset_suzanne,no floor,helper rule v1.3,100.0
+auxiliary floor,asset_suzanne,thin floor 3x,helper rule v1.3,100.0
+auxiliary floor,asset_suzanne,thin floor 4x,helper rule v1.3,100.0
+auxiliary floor,asset_suzanne,thin floor 6x,helper rule v1.3,100.0
+auxiliary floor,asset_suzanne,subdivided floor 4x,helper rule v1.3,0.0
+auxiliary floor,asset_suzanne,slab floor 4x (2 % thick),helper rule v1.3,0.0
+thin model part,asset_suzanne,plate present,helper rule v1.3,100.0
+thin model part,asset_suzanne,plate missing (error),helper rule v1.3,100.0
+auxiliary floor,asset_suzanne,no floor,helper rule v1.4,100.0
+auxiliary floor,asset_suzanne,thin floor 3x,helper rule v1.4,100.0
+auxiliary floor,asset_suzanne,thin floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_suzanne,thin floor 6x,helper rule v1.4,100.0
+auxiliary floor,asset_suzanne,subdivided floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_suzanne,slab floor 4x (2 % thick),helper rule v1.4,100.0
+thin model part,asset_suzanne,plate present,helper rule v1.4,100.0
+thin model part,asset_suzanne,plate missing (error),helper rule v1.4,10.10944297120765
+auxiliary floor,asset_chair,no floor,no removal,0.0
+auxiliary floor,asset_chair,thin floor 3x,no removal,100.0
+auxiliary floor,asset_chair,thin floor 4x,no removal,100.0
+auxiliary floor,asset_chair,thin floor 6x,no removal,100.0
+auxiliary floor,asset_chair,subdivided floor 4x,no removal,100.0
+auxiliary floor,asset_chair,slab floor 4x (2 % thick),no removal,100.0
+thin model part,asset_chair,plate present,no removal,100.0
+thin model part,asset_chair,plate missing (error),no removal,48.33991979036101
+auxiliary floor,asset_chair,no floor,helper rule v1.3,100.0
+auxiliary floor,asset_chair,thin floor 3x,helper rule v1.3,100.0
+auxiliary floor,asset_chair,thin floor 4x,helper rule v1.3,100.0
+auxiliary floor,asset_chair,thin floor 6x,helper rule v1.3,100.0
+auxiliary floor,asset_chair,subdivided floor 4x,helper rule v1.3,0.0
+auxiliary floor,asset_chair,slab floor 4x (2 % thick),helper rule v1.3,0.0
+thin model part,asset_chair,plate present,helper rule v1.3,100.0
+thin model part,asset_chair,plate missing (error),helper rule v1.3,100.0
+auxiliary floor,asset_chair,no floor,helper rule v1.4,100.0
+auxiliary floor,asset_chair,thin floor 3x,helper rule v1.4,100.0
+auxiliary floor,asset_chair,thin floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_chair,thin floor 6x,helper rule v1.4,100.0
+auxiliary floor,asset_chair,subdivided floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_chair,slab floor 4x (2 % thick),helper rule v1.4,100.0
+thin model part,asset_chair,plate present,helper rule v1.4,100.0
+thin model part,asset_chair,plate missing (error),helper rule v1.4,48.33991979036101
+auxiliary floor,asset_mug,no floor,no removal,0.0
+auxiliary floor,asset_mug,thin floor 3x,no removal,95.5971724117515
+auxiliary floor,asset_mug,thin floor 4x,no removal,100.0
+auxiliary floor,asset_mug,thin floor 6x,no removal,94.85658024275581
+auxiliary floor,asset_mug,subdivided floor 4x,no removal,100.0
+auxiliary floor,asset_mug,slab floor 4x (2 % thick),no removal,100.0
+thin model part,asset_mug,plate present,no removal,100.0
+thin model part,asset_mug,plate missing (error),no removal,100.0
+auxiliary floor,asset_mug,no floor,helper rule v1.3,100.0
+auxiliary floor,asset_mug,thin floor 3x,helper rule v1.3,100.0
+auxiliary floor,asset_mug,thin floor 4x,helper rule v1.3,100.0
+auxiliary floor,asset_mug,thin floor 6x,helper rule v1.3,100.0
+auxiliary floor,asset_mug,subdivided floor 4x,helper rule v1.3,0.0
+auxiliary floor,asset_mug,slab floor 4x (2 % thick),helper rule v1.3,0.0
+thin model part,asset_mug,plate present,helper rule v1.3,100.0
+thin model part,asset_mug,plate missing (error),helper rule v1.3,100.0
+auxiliary floor,asset_mug,no floor,helper rule v1.4,100.0
+auxiliary floor,asset_mug,thin floor 3x,helper rule v1.4,100.0
+auxiliary floor,asset_mug,thin floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_mug,thin floor 6x,helper rule v1.4,100.0
+auxiliary floor,asset_mug,subdivided floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_mug,slab floor 4x (2 % thick),helper rule v1.4,100.0
+thin model part,asset_mug,plate present,helper rule v1.4,100.0
+thin model part,asset_mug,plate missing (error),helper rule v1.4,100.0
+auxiliary floor,asset_desk_lamp,no floor,no removal,0.0
+auxiliary floor,asset_desk_lamp,thin floor 3x,no removal,100.0
+auxiliary floor,asset_desk_lamp,thin floor 4x,no removal,100.0
+auxiliary floor,asset_desk_lamp,thin floor 6x,no removal,100.0
+auxiliary floor,asset_desk_lamp,subdivided floor 4x,no removal,97.28828411587803
+auxiliary floor,asset_desk_lamp,slab floor 4x (2 % thick),no removal,100.0
+thin model part,asset_desk_lamp,plate present,no removal,100.0
+thin model part,asset_desk_lamp,plate missing (error),no removal,46.49941678493387
+auxiliary floor,asset_desk_lamp,no floor,helper rule v1.3,100.0
+auxiliary floor,asset_desk_lamp,thin floor 3x,helper rule v1.3,100.0
+auxiliary floor,asset_desk_lamp,thin floor 4x,helper rule v1.3,100.0
+auxiliary floor,asset_desk_lamp,thin floor 6x,helper rule v1.3,100.0
+auxiliary floor,asset_desk_lamp,subdivided floor 4x,helper rule v1.3,0.0
+auxiliary floor,asset_desk_lamp,slab floor 4x (2 % thick),helper rule v1.3,0.0
+thin model part,asset_desk_lamp,plate present,helper rule v1.3,100.0
+thin model part,asset_desk_lamp,plate missing (error),helper rule v1.3,100.0
+auxiliary floor,asset_desk_lamp,no floor,helper rule v1.4,100.0
+auxiliary floor,asset_desk_lamp,thin floor 3x,helper rule v1.4,100.0
+auxiliary floor,asset_desk_lamp,thin floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_desk_lamp,thin floor 6x,helper rule v1.4,100.0
+auxiliary floor,asset_desk_lamp,subdivided floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_desk_lamp,slab floor 4x (2 % thick),helper rule v1.4,100.0
+thin model part,asset_desk_lamp,plate present,helper rule v1.4,100.0
+thin model part,asset_desk_lamp,plate missing (error),helper rule v1.4,46.49941678493387
+auxiliary floor,asset_bottle_glass,no floor,no removal,0.0
+auxiliary floor,asset_bottle_glass,thin floor 3x,no removal,100.0
+auxiliary floor,asset_bottle_glass,thin floor 4x,no removal,100.0
+auxiliary floor,asset_bottle_glass,thin floor 6x,no removal,100.0
+auxiliary floor,asset_bottle_glass,subdivided floor 4x,no removal,100.0
+auxiliary floor,asset_bottle_glass,slab floor 4x (2 % thick),no removal,100.0
+thin model part,asset_bottle_glass,plate present,no removal,100.0
+thin model part,asset_bottle_glass,plate missing (error),no removal,87.0718782344183
+auxiliary floor,asset_bottle_glass,no floor,helper rule v1.3,100.0
+auxiliary floor,asset_bottle_glass,thin floor 3x,helper rule v1.3,100.0
+auxiliary floor,asset_bottle_glass,thin floor 4x,helper rule v1.3,100.0
+auxiliary floor,asset_bottle_glass,thin floor 6x,helper rule v1.3,100.0
+auxiliary floor,asset_bottle_glass,subdivided floor 4x,helper rule v1.3,0.0
+auxiliary floor,asset_bottle_glass,slab floor 4x (2 % thick),helper rule v1.3,0.0
+thin model part,asset_bottle_glass,plate present,helper rule v1.3,100.0
+thin model part,asset_bottle_glass,plate missing (error),helper rule v1.3,100.0
+auxiliary floor,asset_bottle_glass,no floor,helper rule v1.4,100.0
+auxiliary floor,asset_bottle_glass,thin floor 3x,helper rule v1.4,100.0
+auxiliary floor,asset_bottle_glass,thin floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_bottle_glass,thin floor 6x,helper rule v1.4,100.0
+auxiliary floor,asset_bottle_glass,subdivided floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_bottle_glass,slab floor 4x (2 % thick),helper rule v1.4,100.0
+thin model part,asset_bottle_glass,plate present,helper rule v1.4,100.0
+thin model part,asset_bottle_glass,plate missing (error),helper rule v1.4,87.0718782344183
+auxiliary floor,asset_kettle,no floor,no removal,0.0
+auxiliary floor,asset_kettle,thin floor 3x,no removal,99.87283922947114
+auxiliary floor,asset_kettle,thin floor 4x,no removal,100.0
+auxiliary floor,asset_kettle,thin floor 6x,no removal,100.0
+auxiliary floor,asset_kettle,subdivided floor 4x,no removal,100.0
+auxiliary floor,asset_kettle,slab floor 4x (2 % thick),no removal,100.0
+thin model part,asset_kettle,plate present,no removal,100.0
+thin model part,asset_kettle,plate missing (error),no removal,16.328377363308814
+auxiliary floor,asset_kettle,no floor,helper rule v1.3,100.0
+auxiliary floor,asset_kettle,thin floor 3x,helper rule v1.3,100.0
+auxiliary floor,asset_kettle,thin floor 4x,helper rule v1.3,100.0
+auxiliary floor,asset_kettle,thin floor 6x,helper rule v1.3,100.0
+auxiliary floor,asset_kettle,subdivided floor 4x,helper rule v1.3,0.0
+auxiliary floor,asset_kettle,slab floor 4x (2 % thick),helper rule v1.3,0.0
+thin model part,asset_kettle,plate present,helper rule v1.3,100.0
+thin model part,asset_kettle,plate missing (error),helper rule v1.3,100.0
+auxiliary floor,asset_kettle,no floor,helper rule v1.4,100.0
+auxiliary floor,asset_kettle,thin floor 3x,helper rule v1.4,100.0
+auxiliary floor,asset_kettle,thin floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_kettle,thin floor 6x,helper rule v1.4,100.0
+auxiliary floor,asset_kettle,subdivided floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_kettle,slab floor 4x (2 % thick),helper rule v1.4,100.0
+thin model part,asset_kettle,plate present,helper rule v1.4,100.0
+thin model part,asset_kettle,plate missing (error),helper rule v1.4,16.328377363308814
+auxiliary floor,asset_robot,no floor,no removal,0.0
+auxiliary floor,asset_robot,thin floor 3x,no removal,100.0
+auxiliary floor,asset_robot,thin floor 4x,no removal,100.0
+auxiliary floor,asset_robot,thin floor 6x,no removal,100.0
+auxiliary floor,asset_robot,subdivided floor 4x,no removal,100.0
+auxiliary floor,asset_robot,slab floor 4x (2 % thick),no removal,100.0
+thin model part,asset_robot,plate present,no removal,100.0
+thin model part,asset_robot,plate missing (error),no removal,36.124113324118866
+auxiliary floor,asset_robot,no floor,helper rule v1.3,100.0
+auxiliary floor,asset_robot,thin floor 3x,helper rule v1.3,100.0
+auxiliary floor,asset_robot,thin floor 4x,helper rule v1.3,100.0
+auxiliary floor,asset_robot,thin floor 6x,helper rule v1.3,100.0
+auxiliary floor,asset_robot,subdivided floor 4x,helper rule v1.3,0.0
+auxiliary floor,asset_robot,slab floor 4x (2 % thick),helper rule v1.3,0.0
+thin model part,asset_robot,plate present,helper rule v1.3,100.0
+thin model part,asset_robot,plate missing (error),helper rule v1.3,100.0
+auxiliary floor,asset_robot,no floor,helper rule v1.4,100.0
+auxiliary floor,asset_robot,thin floor 3x,helper rule v1.4,100.0
+auxiliary floor,asset_robot,thin floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_robot,thin floor 6x,helper rule v1.4,100.0
+auxiliary floor,asset_robot,subdivided floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_robot,slab floor 4x (2 % thick),helper rule v1.4,100.0
+thin model part,asset_robot,plate present,helper rule v1.4,100.0
+thin model part,asset_robot,plate missing (error),helper rule v1.4,36.124113324118866
+auxiliary floor,asset_rocket,no floor,no removal,0.0
+auxiliary floor,asset_rocket,thin floor 3x,no removal,100.0
+auxiliary floor,asset_rocket,thin floor 4x,no removal,100.0
+auxiliary floor,asset_rocket,thin floor 6x,no removal,100.0
+auxiliary floor,asset_rocket,subdivided floor 4x,no removal,100.0
+auxiliary floor,asset_rocket,slab floor 4x (2 % thick),no removal,100.0
+thin model part,asset_rocket,plate present,no removal,100.0
+thin model part,asset_rocket,plate missing (error),no removal,82.2829888779474
+auxiliary floor,asset_rocket,no floor,helper rule v1.3,100.0
+auxiliary floor,asset_rocket,thin floor 3x,helper rule v1.3,100.0
+auxiliary floor,asset_rocket,thin floor 4x,helper rule v1.3,100.0
+auxiliary floor,asset_rocket,thin floor 6x,helper rule v1.3,100.0
+auxiliary floor,asset_rocket,subdivided floor 4x,helper rule v1.3,0.0
+auxiliary floor,asset_rocket,slab floor 4x (2 % thick),helper rule v1.3,0.0
+thin model part,asset_rocket,plate present,helper rule v1.3,100.0
+thin model part,asset_rocket,plate missing (error),helper rule v1.3,100.0
+auxiliary floor,asset_rocket,no floor,helper rule v1.4,100.0
+auxiliary floor,asset_rocket,thin floor 3x,helper rule v1.4,100.0
+auxiliary floor,asset_rocket,thin floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_rocket,thin floor 6x,helper rule v1.4,100.0
+auxiliary floor,asset_rocket,subdivided floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_rocket,slab floor 4x (2 % thick),helper rule v1.4,100.0
+thin model part,asset_rocket,plate present,helper rule v1.4,100.0
+thin model part,asset_rocket,plate missing (error),helper rule v1.4,82.2829888779474
+auxiliary floor,asset_snowman,no floor,no removal,0.0
+auxiliary floor,asset_snowman,thin floor 3x,no removal,100.0
+auxiliary floor,asset_snowman,thin floor 4x,no removal,100.0
+auxiliary floor,asset_snowman,thin floor 6x,no removal,100.0
+auxiliary floor,asset_snowman,subdivided floor 4x,no removal,100.0
+auxiliary floor,asset_snowman,slab floor 4x (2 % thick),no removal,100.0
+thin model part,asset_snowman,plate present,no removal,100.0
+thin model part,asset_snowman,plate missing (error),no removal,75.04830615892389
+auxiliary floor,asset_snowman,no floor,helper rule v1.3,100.0
+auxiliary floor,asset_snowman,thin floor 3x,helper rule v1.3,100.0
+auxiliary floor,asset_snowman,thin floor 4x,helper rule v1.3,100.0
+auxiliary floor,asset_snowman,thin floor 6x,helper rule v1.3,100.0
+auxiliary floor,asset_snowman,subdivided floor 4x,helper rule v1.3,0.0
+auxiliary floor,asset_snowman,slab floor 4x (2 % thick),helper rule v1.3,0.0
+thin model part,asset_snowman,plate present,helper rule v1.3,100.0
+thin model part,asset_snowman,plate missing (error),helper rule v1.3,100.0
+auxiliary floor,asset_snowman,no floor,helper rule v1.4,100.0
+auxiliary floor,asset_snowman,thin floor 3x,helper rule v1.4,100.0
+auxiliary floor,asset_snowman,thin floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_snowman,thin floor 6x,helper rule v1.4,100.0
+auxiliary floor,asset_snowman,subdivided floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_snowman,slab floor 4x (2 % thick),helper rule v1.4,100.0
+thin model part,asset_snowman,plate present,helper rule v1.4,100.0
+thin model part,asset_snowman,plate missing (error),helper rule v1.4,75.04830615892389
+auxiliary floor,asset_table_vase,no floor,no removal,0.0
+auxiliary floor,asset_table_vase,thin floor 3x,no removal,100.0
+auxiliary floor,asset_table_vase,thin floor 4x,no removal,100.0
+auxiliary floor,asset_table_vase,thin floor 6x,no removal,98.80794177192261
+auxiliary floor,asset_table_vase,subdivided floor 4x,no removal,100.0
+auxiliary floor,asset_table_vase,slab floor 4x (2 % thick),no removal,100.0
+thin model part,asset_table_vase,plate present,no removal,100.0
+thin model part,asset_table_vase,plate missing (error),no removal,43.782763306851315
+auxiliary floor,asset_table_vase,no floor,helper rule v1.3,98.73511234695262
+auxiliary floor,asset_table_vase,thin floor 3x,helper rule v1.3,100.0
+auxiliary floor,asset_table_vase,thin floor 4x,helper rule v1.3,100.0
+auxiliary floor,asset_table_vase,thin floor 6x,helper rule v1.3,100.0
+auxiliary floor,asset_table_vase,subdivided floor 4x,helper rule v1.3,0.0
+auxiliary floor,asset_table_vase,slab floor 4x (2 % thick),helper rule v1.3,0.0
+thin model part,asset_table_vase,plate present,helper rule v1.3,100.0
+thin model part,asset_table_vase,plate missing (error),helper rule v1.3,98.73511234695262
+auxiliary floor,asset_table_vase,no floor,helper rule v1.4,100.0
+auxiliary floor,asset_table_vase,thin floor 3x,helper rule v1.4,100.0
+auxiliary floor,asset_table_vase,thin floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_table_vase,thin floor 6x,helper rule v1.4,100.0
+auxiliary floor,asset_table_vase,subdivided floor 4x,helper rule v1.4,100.0
+auxiliary floor,asset_table_vase,slab floor 4x (2 % thick),helper rule v1.4,100.0
+thin model part,asset_table_vase,plate present,helper rule v1.4,100.0
+thin model part,asset_table_vase,plate missing (error),helper rule v1.4,43.782763306851315

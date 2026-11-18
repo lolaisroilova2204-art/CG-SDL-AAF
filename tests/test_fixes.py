@@ -81,7 +81,7 @@ def test_multiple_screenshots_best_match(tmp_path):
     mock_ui(scene(dx=5), 1).save(d / "b_good_view_with_ui.png")
     r = c.evaluate_attempt(d, use_lpips=False)
     assert r["image"]["n_images"] == 2 and r["image"]["file"] == "b_good_view_with_ui.png" and r["image"]["crop"] and r["score"] > 85
-    assert r["env"]["numpy"] and r["env"]["algo"] == "CG-SDL-AAF 1.3"
+    assert r["env"]["numpy"] and r["env"]["algo"] == "CG-SDL-AAF 1.4"
 
 
 @pytest.mark.skipif(find_blender() is None, reason="Blender not available")

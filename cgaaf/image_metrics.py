@@ -33,36 +33,51 @@ def load_image(path) -> np.ndarray:
 
 
 def _corner_bg(a: np.ndarray, k: int = 4) -> np.ndarray:
-    h, w, _ = a.shape
-    c = [a[:k, :k], a[:k, w - k:], a[h - k:, :k], a[h - k:, w - k:]]
-    return np.mean([x.reshape(-1, 3).mean(0) for x in c], axis=0)
+    """Background colour: median of the four k x k corner patches (v1.4: medians instead of means, so
+    that a stray interface row left by an inexact crop does not shift the estimate)."""
+    patches = [a[:k, :k], a[:k, -k:], a[-k:, :k], a[-k:, -k:]]
+    return np.median(np.stack([np.median(p.reshape(-1, 3), axis=0) for p in patches]), axis=0)
 
 
-def normalise(img: np.ndarray, trim: bool = True, n: int = N_DEFAULT) -> np.ndarray:
-    """Estimate background from corners, optionally trim to object bbox (+5 %),
-    then fit into an n x n canvas filled with the background colour."""
+def normalise_geometry(img: np.ndarray, trim: bool = True, n: int = N_DEFAULT):
+    """Geometry of `normalise`: returns (scale0, (y0, y1, x0, x1), s, (offx, offy)) so that an original
+    pixel (x, y) maps to ((x * scale0 - x0) * s + offx, (y * scale0 - y0) * s + offy)."""
     a = img
-    scale = min(1.0, 1200 / max(a.shape[:2]))
-    if scale < 1:
+    scale0 = min(1.0, 1200 / max(a.shape[:2]))
+    if scale0 < 1:
         a = np.asarray(Image.fromarray(a.astype(np.uint8)).resize(
-            (max(1, round(a.shape[1] * scale)), max(1, round(a.shape[0] * scale))), Image.LANCZOS), dtype=np.float64)
+            (max(1, round(a.shape[1] * scale0)), max(1, round(a.shape[0] * scale0))), Image.LANCZOS), dtype=np.float64)
     bg = _corner_bg(a)
     h, w, _ = a.shape
     y0, y1, x0, x1 = 0, h, 0, w
     if trim:
         diff = np.abs(a - bg).sum(2) > 36
+        diff[:2, :] = diff[-2:, :] = False  # v1.4: a 1-2 px line left at the border (e.g. by an inexact
+        diff[:, :2] = diff[:, -2:] = False  # interface crop) must not stretch the object's bounding box
         ys, xs = np.where(diff)
         if len(ys):
             m = int(round(0.05 * max(ys.max() - ys.min(), xs.max() - xs.min())))
             y0, y1 = max(0, ys.min() - m), min(h, ys.max() + 1 + m)
             x0, x1 = max(0, xs.min() - m), min(w, xs.max() + 1 + m)
-    crop = Image.fromarray(a[y0:y1, x0:x1].astype(np.uint8))
-    s = min(n / crop.width, n / crop.height)
-    dw, dh = max(1, round(crop.width * s)), max(1, round(crop.height * s))
-    crop = crop.resize((dw, dh), Image.LANCZOS)
+    s = min(n / (x1 - x0), n / (y1 - y0))
+    dw, dh = max(1, round((x1 - x0) * s)), max(1, round((y1 - y0) * s))
+    return a, bg, scale0, (y0, y1, x0, x1), s, ((n - dw) // 2, (n - dh) // 2), (dw, dh)
+
+
+def normalise(img: np.ndarray, trim: bool = True, n: int = N_DEFAULT) -> np.ndarray:
+    """Estimate background from corners, optionally trim to object bbox (+5 %),
+    then fit into an n x n canvas filled with the background colour."""
+    a, bg, _, (y0, y1, x0, x1), _, (ox, oy), (dw, dh) = normalise_geometry(img, trim, n)
+    crop = Image.fromarray(a[y0:y1, x0:x1].astype(np.uint8)).resize((dw, dh), Image.LANCZOS)
     canvas = Image.new("RGB", (n, n), tuple(int(round(v)) for v in bg))
-    canvas.paste(crop, ((n - dw) // 2, (n - dh) // 2))
+    canvas.paste(crop, (ox, oy))
     return np.asarray(canvas, dtype=np.float64)
+
+
+def map_point(img: np.ndarray, x: float, y: float, trim: bool = True, n: int = N_DEFAULT):
+    """Position of the original pixel (x, y) in the normalised n x n canvas."""
+    _, _, s0, (y0, _, x0, _), s, (ox, oy), _ = normalise_geometry(img, trim, n)
+    return (x * s0 - x0) * s + ox, (y * s0 - y0) * s + oy
 
 
 def luminance(a: np.ndarray) -> np.ndarray:
@@ -216,6 +231,32 @@ def lpips_distance(ref, stu):
         return float(_LPIPS["model"](t(ref), t(stu)).item())
 
 
+# ----------------------------------------------------------------- additional baselines (not part of the score)
+def flip_error(R, S):
+    """Mean FLIP error (Andersson et al.) between two normalised sRGB images; None if the
+    flip-evaluator package is not installed. Lower = more similar."""
+    try:
+        import flip_evaluator as flip
+    except Exception:
+        return None
+    _, mean, _ = flip.evaluate(np.ascontiguousarray(R, dtype=np.float32) / 255.0,
+                               np.ascontiguousarray(S, dtype=np.float32) / 255.0, "LDR", applyMagma=False)
+    return float(mean)
+
+
+def sncd(R, S):
+    """Symmetric normalised compression distance (Roman-Gonzalez 2013): mean of NCD(x, y) and NCD(y, x),
+    computed with the LZMA compressor on the 8-bit luminance of the normalised images (its dictionary
+    spans both images, unlike the 32 kB window of deflate). Lower = more similar."""
+    import lzma
+    a = np.clip(luminance(R), 0, 255).astype(np.uint8).tobytes()
+    b = np.clip(luminance(S), 0, 255).astype(np.uint8).tobytes()
+    C = lambda x: len(lzma.compress(x, preset=6))
+    ca, cb, cab, cba = C(a), C(b), C(a + b), C(b + a)
+    lo, hi = min(ca, cb), max(ca, cb)
+    return float(0.5 * ((cab - lo) / hi + (cba - lo) / hi))
+
+
 # ----------------------------------------------------------------- main entry
 @dataclass
 class ImageResult:
@@ -227,9 +268,14 @@ class ImageResult:
     worst: tuple = (0, 1.0)
 
 
-def compare_images(ref, stu, trim=True, use_lpips=True, n=N_DEFAULT, ref_is_normalised=False, crop=None, ref_crop=None) -> ImageResult:
+def compare_images(ref, stu, trim=True, use_lpips=True, n=N_DEFAULT, ref_is_normalised=False, crop=None, ref_crop=None,
+                   baselines=False) -> ImageResult:
     """ref, stu: paths or RGB arrays. crop / ref_crop: None | 'auto' | (x0,y0,x1,y1) | {x0,y0,x1,y1 fractions}
-    removes application UI from screenshots (see ui_crop)."""
+    removes application UI from screenshots (see ui_crop).
+    trim=True ("object" mode, default for tasks): both images are trimmed to the object's bounding box,
+    so the placement and size of the object in the frame are not assessed. trim=False ("composition"
+    mode): the frames are compared as they are, so framing differences count as errors.
+    baselines=True adds FLIP and SNCD (benchmark baselines, not used by the score)."""
     from .ui_crop import apply_crop
     ref = load_image(ref) if not isinstance(ref, np.ndarray) else ref
     stu = load_image(stu) if not isinstance(stu, np.ndarray) else stu
@@ -253,7 +299,12 @@ def compare_images(ref, stu, trim=True, use_lpips=True, n=N_DEFAULT, ref_is_norm
         m["lpips"] = float(np.clip(1 - d / 0.6, 0, 1))
     raw["crop_box"] = list(sbox) if sbox else None
     raw["ref_crop_box"] = list(rbox) if rbox else None
-    return ImageResult(raw, m, first["map"], R, S, worst_region(first["map"]))
+    worst = worst_region(first["map"])
+    raw["worst_cell"], raw["worst_ssim"] = int(worst[0]), float(worst[1])
+    if baselines:
+        raw["flip"] = flip_error(R, S)
+        raw["sncd"] = sncd(R, S)
+    return ImageResult(raw, m, first["map"], R, S, worst)
 
 
 def heatmap(res: ImageResult, out_path, size=320):

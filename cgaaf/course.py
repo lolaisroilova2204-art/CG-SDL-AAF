@@ -29,7 +29,7 @@ from . import ALGO_VERSION
 from .blender import BLENDER_INPUT, run_blender
 from .feedback import feedback_items
 from .image_metrics import compare_images, heatmap
-from .mesh_metrics import MESH_EXT, compare_meshes, load_mesh, prepare_reference
+from .mesh_metrics import MESH_EXT, compare_meshes, load_mesh, prepare_reference, topology
 
 
 def environment():
@@ -151,14 +151,20 @@ class Course:
         cache, key = d / "ref_points.npy", d / "ref_points.key"
         k = f'{task["reference"]["mesh"]}|{task.get("align", "pca_icp")}|{task.get("objects", "auto")}|{ALGO_VERSION}'
         meta = _jload(key) if key.exists() else None
-        if cache.exists() and isinstance(meta, dict) and meta.get("key") == k:
+        if cache.exists() and isinstance(meta, dict) and meta.get("key") == k and "topo" in meta:
             P, s = np.load(cache), meta["scale"]
         else:
             m = load_mesh(d / task["reference"]["mesh"], drop_planes=task.get("objects", "auto") != "all")
             P, s = prepare_reference(m, task.get("align", "pca_icp"), return_scale=True)
             np.save(cache, P)
-            _jsave(key, {"key": k, "scale": s})
+            _jsave(key, {"key": k, "scale": s, "topo": topology(m)})
         return (P, s) if with_scale else P
+
+    def ref_topology(self, task):
+        """Topology of the reference mesh: defects are penalised only in excess of it."""
+        self.ref_points(task)
+        meta = _jload(self.task_dir(task["id"]) / "ref_points.key")
+        return meta.get("topo") if isinstance(meta, dict) else None
 
     # ------------------------------------------------------------ students
     def students(self):
@@ -289,12 +295,16 @@ class Course:
             if src is None:
                 raise RuntimeError("no mesh / .blend in submission")
             ref_pts, ref_scale = self.ref_points(task, with_scale=True)
-            mr = compare_meshes(load_mesh(src, drop_planes=task["objects"] != "all"), ref_pts, task.get("align", "pca_icp"), ref_scale=ref_scale if task.get("check_size") else None)
+            mr = compare_meshes(load_mesh(src, drop_planes=task["objects"] != "all"), ref_pts, task.get("align", "pca_icp"),
+                                ref_scale=ref_scale if task.get("check_size") else None, ref_topo=self.ref_topology(task))
             np.save(d / "aaf_cloud.npy", mr.aligned[:: max(1, len(mr.aligned) // 1024)].astype(np.float32))
             res["mesh"] = {"raw": mr.raw, "source": "blender_export" if blends else "file", "file": Path(src).name}
             res["m"].update(mr.m)
         res["score"] = round(score(task, res["m"]), 2)
         res["grade"] = grade5(res["score"])
+        for part, kind in (("image", "image"), ("mesh", "mesh")):  # channel scores for the feedback rules
+            if part in res:
+                res[part]["score"] = round(score({**task, "type": kind}, res["m"]), 2)
         res["calibrated"] = bool(task.get("calibration"))
         res["plan"] = sub.get("plan") or {}
         res["feedback"] = feedback_items(res)

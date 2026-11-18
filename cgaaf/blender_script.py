@@ -29,7 +29,8 @@ helpers = argv[12] if len(argv) > 12 else "hide"  # hide | show : render helper 
 ext = os.path.splitext(src)[1].lower()
 
 if ext == ".blend":
-    bpy.ops.wm.open_mainfile(filepath=src)
+    # use_scripts=False: scripts embedded in a student's file are never executed (also with the bpy module)
+    bpy.ops.wm.open_mainfile(filepath=src, use_scripts=False)
 else:
     bpy.ops.wm.read_factory_settings(use_empty=True)
     imp = {".fbx": lambda p: bpy.ops.import_scene.fbx(filepath=p),
@@ -48,14 +49,25 @@ renderable = [o for o in scene.objects if o.type in {"MESH", "CURVE", "SURFACE",
 HELPER_NAMES = ["plane*", "floor*", "ground*", "background*", "backdrop*", "pol*", "tekislik*", "zamin*", "фон*", "пол*"]
 
 
-def plane_like(o):
+def _max_dim(objs):
+    pts = [o.matrix_world @ mathutils.Vector(c) for o in objs for c in o.bound_box]
+    if not pts:
+        return 0.0
+    return max(max(p[i] for p in pts) - min(p[i] for p in pts) for i in range(3))
+
+
+def plane_like(o, others):
+    """Helper objects (floors, backdrops): flat (< 1 % thick) and at least 0.8x as large as the other
+    objects, a thin slab (< 3 %) at least 1.5x as large, or named like a floor and < 5 % thick.
+    Small thin parts of the model (plates, signs) are kept."""
     d = sorted(o.dimensions)
     if d[2] <= 0:
         return True
-    n_poly = len(o.data.polygons) if o.type == "MESH" else 999
-    flat = d[0] < 0.01 * d[2]
+    E_rest = _max_dim([q for q in others if q is not o])
     named = any(fnmatch.fnmatch(o.name.lower(), p) for p in HELPER_NAMES)
-    return (flat and n_poly <= 64) or (named and d[0] < 0.05 * d[2])
+    flat = d[0] < 0.01 * d[2] and d[2] >= 0.8 * E_rest
+    slab = d[0] < 0.03 * d[2] and d[2] >= 1.5 * E_rest
+    return (E_rest > 0 and (flat or slab)) or (named and d[0] < 0.05 * d[2])
 
 
 if obj_filter == "all":
@@ -67,7 +79,7 @@ elif obj_filter.startswith("collection:"):
     col = bpy.data.collections.get(obj_filter[11:])
     meshes = [o for o in renderable if col and o.name in col.all_objects]
 else:
-    meshes = [o for o in renderable if not plane_like(o)] or renderable
+    meshes = [o for o in renderable if not plane_like(o, renderable)] or renderable
 print("AAF_OBJECTS", ",".join(o.name for o in meshes), flush=True)
 if helpers == "hide" and mode == "canonical":
     for o in renderable:

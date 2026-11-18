@@ -1,0 +1,290 @@
+content,theme,reference,layout,seed,iou,detected
+render,dark,scene_A,0,0,1.0,True
+render,dark,scene_A,0,1,1.0,True
+render,dark,scene_A,1,0,1.0,True
+render,dark,scene_A,1,1,1.0,True
+render,dark,scene_A,2,0,1.0,True
+render,dark,scene_A,2,1,1.0,True
+render,light,scene_A,0,0,0.9886460183826369,True
+render,light,scene_A,0,1,0.9886460183826369,True
+render,light,scene_A,1,0,0.7881773399014779,True
+render,light,scene_A,1,1,0.817717206132879,True
+render,light,scene_A,2,0,0.8362369337979094,True
+render,light,scene_A,2,1,0.8839779005524862,True
+render,dark,scene_B,0,0,1.0,True
+render,dark,scene_B,0,1,1.0,True
+render,dark,scene_B,1,0,1.0,True
+render,dark,scene_B,1,1,1.0,True
+render,dark,scene_B,2,0,1.0,True
+render,dark,scene_B,2,1,1.0,True
+render,light,scene_B,0,0,0.9886460183826369,True
+render,light,scene_B,0,1,0.9886460183826369,True
+render,light,scene_B,1,0,0.7881773399014779,True
+render,light,scene_B,1,1,0.817717206132879,True
+render,light,scene_B,2,0,0.8362369337979094,True
+render,light,scene_B,2,1,0.8839779005524862,True
+render,dark,render_suzanne,0,0,1.0,True
+render,dark,render_suzanne,0,1,1.0,True
+render,dark,render_suzanne,1,0,1.0,True
+render,dark,render_suzanne,1,1,1.0,True
+render,dark,render_suzanne,2,0,1.0,True
+render,dark,render_suzanne,2,1,1.0,True
+render,light,render_suzanne,0,0,0.888166097468423,True
+render,light,render_suzanne,0,1,0.888166097468423,True
+render,light,render_suzanne,1,0,0.9078014184397163,True
+render,light,render_suzanne,1,1,0.9078014184397163,True
+render,light,render_suzanne,2,0,0.9078014184397163,True
+render,light,render_suzanne,2,1,0.9078014184397163,True
+render,dark,render_still_life,0,0,1.0,True
+render,dark,render_still_life,0,1,1.0,True
+render,dark,render_still_life,1,0,1.0,True
+render,dark,render_still_life,1,1,1.0,True
+render,dark,render_still_life,2,0,1.0,True
+render,dark,render_still_life,2,1,1.0,True
+render,light,render_still_life,0,0,0.888166097468423,True
+render,light,render_still_life,0,1,0.888166097468423,True
+render,light,render_still_life,1,0,0.9078014184397163,True
+render,light,render_still_life,1,1,0.9078014184397163,True
+render,light,render_still_life,2,0,0.9078014184397163,True
+render,light,render_still_life,2,1,0.9078014184397163,True
+render,dark,render_chair,0,0,1.0,True
+render,dark,render_chair,0,1,1.0,True
+render,dark,render_chair,1,0,1.0,True
+render,dark,render_chair,1,1,1.0,True
+render,dark,render_chair,2,0,1.0,True
+render,dark,render_chair,2,1,1.0,True
+render,light,render_chair,0,0,0.888166097468423,True
+render,light,render_chair,0,1,0.888166097468423,True
+render,light,render_chair,1,0,0.9078014184397163,True
+render,light,render_chair,1,1,0.9078014184397163,True
+render,light,render_chair,2,0,0.9078014184397163,True
+render,light,render_chair,2,1,0.9078014184397163,True
+render,dark,render_mug,0,0,1.0,True
+render,dark,render_mug,0,1,1.0,True
+render,dark,render_mug,1,0,1.0,True
+render,dark,render_mug,1,1,1.0,True
+render,dark,render_mug,2,0,1.0,True
+render,dark,render_mug,2,1,1.0,True
+render,light,render_mug,0,0,0.888166097468423,True
+render,light,render_mug,0,1,0.888166097468423,True
+render,light,render_mug,1,0,0.9078014184397163,True
+render,light,render_mug,1,1,0.9078014184397163,True
+render,light,render_mug,2,0,0.9078014184397163,True
+render,light,render_mug,2,1,0.9078014184397163,True
+render,dark,render_desk_lamp,0,0,1.0,True
+render,dark,render_desk_lamp,0,1,1.0,True
+render,dark,render_desk_lamp,1,0,1.0,True
+render,dark,render_desk_lamp,1,1,1.0,True
+render,dark,render_desk_lamp,2,0,1.0,True
+render,dark,render_desk_lamp,2,1,1.0,True
+render,light,render_desk_lamp,0,0,0.888166097468423,True
+render,light,render_desk_lamp,0,1,0.888166097468423,True
+render,light,render_desk_lamp,1,0,0.9078014184397163,True
+render,light,render_desk_lamp,1,1,0.9078014184397163,True
+render,light,render_desk_lamp,2,0,0.9078014184397163,True
+render,light,render_desk_lamp,2,1,0.9078014184397163,True
+render,dark,render_bottle_glass,0,0,1.0,True
+render,dark,render_bottle_glass,0,1,1.0,True
+render,dark,render_bottle_glass,1,0,1.0,True
+render,dark,render_bottle_glass,1,1,1.0,True
+render,dark,render_bottle_glass,2,0,1.0,True
+render,dark,render_bottle_glass,2,1,1.0,True
+render,light,render_bottle_glass,0,0,0.888166097468423,True
+render,light,render_bottle_glass,0,1,0.888166097468423,True
+render,light,render_bottle_glass,1,0,0.9078014184397163,True
+render,light,render_bottle_glass,1,1,0.9078014184397163,True
+render,light,render_bottle_glass,2,0,0.9078014184397163,True
+render,light,render_bottle_glass,2,1,0.9078014184397163,True
+render,dark,render_kettle,0,0,1.0,True
+render,dark,render_kettle,0,1,1.0,True
+render,dark,render_kettle,1,0,1.0,True
+render,dark,render_kettle,1,1,1.0,True
+render,dark,render_kettle,2,0,1.0,True
+render,dark,render_kettle,2,1,1.0,True
+render,light,render_kettle,0,0,0.888166097468423,True
+render,light,render_kettle,0,1,0.888166097468423,True
+render,light,render_kettle,1,0,0.9078014184397163,True
+render,light,render_kettle,1,1,0.9078014184397163,True
+render,light,render_kettle,2,0,0.9078014184397163,True
+render,light,render_kettle,2,1,0.9078014184397163,True
+render,dark,render_robot,0,0,1.0,True
+render,dark,render_robot,0,1,1.0,True
+render,dark,render_robot,1,0,1.0,True
+render,dark,render_robot,1,1,1.0,True
+render,dark,render_robot,2,0,1.0,True
+render,dark,render_robot,2,1,1.0,True
+render,light,render_robot,0,0,0.888166097468423,True
+render,light,render_robot,0,1,0.888166097468423,True
+render,light,render_robot,1,0,0.9078014184397163,True
+render,light,render_robot,1,1,0.9078014184397163,True
+render,light,render_robot,2,0,0.9078014184397163,True
+render,light,render_robot,2,1,0.9078014184397163,True
+render,dark,render_rocket,0,0,1.0,True
+render,dark,render_rocket,0,1,1.0,True
+render,dark,render_rocket,1,0,1.0,True
+render,dark,render_rocket,1,1,1.0,True
+render,dark,render_rocket,2,0,1.0,True
+render,dark,render_rocket,2,1,1.0,True
+render,light,render_rocket,0,0,0.888166097468423,True
+render,light,render_rocket,0,1,0.888166097468423,True
+render,light,render_rocket,1,0,0.9078014184397163,True
+render,light,render_rocket,1,1,0.9078014184397163,True
+render,light,render_rocket,2,0,0.9078014184397163,True
+render,light,render_rocket,2,1,0.9078014184397163,True
+render,dark,render_snowman,0,0,1.0,True
+render,dark,render_snowman,0,1,1.0,True
+render,dark,render_snowman,1,0,1.0,True
+render,dark,render_snowman,1,1,1.0,True
+render,dark,render_snowman,2,0,1.0,True
+render,dark,render_snowman,2,1,1.0,True
+render,light,render_snowman,0,0,0.888166097468423,True
+render,light,render_snowman,0,1,0.888166097468423,True
+render,light,render_snowman,1,0,0.9078014184397163,True
+render,light,render_snowman,1,1,0.9078014184397163,True
+render,light,render_snowman,2,0,0.9078014184397163,True
+render,light,render_snowman,2,1,0.9078014184397163,True
+render,dark,render_table_vase,0,0,1.0,True
+render,dark,render_table_vase,0,1,1.0,True
+render,dark,render_table_vase,1,0,1.0,True
+render,dark,render_table_vase,1,1,1.0,True
+render,dark,render_table_vase,2,0,1.0,True
+render,dark,render_table_vase,2,1,1.0,True
+render,light,render_table_vase,0,0,0.888166097468423,True
+render,light,render_table_vase,0,1,0.888166097468423,True
+render,light,render_table_vase,1,0,0.9078014184397163,True
+render,light,render_table_vase,1,1,0.9078014184397163,True
+render,light,render_table_vase,2,0,0.9078014184397163,True
+render,light,render_table_vase,2,1,0.9078014184397163,True
+viewport content,dark,bottle_glass,0,0,1.0,True
+viewport content,dark,bottle_glass,1,0,1.0,True
+viewport content,dark,bottle_glass,2,0,1.0,True
+viewport content,light,bottle_glass,0,0,0.31142359049023927,True
+viewport content,light,bottle_glass,1,0,0.24404921500283017,True
+viewport content,light,bottle_glass,2,0,0.2944220816561242,True
+viewport content,dark,chair,0,0,1.0,True
+viewport content,dark,chair,1,0,1.0,True
+viewport content,dark,chair,2,0,1.0,True
+viewport content,light,chair,0,0,0.4034829341394724,True
+viewport content,light,chair,1,0,0.24404921500283017,True
+viewport content,light,chair,2,0,0.2944220816561242,True
+viewport content,dark,desk_lamp,0,0,1.0,True
+viewport content,dark,desk_lamp,1,0,1.0,True
+viewport content,dark,desk_lamp,2,0,1.0,True
+viewport content,light,desk_lamp,0,0,0.31142359049023927,True
+viewport content,light,desk_lamp,1,0,0.36103896103896105,True
+viewport content,light,desk_lamp,2,0,0.2944220816561242,True
+viewport content,dark,kettle,0,0,1.0,True
+viewport content,dark,kettle,1,0,1.0,True
+viewport content,dark,kettle,2,0,1.0,True
+viewport content,light,kettle,0,0,0.4034829341394724,True
+viewport content,light,kettle,1,0,0.24404921500283017,True
+viewport content,light,kettle,2,0,0.2944220816561242,True
+viewport content,dark,mug,0,0,1.0,True
+viewport content,dark,mug,1,0,1.0,True
+viewport content,dark,mug,2,0,1.0,True
+viewport content,light,mug,0,0,0.4034829341394724,True
+viewport content,light,mug,1,0,0.24404921500283017,True
+viewport content,light,mug,2,0,0.2944220816561242,True
+viewport content,dark,robot,0,0,1.0,True
+viewport content,dark,robot,1,0,1.0,True
+viewport content,dark,robot,2,0,1.0,True
+viewport content,light,robot,0,0,0.31142359049023927,True
+viewport content,light,robot,1,0,0.24404921500283017,True
+viewport content,light,robot,2,0,0.2944220816561242,True
+viewport content,dark,rocket,0,0,1.0,True
+viewport content,dark,rocket,1,0,1.0,True
+viewport content,dark,rocket,2,0,1.0,True
+viewport content,light,rocket,0,0,0.31142359049023927,True
+viewport content,light,rocket,1,0,0.24404921500283017,True
+viewport content,light,rocket,2,0,0.2944220816561242,True
+viewport content,dark,snowman,0,0,1.0,True
+viewport content,dark,snowman,1,0,1.0,True
+viewport content,dark,snowman,2,0,1.0,True
+viewport content,light,snowman,0,0,0.4034829341394724,True
+viewport content,light,snowman,1,0,0.24404921500283017,True
+viewport content,light,snowman,2,0,0.2944220816561242,True
+viewport content,dark,still_life,0,0,1.0,True
+viewport content,dark,still_life,1,0,1.0,True
+viewport content,dark,still_life,2,0,1.0,True
+viewport content,light,still_life,0,0,0.4034829341394724,True
+viewport content,light,still_life,1,0,0.24404921500283017,True
+viewport content,light,still_life,2,0,0.2944220816561242,True
+viewport content,dark,suzanne,0,0,1.0,True
+viewport content,dark,suzanne,1,0,1.0,True
+viewport content,dark,suzanne,2,0,1.0,True
+viewport content,light,suzanne,0,0,0.4034829341394724,True
+viewport content,light,suzanne,1,0,0.24404921500283017,True
+viewport content,light,suzanne,2,0,0.2944220816561242,True
+viewport content,dark,table_vase,0,0,1.0,True
+viewport content,dark,table_vase,1,0,1.0,True
+viewport content,dark,table_vase,2,0,1.0,True
+viewport content,light,table_vase,0,0,0.31142359049023927,True
+viewport content,light,table_vase,1,0,0.36103896103896105,True
+viewport content,light,table_vase,2,0,0.2944220816561242,True
+viewport content,dark,torus_cube,0,0,1.0,True
+viewport content,dark,torus_cube,1,0,1.0,True
+viewport content,dark,torus_cube,2,0,1.0,True
+viewport content,light,torus_cube,0,0,0.9769827072152654,True
+viewport content,light,torus_cube,1,0,0.24404921500283017,True
+viewport content,light,torus_cube,2,0,0.5708710801393728,True
+clean image,-,scene_A,-1,0,,False
+clean image,-,scene_B,-1,0,,False
+clean image,-,render_suzanne,-1,0,,False
+clean image,-,render_still_life,-1,0,,False
+clean image,-,render_chair,-1,0,,False
+clean image,-,render_mug,-1,0,,False
+clean image,-,render_desk_lamp,-1,0,,False
+clean image,-,render_bottle_glass,-1,0,,False
+clean image,-,render_kettle,-1,0,,False
+clean image,-,render_robot,-1,0,,False
+clean image,-,render_rocket,-1,0,,False
+clean image,-,render_snowman,-1,0,,False
+clean image,-,render_table_vase,-1,0,,False
+clean image,-,bottle_glass/nuis_shot0.png,-1,0,,False
+clean image,-,bottle_glass/nuis_view1.png,-1,0,,False
+clean image,-,bottle_glass/err0_rr.png,-1,0,,False
+clean image,-,bottle_glass/err6_rr.png,-1,0,,False
+clean image,-,chair/nuis_shot0.png,-1,0,,False
+clean image,-,chair/nuis_view1.png,-1,0,,False
+clean image,-,chair/err0_rr.png,-1,0,,False
+clean image,-,chair/err6_rr.png,-1,0,,False
+clean image,-,desk_lamp/nuis_shot0.png,-1,0,,False
+clean image,-,desk_lamp/nuis_view1.png,-1,0,,False
+clean image,-,desk_lamp/err0_rr.png,-1,0,,False
+clean image,-,desk_lamp/err6_rr.png,-1,0,,False
+clean image,-,kettle/nuis_shot0.png,-1,0,,False
+clean image,-,kettle/nuis_view1.png,-1,0,,False
+clean image,-,kettle/err0_rr.png,-1,0,,False
+clean image,-,kettle/err6_rr.png,-1,0,,False
+clean image,-,mug/nuis_shot0.png,-1,0,,False
+clean image,-,mug/nuis_view1.png,-1,0,,False
+clean image,-,mug/err0_rr.png,-1,0,,False
+clean image,-,mug/err6_rr.png,-1,0,,False
+clean image,-,robot/nuis_shot0.png,-1,0,,False
+clean image,-,robot/nuis_view1.png,-1,0,,False
+clean image,-,robot/err0_rr.png,-1,0,,False
+clean image,-,robot/err6_rr.png,-1,0,,False
+clean image,-,rocket/nuis_shot0.png,-1,0,,False
+clean image,-,rocket/nuis_view1.png,-1,0,,False
+clean image,-,rocket/err0_rr.png,-1,0,,False
+clean image,-,rocket/err6_rr.png,-1,0,,False
+clean image,-,snowman/nuis_shot0.png,-1,0,,False
+clean image,-,snowman/nuis_view1.png,-1,0,,False
+clean image,-,snowman/err0_rr.png,-1,0,,False
+clean image,-,snowman/err6_rr.png,-1,0,,False
+clean image,-,still_life/nuis_shot0.png,-1,0,,False
+clean image,-,still_life/nuis_view1.png,-1,0,,False
+clean image,-,still_life/err0_rr.png,-1,0,,False
+clean image,-,still_life/err6_rr.png,-1,0,,False
+clean image,-,suzanne/nuis_shot0.png,-1,0,,False
+clean image,-,suzanne/nuis_view1.png,-1,0,,False
+clean image,-,suzanne/err0_rr.png,-1,0,,False
+clean image,-,suzanne/err6_rr.png,-1,0,,False
+clean image,-,table_vase/nuis_shot0.png,-1,0,,False
+clean image,-,table_vase/nuis_view1.png,-1,0,,False
+clean image,-,table_vase/err0_rr.png,-1,0,,False
+clean image,-,table_vase/err6_rr.png,-1,0,,False
+clean image,-,torus_cube/nuis_shot0.png,-1,0,,False
+clean image,-,torus_cube/nuis_view1.png,-1,0,,False
+clean image,-,torus_cube/err0_rr.png,-1,0,,False
+clean image,-,torus_cube/err6_rr.png,-1,0,,False

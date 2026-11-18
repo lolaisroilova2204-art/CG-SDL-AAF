@@ -31,7 +31,11 @@ def _sep_runs(Y, axis):
     idx = np.arange(n)
     lo, hi = med[np.clip(idx - 8, 0, n - 1)], med[np.clip(idx + 8, 0, n - 1)]
     edge = (idx < 2) | (idx > n - 3)
-    cand = uni & (med < 36) & ((med <= np.minimum(lo, hi) - 5) | edge)
+    nb = np.minimum(lo, hi)
+    # light themes (v1.4): a thin uniform line whose grey differs clearly from the rows 4 px on either side
+    m_lo, m_hi = med[np.clip(idx - 4, 0, n - 1)], med[np.clip(idx + 4, 0, n - 1)]
+    distinct = (np.abs(med - m_lo) >= 25) & (np.abs(med - m_hi) >= 25)
+    cand = uni & (((med < 36) & ((med <= nb - 5) | edge)) | distinct)
     runs, i = [], 0
     while i < n:
         if cand[i]:
@@ -113,7 +117,12 @@ def detect_viewport(img):
         tex = float(_lum(sub).std())
         sat = float((sub.max(2) - sub.min(2)).mean())
         med = np.median(sub.reshape(-1, 3), axis=0)
-        ui_like = (0.299 * med[0] + 0.587 * med[1] + 0.114 * med[2]) < 75 and (med.max() - med.min()) < 10
+        q = (sub.astype(int) // 4).reshape(-1, 3)
+        _, cnt = np.unique(q[:, 0] * 4096 + q[:, 1] * 64 + q[:, 2], return_counts=True)
+        top3 = float(np.sort(cnt)[::-1][:3].sum() / len(q))
+        # an interface panel (dark or light theme) is unsaturated and drawn in a few flat colours; a
+        # solid-shaded grey viewport is unsaturated too, but shaded, so it is not mistaken for a panel
+        ui_like = (med.max() - med.min()) < 10 and top3 >= 0.97
         s = area * (1.0 if tex > 6 else 0.2) * (1 + sat / 40) * (0.15 if ui_like else 1.0)
         if s > bs:
             best, bs = (x0, y0, x1, y1), s
@@ -145,11 +154,17 @@ def apply_crop(a: np.ndarray, crop):
 
 
 # ------------------------------------------------------------------ mock UI for tests / benchmark
-def mock_ui(render: Image.Image, layout=0, seed=0) -> Image.Image:
-    """Blender-like dark UI around a viewport showing `render` (approximate theme colours)."""
+THEMES = {"dark": dict(SEP=(22, 22, 22), AREA=(48, 48, 48), PANEL=(61, 61, 61), HEAD=(40, 40, 40), TEXT=(190, 190, 190), TEXT2=(120, 120, 120), BTN=(130, 130, 130)),
+          "light": dict(SEP=(140, 140, 140), AREA=(205, 205, 205), PANEL=(220, 220, 220), HEAD=(188, 188, 188), TEXT=(60, 60, 60), TEXT2=(120, 120, 120), BTN=(150, 150, 150))}
+
+
+def mock_ui(render: Image.Image, layout=0, seed=0, theme="dark", return_box=False):
+    """Blender-like UI (dark or light theme) around a viewport showing `render`.
+    return_box=True also returns the true viewport rectangle (x0, y0, x1, y1) without its header."""
     rng = np.random.default_rng(seed)
     W, H = render.size
-    SEP, AREA, PANEL, HEAD, TEXT = (22, 22, 22), (48, 48, 48), (61, 61, 61), (40, 40, 40), (190, 190, 190)
+    T = THEMES[theme]
+    SEP, AREA, PANEL, HEAD, TEXT = T["SEP"], T["AREA"], T["PANEL"], T["HEAD"], T["TEXT"]
     left = [0, 46, 70][layout % 3]
     right = [300, 360, 260][layout % 3]
     top = [34, 30, 60][layout % 3]
@@ -164,7 +179,7 @@ def mock_ui(render: Image.Image, layout=0, seed=0) -> Image.Image:
         if text:
             for yy in range(y0 + 8, y1 - 14, 22):
                 L = int(rng.integers(30, max(31, (x1 - x0) - 20)))
-                d.rectangle([x0 + 10, yy, x0 + 10 + L, yy + 8], fill=TEXT if rng.random() < .5 else (120, 120, 120))
+                d.rectangle([x0 + 10, yy, x0 + 10 + L, yy + 8], fill=TEXT if rng.random() < .5 else T["TEXT2"])
     area(0, 0, sw, top, HEAD)
     vx0, vy0 = left + 2, top + 2
     if left:
@@ -175,6 +190,17 @@ def mock_ui(render: Image.Image, layout=0, seed=0) -> Image.Image:
         area(vx0, vy0 + head + H + 2, vx0 + W, sh, AREA)
     d.rectangle([vx0, vy0, vx0 + W - 1, vy0 + head - 1], fill=HEAD)
     for k in range(8):
-        d.rectangle([vx0 + 8 + 26 * k, vy0 + 6, vx0 + 22 + 26 * k, vy0 + 20], fill=(130, 130, 130))
+        d.rectangle([vx0 + 8 + 26 * k, vy0 + 6, vx0 + 22 + 26 * k, vy0 + 20], fill=T["BTN"])
     im.paste(render, (vx0, vy0 + head))
-    return im
+    box = (vx0, vy0 + head, vx0 + W, vy0 + head + H)
+    return (im, box) if return_box else im
+
+
+def box_iou(a, b):
+    if a is None or b is None:
+        return 0.0
+    ix = max(0, min(a[2], b[2]) - max(a[0], b[0]))
+    iy = max(0, min(a[3], b[3]) - max(a[1], b[1]))
+    inter = ix * iy
+    ua = (a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1]) - inter
+    return float(inter / ua) if ua > 0 else 0.0

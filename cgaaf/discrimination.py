@@ -7,7 +7,8 @@ resolution, compression, pose, tessellation) and lowers it under genuine *errors
 
 AUC  = P(s_nuisance > s_error) (+ 0.5 for ties) — 1.0 = perfect separation, 0.5 = chance.
 d    = Cohen's d between the nuisance and the error distributions (pooled SD).
-CI   = percentile bootstrap that resamples *references* (clusters), not single samples.
+CI   = percentile bootstrap that resamples *references* (clusters), not single samples;
+       dAUC = paired difference to the framework score on the same bootstrap samples.
 """
 from __future__ import annotations
 
@@ -40,28 +41,45 @@ def _oriented(df, col, sign):
     return v * sign
 
 
-def compare_methods(df, methods, kind_col="kind", cluster_col="reference", min_level=0.0, B=1000, seed=3):
-    """methods: list of (column, label, sign). Rows with kind 'nuisance' vs 'error' (level >= min_level)."""
+def compare_methods(df, methods, kind_col="kind", cluster_col="reference", min_level=0.0, B=1000, seed=3, ref_label="Framework score"):
+    """methods: list of (column, label, sign). Rows with kind 'nuisance' vs 'error' (level >= min_level).
+
+    For every method: AUC with a percentile-bootstrap CI that resamples reference objects (clusters);
+    the paired difference to the framework score (same resampled clusters for both methods), whose CI
+    tests whether the two methods differ; and the range of the AUC when one reference object is left out.
+    Cohen's d is kept in the output only for continuity: under ceiling effects (nuisance scores of exactly
+    100) it is not interpretable, and the paper reports AUC differences instead."""
     rng = np.random.default_rng(seed)
     nu = df[df[kind_col] == "nuisance"]
     er = df[(df[kind_col] == "error") & (df["level"] >= min_level)]
-    clusters = sorted(df[cluster_col].unique())
+    clusters = sorted(set(nu[cluster_col]) & set(er[cluster_col]))
+    meths = [(c, l, s) for c, l, s in methods if c in df and not df[c].isna().all()]
+    P = {l: {c_: _oriented(nu[nu[cluster_col] == c_], c, s).to_numpy() for c_ in clusters} for c, l, s in meths}
+    N = {l: {c_: _oriented(er[er[cluster_col] == c_], c, s).to_numpy() for c_ in clusters} for c, l, s in meths}
+    point = {l: auc(np.concatenate(list(P[l].values())), np.concatenate(list(N[l].values()))) for _, l, _ in meths}
+    boots = {l: [] for _, l, _ in meths}
+    if len(clusters) > 1:
+        for _ in range(B):
+            pick = rng.choice(clusters, len(clusters), replace=True)
+            for _, l, _ in meths:
+                boots[l].append(auc(np.concatenate([P[l][c] for c in pick]), np.concatenate([N[l][c] for c in pick])))
     rows = []
-    for col, lab, sign in methods:
-        if col not in df or df[col].isna().all():
-            continue
-        p, n = _oriented(nu, col, sign), _oriented(er, col, sign)
-        a, d = auc(p, n), cohen_d(p, n)
-        boots = []
-        if len(clusters) > 1:
-            pc = {c: p[nu[cluster_col] == c].to_numpy() for c in clusters}
-            nc = {c: n[er[cluster_col] == c].to_numpy() for c in clusters}
-            for _ in range(B):
-                pick = rng.choice(clusters, len(clusters), replace=True)
-                boots.append(auc(np.concatenate([pc[c] for c in pick]), np.concatenate([nc[c] for c in pick])))
-        lo, hi = (np.nanpercentile(boots, 2.5), np.nanpercentile(boots, 97.5)) if boots else (np.nan, np.nan)
-        rows.append({"method": lab, "AUC": a, "AUC 95% CI": f"[{lo:.3f}, {hi:.3f}]" if np.isfinite(lo) else "—", "Cohen d": d,
-                     "n nuisance": int(p.notna().sum()), "n error": int(n.notna().sum())})
+    for c, l, s in meths:
+        b = np.asarray(boots[l], float)
+        lo, hi = (np.nanpercentile(b, 2.5), np.nanpercentile(b, 97.5)) if len(b) else (np.nan, np.nan)
+        row = {"method": l, "AUC": point[l], "AUC 95% CI": f"[{lo:.3f}, {hi:.3f}]" if np.isfinite(lo) else "—", "ci_lo": lo, "ci_hi": hi}
+        if ref_label in boots and len(b) and l != ref_label:
+            dlt = b - np.asarray(boots[ref_label], float)
+            dlo, dhi = np.nanpercentile(dlt, 2.5), np.nanpercentile(dlt, 97.5)
+            row.update({"dAUC vs framework": point[l] - point.get(ref_label, np.nan), "dAUC 95% CI": f"[{dlo:+.3f}, {dhi:+.3f}]",
+                        "d_lo": dlo, "d_hi": dhi, "differs": bool(dlo > 0 or dhi < 0)})
+        loo = [auc(np.concatenate([P[l][k] for k in clusters if k != c_]), np.concatenate([N[l][k] for k in clusters if k != c_]))
+               for c_ in clusters] if len(clusters) > 2 else []
+        row.update({"LOOO min": float(np.nanmin(loo)) if loo else np.nan, "LOOO max": float(np.nanmax(loo)) if loo else np.nan,
+                    "Cohen d": cohen_d(np.concatenate(list(P[l].values())), np.concatenate(list(N[l].values()))),
+                    "n nuisance": int(sum(len(v) for v in P[l].values())), "n error": int(sum(len(v) for v in N[l].values())),
+                    "n objects": len(clusters)})
+        rows.append(row)
     return pd.DataFrame(rows).sort_values("AUC", ascending=False, ignore_index=True)
 
 

@@ -51,7 +51,7 @@ def run_script(script, args, blender=None, timeout=600):
     b = blender or find_blender()
     if b is None:
         raise RuntimeError("Blender not found")
-    cmd = ([b[1], "-b", "--factory-startup", "--python", str(script), "--"] if b[0] == "exe" else [b[1], str(script), "--"]) + [str(a) for a in args]
+    cmd = ([b[1], "-b", "--factory-startup", "--disable-autoexec", "--python", str(script), "--"] if b[0] == "exe" else [b[1], str(script), "--"]) + [str(a) for a in args]
     p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
     if "AAF_OK" not in (p.stdout or "") + (p.stderr or ""):
         raise RuntimeError(((p.stdout or "") + (p.stderr or ""))[-1500:])
@@ -65,7 +65,8 @@ def run_blender(src, out_png=None, out_obj=None, mode="canonical", res=512, engi
         raise RuntimeError("Blender not found (set CGAAF_BLENDER or install Blender).")
     args = ["--", str(Path(src).resolve()), str(out_png or "-"), str(out_obj or "-"), mode, str(res), engine, str(samples)] + [str(v) for v in jitter] + [obj_filter or "auto", str(int(frames)), helpers]
     if b[0] == "exe":
-        cmd = [b[1], "-b", "--factory-startup", "--python", str(SCRIPT)] + args
+        # --disable-autoexec: Python embedded in untrusted student files (text blocks, drivers) never runs
+        cmd = [b[1], "-b", "--factory-startup", "--disable-autoexec", "--python", str(SCRIPT)] + args
     else:
         cmd = [b[1], str(SCRIPT)] + args
     p = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)

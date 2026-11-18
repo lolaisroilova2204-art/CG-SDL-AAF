@@ -48,5 +48,16 @@ def test_benchmark_monotone_and_invariant():
     S = summarise(img, mesh)
     assert (S["mesh_invariance"]["score_min"] > 95).all()
     assert (S["mesh_monotonicity"]["rho_level_score"] < -0.7).all()
-    im = S["image_monotonicity"].set_index("family")
-    assert im.loc[["translation", "scale", "brightness", "noise"], "rho_level_score"].lt(-0.9).all()
+    im = S["image_monotonicity"]
+    comp = im[im["mode"] == "composition"].set_index("family")
+    assert comp.loc[["translation", "scale", "brightness", "noise"], "rho_level_score"].lt(-0.9).all()
+    obj = im[im["mode"] == "object"].set_index("family")
+    assert "translation" not in obj.index  # placement is not assessed in object mode
+    # object mode: a render-like object on a uniform background may be moved and resized in the frame
+    from PIL import Image, ImageDraw
+    obj = Image.new("RGB", (256, 256), (60, 60, 64))
+    dr = ImageDraw.Draw(obj)
+    dr.ellipse((78, 70, 178, 190), fill=(180, 90, 40)); dr.rectangle((100, 150, 160, 200), fill=(40, 120, 190))
+    im2 = run_image_bench({"obj": obj}, repeats=1, use_lpips=False, log=lambda s: None, modes=("object",))
+    nu = im2[(im2.kind == "nuisance") & (im2.family == "n_reframe")]
+    assert len(nu) == 3 and nu["score"].min() > 90

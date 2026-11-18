@@ -27,7 +27,22 @@ def test_compare_methods_orientation_and_ci():
 @pytest.mark.skipif(find_blender() is None, reason="Blender not available")
 def test_render_bench_one_composition(tmp_path):
     from cgaaf.bench_render import run_render_bench
-    df, det, assets = run_render_bench(tmp_path, use_lpips=False, res=128, log=lambda s: None, compositions=[1])
-    assert det["max_abs_pixel_diff"] == 0 and det["identical_obj"] and assets["suzanne"].exists()
+    df, det, assets = run_render_bench(tmp_path, use_lpips=False, res=128, log=lambda s: None, compositions=[1], hires=0)
+    assert det["max_abs_pixel_diff"] == 0 and det["identical_obj"] and assets["suzanne"]["ref"].exists()
+    assert assets["suzanne"]["tess1"].exists() and assets["suzanne"]["tess2"].exists()
     rr = df[df.pipeline == "re-render"]
     assert rr[rr.kind == "nuisance"]["score"].min() > rr[rr.kind == "error"]["score"].median()
+    # canonical re-rendering neutralises student render settings (engine, view transform, camera, film)
+    assert rr[(rr.kind == "nuisance") & (rr.family == "student render settings")]["score"].min() > 90
+    assert set(df.pipeline) == {"re-render", "screenshot", "viewport"}
+
+
+def test_paired_auc_difference():
+    rng = np.random.default_rng(1)
+    rows = []
+    for r in range(6):
+        for k in range(20):
+            rows.append({"reference": f"r{r}", "kind": "nuisance", "level": 0, "good": rng.normal(1, .1), "weak": rng.normal(.6, .3)})
+            rows.append({"reference": f"r{r}", "kind": "error", "level": .5, "good": rng.normal(0, .1), "weak": rng.normal(.4, .3)})
+    T = compare_methods(pd.DataFrame(rows), [("good", "Framework score", 1), ("weak", "weak", 1)], B=300).set_index("method")
+    assert T.loc["weak", "differs"] and T.loc["weak", "dAUC vs framework"] < 0 and T.loc["weak", "LOOO max"] <= 1

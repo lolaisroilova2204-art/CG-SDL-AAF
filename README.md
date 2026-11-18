@@ -1,6 +1,6 @@
 # CG-SDL-AAF
 
-**A Reproducible Automated Assessment Framework for Self-Directed Learning in Computer Graphics: Combining Perceptual Image Similarity, Geometric Mesh Metrics and Blender-Based Re-Rendering**
+**A Reproducible Automated Assessment Framework for Self-Directed Learning in Computer Graphics**
 
 *Kompyuter grafikasida mustaqil ta'lim uchun takrorlanuvchan avtomatik baholash ramkasi*
 
@@ -23,7 +23,7 @@ Talabalarning «Kompyuter grafikasi» fanidan mustaqil ishlarini (render tasvirl
 | Statistika | Pearson/Spearman, ICC(2,1)/(3,1), Bland–Altman, kvadratik κ, bootstrap CI, NNLS kalibrlash, LOOCV ablatsiya |
 
 ### O'rnatish (Windows)
-1. [Python 3.10–3.12](https://www.python.org/downloads/) o'rnating («Add to PATH» belgisini qo'ying).
+1. [Python 3.10–3.13](https://www.python.org/downloads/) o'rnating («Add to PATH» belgisini qo'ying).
 2. [Blender](https://www.blender.org/download/) (3.6 yoki yangiroq) o'rnating — `.blend` fayllar uchun.
 3. Papkada buyruq oynasini oching:
    ```
@@ -102,7 +102,20 @@ cgaaf import-archive course mapping.xlsx --expert-max 5    # copy, rescale grade
 cgaaf benchmark course/results/benchmark                   # perturbation benchmark, Blender determinism & viewpoint test
 cgaaf paper course --benchmark course/results/benchmark    # Tables I-VII, figures, results paragraphs
 ```
-`docs/benchmark_reference_run/` contains a reference run of the benchmark on the built-in references (LPIPS off); re-run it on your machine with LPIPS enabled for the manuscript.
+`docs/benchmark_reference_run/` contains the reference run of version 1.4 reported in the manuscript (Blender 5.3, LPIPS off because its network weights could not be downloaded in the build environment); `scripts/run_full_benchmark.*` reruns it, with LPIPS when the weights are available.
+
+### Version 1.4 — revision after peer review of the technical validation
+* image channel: explicit **object mode** (trim on, default: placement and size not assessed) and **composition mode** (trim off); both are benchmarked (v1.3 benchmarked trim off only, which did not match the default of a task);
+* fair alignment baselines: Chamfer without alignment is now computed with both shapes in their original orientations (v1.3 compared an unrotated student cloud with a PCA-rotated reference); new baselines ICP only, PCA only, D2 shape distribution, FLIP and SNCD;
+* topology is penalised only in excess of the reference; helper-component rule independent of the face count (subdivided floors, slabs) that keeps small thin model parts;
+* viewport detection for light themes; robust background estimate; trimming ignores stray border lines;
+* Blender runs with `--disable-autoexec` / `use_scripts=False` (no code in student files is executed);
+* benchmark: 12 compositions (6 held-out), student-like render settings, re-tessellation, viewport (Workbench) screenshots, 512 px check, feedback validation, paired bootstrap AUC differences, leave-one-object-out ranges, sensitivity analysis of all default constants;
+* feedback: the benchmark now validates every message against the injected error; two defects it exposed were corrected (no contour at all → "missing contours"; a result graded below 5 without a specific message always names the region with the largest difference or the overall shape);
+* `scripts/paper/make_figures.py` and `scripts/paper/manuscript_numbers.py` regenerate Figs. 2–7 and the table rows of the manuscript from a benchmark run; `scripts/time_framework.py` times the framework metrics without the baselines;
+* tests extended (light-theme crop, paired AUC difference, render settings neutralised, feedback corrections) — 28 tests.
+
+Main findings of the reference run (`docs/benchmark_reference_run/`, 6,225 cases): the score decreased with severity in every error family and separated nuisance from errors with AUC 0.936 (object mode), 0.916 (composition mode) and 0.972 (meshes), without degradation on the six held-out compositions; **PSNR and the Hausdorff distance were slightly but significantly better** than the composite; canonical re-rendering reached AUC 0.975 and gave every correct scene the top grade, whereas **render and viewport screenshots were near chance** (0.550 and 0.511) — assess `.blend` files, not screenshots; the extra-parts message is unreliable and light-theme screenshot cropping fails. See `CHANGELOG.md` and the manuscript for details.
 
 ### Version 1.3 — technical-validation benchmark
 * six parametric Blender compositions (Suzanne, chair, mug, desk lamp, still life with procedural texture, torus + cube) and their exported meshes as references;

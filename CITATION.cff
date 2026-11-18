@@ -1,7 +1,9 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
+type: software
 title: "CG-SDL-AAF: A Reproducible Automated Assessment Framework for Self-Directed Learning in Computer Graphics"
-version: 1.3.0
+abstract: "CG-SDL-AAF is an open-source, bilingual (Uzbek/English) framework for the automated assessment of self-directed work in computer graphics. It standardises student evidence (headless Blender re-rendering of .blend/.fbx scene files with a canonical camera and script execution disabled, helper-object filtering, automatic removal of the application interface from screenshots in dark and light themes, PCA+ICP pose alignment of meshes), compares it with a reference using perceptual image metrics in an object or a composition mode (foreground-weighted SSIM, MS-SSIM, CIEDE2000, edge F1, optional LPIPS) and geometric mesh metrics (Chamfer, Hausdorff, H95, F-score, topology relative to the reference), and returns a 0-100 score with formative feedback within a forethought-performance-self-reflection cycle. The release contains the desktop GUI, command-line interface, notebooks, tests, the technical-validation benchmark (development and held-out objects, feedback validation, sensitivity analysis) and the reference benchmark run reported in the accompanying manuscript."
+version: 1.4.0
 date-released: 2026-11-16
 license: MIT
 authors:
@@ -9,6 +11,14 @@ authors:
     given-names: Lola Sunnatovna
     orcid: "https://orcid.org/0009-0008-2777-2816"
     affiliation: "Navoi State University, Department of Digital Technologies"
-keywords: [computer graphics education, automated assessment, self-directed learning, SSIM, LPIPS, Chamfer distance, Hausdorff distance, Blender]
-# repository-code: https://github.com/<user>/CG-SDL-AAF   (fill in after upload)
-# doi: 10.5281/zenodo.XXXXXXX                              (fill in after Zenodo release)
+keywords:
+  - computer graphics education
+  - automated assessment
+  - self-directed learning
+  - SSIM
+  - LPIPS
+  - Chamfer distance
+  - Hausdorff distance
+  - Blender
+repository-code: "https://github.com/lolaisroilova2204-art/CG-SDL-AAF"
+# doi: the Zenodo DOI of the v1.4.0 release (filled in after the release)

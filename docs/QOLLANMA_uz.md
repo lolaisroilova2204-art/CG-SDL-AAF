@@ -59,11 +59,18 @@ kurs/
 * **Arxiv importida ekspert shkalasi**: 2–5 baholar uchun «5 ballik baho» ni tanlang (5 → 93, 4 → 78, 3 → 62.5, 2 → 27.5), boshqa shkalalar uchun minimum va maksimumni kiriting.
 * Validatsiyada har bir talaba–topshiriq juftligidan bitta (oxirgi baholangan) urinish olinadi; ishonch oraliqlari talabalar bo'yicha klasterli bootstrap bilan hisoblanadi.
 
+## 7a. 1.4 versiyadagi o'zgarishlar
+* **Tasvir rejimi** (topshiriq sozlamasi): «Obyekt rejimi» (standart) — obyektning kadrdagi joyi va o'lchami baholanmaydi (modellashtirish va material topshiriqlari uchun); belgi olib tashlansa — «kompozitsiya rejimi»: kadr, kamera burilishi va joylashuv ham baholanadi.
+* **Xavfsizlik**: talabaning `.blend` fayli ichidagi Python skriptlari hech qachon ishga tushirilmaydi (`--disable-autoexec`).
+* **Yordamchi obyektlar**: pol va fon endi poligonlar soniga qaramay (bo'lingan pol, qalin taxta ham) aniqlanadi, modelning kichik yupqa qismlari (plastinka, yozuv taxtasi) esa saqlanadi.
+* **Izohlar**: kontur umuman topilmasa — «kontur yetishmaydi» deyiladi; ball 86 dan past bo'lib, birorta aniq qoida ishlamasa ham, eng katta farq bor soha yoki umumiy shakl haqida izoh beriladi. «Ortiqcha qism» izohi hali ishonchsiz — buni talabalarga ayting.
+* **Tavsiya**: baholash uchun ekran surati emas, `.blend` faylni talab qiling — benchmarkda ekran suratlari bo'yicha to'g'ri va xato sahnalar deyarli farqlanmadi, qayta render esa barcha to'g'ri sahnalarga 5 baho berdi. Och rangli (light) interfeys mavzusidagi ekran suratlarini avtomatik kesish ishonchsiz — qo'lda kesing.
+
 ## 8. Texnik validatsiya maqolasi uchun (talabalar ma'lumotisiz)
 1. `pip install -e .[lpips]` va Blender 3.6+ o'rnatilgan bo'lsin.
-2. `scripts\run_full_benchmark.bat` ni ishga tushiring (10–20 daqiqa).
-3. `paper_tech\paper_results_en.md` — maqolaning natijalar bo'limi uchun barcha jadvallar va inglizcha paragraf; `paper_tech\figures\` — 300 dpi rasmlar.
-Benchmark haqiqiy talaba ishi emas, boshqariladigan sinov: unda dastur metrikalarining xatoni sezishi, halaqit beruvchi omillarga chidamliligi va asosiy usullardan ustunligi tekshiriladi.
+2. `scripts\run_full_benchmark.bat` ni ishga tushiring (to'liq benchmark Blender renderlari tufayli ancha vaqt oladi).
+3. `paper_tech\paper_results_en.md` — maqolaning natijalar bo'limi uchun barcha jadvallar va inglizcha paragraf; `paper_tech\figures\` — 300 dpi rasmlar. Maqoladagi 2–7-rasmlar va jadval qatorlari `scripts/paper/make_figures.py` va `scripts/paper/manuscript_numbers.py` bilan qayta olinadi.
+Benchmark haqiqiy talaba ishi emas, boshqariladigan sinov: unda ballning xatoni sezishi, halaqit beruvchi omillarga chidamliligi va oddiy metrikalar (PSNR, Hausdorff va boshqalar) bilan solishtirilganda qanday natija berishi tekshiriladi. 1.4 versiyadagi natijalar `docs/benchmark_reference_run/` papkasida.
 
 ## 9. Muhim
 * «Namuna (sintetik) kurs» — faqat dasturni sinash uchun; uning raqamlari **maqolada ishlatilmaydi**.

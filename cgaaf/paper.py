@@ -120,7 +120,7 @@ def make_paper_bundle(course=None, bench_dir=None, out=None, log=print):
         md += [f"Benchmark references — images: {', '.join(meta.get('images', []))}; meshes: {', '.join(meta.get('meshes', []))}; "
                f"Blender compositions: {', '.join(meta.get('render_compositions', []))}; LPIPS: {meta.get('lpips')}.", ""]
     caps = {"T1_dataset": "Table. Archived dataset used for retrospective validation",
-            "B2a_image_monotonicity": "Table. Image channel — monotonicity of the score over 9 error families",
+            "B2a_image_monotonicity": "Table. Image channel — monotonicity of the score per error family (object and composition modes)",
             "B2b_image_nuisance": "Table. Image channel — scores under nuisance variation (JPEG, noise, 1–2 px shift, resampling)",
             "B2c_image_sensitivity": "Table. Image channel — |Spearman ρ| between severity and each metric",
             "B3a_mesh_invariance": "Table. Mesh channel — invariance to rotation, scaling, re-triangulation, micro-noise",
@@ -130,7 +130,7 @@ def make_paper_bundle(course=None, bench_dir=None, out=None, log=print):
             "B4b_image_min_severity": "Table. Image channel — smallest error severity detected with AUC ≥ 0.9",
             "B4c_mesh_auc": "Table. Mesh channel — framework vs baselines: AUC of nuisance vs errors (severity ≥ 0.2)",
             "B4d_mesh_min_severity": "Table. Mesh channel — smallest error severity detected with AUC ≥ 0.9",
-            "B5a_render_auc": "Table. Render-level errors in six Blender compositions — AUC by pipeline (screenshot vs re-render)",
+            "B5a_render_auc": "Table. Render-level errors in twelve Blender compositions — AUC by pipeline (viewport screenshot, render screenshot, re-render)",
             "B5b_render_scores": "Table. Render-level scores by pipeline, kind and family",
             "B6_robustness": "Table. Robustness to application UI in screenshots and to auxiliary objects",
             "T2d_bench_image_sensitivity": "Table II(d). Benchmark — |Spearman ρ| between severity and each image metric",
